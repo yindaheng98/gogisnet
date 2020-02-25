@@ -11,11 +11,11 @@ type Client struct {
 }
 
 func New(info protocol.ClientInfo, option Option) *Client {
-	ClientRegistrantInfo := protocol.ClientRegistrantInfo{
+	RegistrantInfo := protocol.C2SInfo{
 		ClientInfo:         info,
 		ResponseSendOption: option.ResponseSendOption,
 	}
-	Registrant := gogistery.NewRegistrant(ClientRegistrantInfo,
+	Registrant := gogistery.NewRegistrant(RegistrantInfo,
 		option.RegistryN, option.CandidateList, option.RetryNController, option.RequestProto)
 	return &Client{Registrant}
 }
