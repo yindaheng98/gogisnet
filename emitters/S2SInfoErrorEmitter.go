@@ -18,7 +18,11 @@ func NewAsyncS2SInfoErrorEmitter() *S2SInfoErrorEmitter {
 
 func (e *S2SInfoErrorEmitter) AddHandler(handler func(info protocol.S2SInfo, err error)) {
 	e.IndefiniteEmitter.AddHandler(func(args ...interface{}) {
-		handler(args[0].(protocol.S2SInfo), args[1].(error))
+		if args[1] == nil {
+			handler(args[0].(protocol.S2SInfo), nil)
+		} else {
+			handler(args[0].(protocol.S2SInfo), args[1].(error))
+		}
 	})
 }
 

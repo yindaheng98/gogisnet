@@ -16,7 +16,7 @@ type events struct {
 	Retry            *gogistryEmitters.TobeSendRequestErrorEmitter
 }
 
-func (c *Client) initEvent() {
+func (c *Client) newEvent() *events {
 	oldEvents := c.c2sRegistrant.Events
 	newEvents := &events{
 		NewConnection:    emitters.NewAsyncS2CInfoEmitter(),
@@ -41,4 +41,8 @@ func (c *Client) initEvent() {
 		newEvents.Error.Emit(err)
 	})
 	oldEvents.EnableAll()
+	return newEvents
+}
+func (c *Client) initEvent() {
+	c.Events = c.newEvent()
 }

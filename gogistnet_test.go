@@ -50,7 +50,7 @@ func InitS2SRegistry() {
 	initS2SRegistry = protocol.S2SInfo{
 		ServerInfo:         ServerInfo,
 		ResponseSendOption: exampleProto.ResponseSendOption{Timestamp: time.Now()},
-		RequestSendOption:  exampleProto.ResponseSendOption{Timestamp: time.Now()},
+		RequestSendOption:  exampleProto.RequestSendOption{RequestAddr: "UNDEF", Timestamp: time.Now()},
 		Candidates:         []protocol.S2SInfo{},
 		S2CInfo: protocol.S2CInfo{
 			ServerInfo:        ServerInfo,
@@ -62,11 +62,18 @@ func InitS2SRegistry() {
 
 func ServerTest(t *testing.T, id int, Type string) {
 	s := fmt.Sprintf("ServerTest(%d)----", id)
-	server := NewServer(TestServerInfo{ID: fmt.Sprintf("SERVER_%d", id), Type: Type},
-		DefaultServerOption(initS2SRegistry,
-			exampleProto.NewChanNetResponseProtocol(),
-			exampleProto.NewChanNetRequestProtocol(),
-			exampleProto.NewChanNetResponseProtocol()))
+	option := DefaultServerOption(initS2SRegistry,
+		exampleProto.NewChanNetResponseProtocol(),
+		exampleProto.NewChanNetRequestProtocol(),
+		exampleProto.NewChanNetResponseProtocol())
+	option.S2SRegistryOption.RequestSendOption = exampleProto.RequestSendOption{
+		RequestAddr: option.S2SRegistryOption.ResponseProto.(exampleProto.ChanNetResponseProtocol).GetAddr(),
+		Timestamp:   time.Now()}
+	option.S2SRegistrantOption.ResponseSendOption = exampleProto.ResponseSendOption{Timestamp: time.Now()}
+	option.S2CRegistryOption.RequestSendOption = exampleProto.RequestSendOption{
+		RequestAddr: option.S2CRegistryOption.ResponseProto.(exampleProto.ChanNetResponseProtocol).GetAddr(),
+		Timestamp:   time.Now()}
+	server := NewServer(TestServerInfo{ID: fmt.Sprintf("SERVER_%d", id), Type: Type}, option)
 	server.Events.ServerNewConnection.AddHandler(func(info protocol.ServerInfo) {
 		t.Log(s + fmt.Sprintf("%s---->ServerNewConnection--->%s", server.GetServerInfo(), info))
 	})
@@ -91,21 +98,33 @@ func ServerTest(t *testing.T, id int, Type string) {
 		go func() {
 			server.Run()
 			stoppedChan <- true
+			close(stoppedChan)
+		}()
+		go func() {
+			for i := 0; ; i++ {
+				select {
+				case <-time.After(1e9):
+					t.Log(s + fmt.Sprintf("Check(%d)-\nS2C:%s\nS2S:%s", i, server.GetC2SConnections(), server.GetS2SConnections()))
+				case <-stoppedChan:
+					return
+				}
+			}
 		}()
 		select {
 		case <-stoppedChan:
-			fmt.Println(s + fmt.Sprintf("%s stopped itself.", server.GetServerInfo()))
-		case <-time.After(10e9):
+			t.Log(s + fmt.Sprintf("%s stopped itself.", server.GetServerInfo()))
+		case <-time.After(20e9):
 			server.Stop()
-			fmt.Println(s + fmt.Sprintf("%s stopped manully.", server.GetServerInfo()))
+			t.Log(s + fmt.Sprintf("%s stopped manully.", server.GetServerInfo()))
 		}
 	}()
 }
 
 func ClientTest(t *testing.T, id int, Type string) {
 	s := fmt.Sprintf("ClientTest(%d)----", id)
-	client := NewClient(TestClientInfo{ID: fmt.Sprintf("CLIENT_%d", id), Type: Type},
-		DefaultClientOption(initS2CRegistry, exampleProto.NewChanNetRequestProtocol()))
+	option := DefaultClientOption(initS2CRegistry, exampleProto.NewChanNetRequestProtocol())
+	option.ResponseSendOption = exampleProto.ResponseSendOption{Timestamp: time.Now()}
+	client := NewClient(TestClientInfo{ID: fmt.Sprintf("CLIENT_%d", id), Type: Type}, option)
 	client.Events.NewConnection.AddHandler(func(info protocol.S2CInfo) {
 		t.Log(s + fmt.Sprintf("%s---->NewConnection---->%s", client.GetClientInfo(), info.ServerInfo))
 	})
@@ -115,16 +134,27 @@ func ClientTest(t *testing.T, id int, Type string) {
 	})
 	client.Events.Disconnection.Enable()
 	go func() {
-		fmt.Println(s + fmt.Sprintf("%s is going to start.", client.GetClientInfo()))
+		t.Log(s + fmt.Sprintf("%s is going to start.", client.GetClientInfo()))
 		stoppedChan := make(chan bool, 1)
 		go func() {
 			client.Run()
 			stoppedChan <- true
+			close(stoppedChan)
+		}()
+		go func() {
+			for i := 0; ; i++ {
+				select {
+				case <-time.After(1e9):
+					t.Log(s + fmt.Sprintf("Check(%d)-C2S:%s", i, client.GetS2CConnections()))
+				case <-stoppedChan:
+					return
+				}
+			}
 		}()
 		select {
 		case <-stoppedChan:
 			fmt.Println(s + fmt.Sprintf("%s stopped itself.", client.GetClientInfo()))
-		case <-time.After(10e9):
+		case <-time.After(8e9):
 			client.Stop()
 			fmt.Println(s + fmt.Sprintf("%s stopped manully.", client.GetClientInfo()))
 		}
@@ -140,8 +170,10 @@ func TestServerClient(t *testing.T) {
 	for i := 0; i < SERVERN; i++ {
 		ServerTest(t, i, Type)
 	}
+	time.Sleep(2e9)
 	for i := 0; i < CLIENTN; i++ {
 		ClientTest(t, i, Type)
+		time.Sleep(0.5e9)
 	}
-	time.Sleep(20e9)
+	time.Sleep(30e9)
 }

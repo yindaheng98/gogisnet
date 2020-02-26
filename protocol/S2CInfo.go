@@ -1,6 +1,9 @@
 package protocol
 
-import "github.com/yindaheng98/gogistry/protocol"
+import (
+	"fmt"
+	"github.com/yindaheng98/gogistry/protocol"
+)
 
 //服务器面向客户端的信息
 type S2CInfo struct {
@@ -21,4 +24,8 @@ func (info S2CInfo) GetCandidates() []protocol.RegistryInfo {
 		r[i] = c
 	}
 	return r
+}
+func (info S2CInfo) String() string {
+	return fmt.Sprintf("S2CInfo{%s,RequestSendOption:%s,Candidates:%s}",
+		info.ServerInfo, info.RequestSendOption, info.Candidates)
 }

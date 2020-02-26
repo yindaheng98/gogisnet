@@ -18,7 +18,11 @@ func NewAsyncS2CInfoErrorEmitter() *S2CInfoErrorEmitter {
 
 func (e *S2CInfoErrorEmitter) AddHandler(handler func(info protocol.S2CInfo, err error)) {
 	e.IndefiniteEmitter.AddHandler(func(args ...interface{}) {
-		handler(args[0].(protocol.S2CInfo), args[1].(error))
+		if args[1] == nil {
+			handler(args[0].(protocol.S2CInfo), nil)
+		} else {
+			handler(args[0].(protocol.S2CInfo), args[1].(error))
+		}
 	})
 }
 

@@ -18,5 +18,5 @@ func (info C2SInfo) GetRegistrantID() string {
 	return info.ClientInfo.GetClientID()
 }
 func (info C2SInfo) String() string {
-	return fmt.Sprintf("ServerRegistrantInfo{%s}", info.ClientInfo.String())
+	return fmt.Sprintf("C2SInfo{%s}", info.ClientInfo.String())
 }

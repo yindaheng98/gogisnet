@@ -3,6 +3,6 @@ module github.com/yindaheng98/gogisnet
 go 1.13
 
 require (
-	github.com/yindaheng98/go-utility v0.0.0-20200226080112-a451e23cc6ce
-	github.com/yindaheng98/gogistry v0.0.0-20200226063136-f693c5c85fb3
+	github.com/yindaheng98/go-utility v0.0.0-20200226124055-d95d6364dc44
+	github.com/yindaheng98/gogistry v0.0.0-20200226121848-6c4f6d44ff41
 )

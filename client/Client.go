@@ -32,7 +32,7 @@ func (c *Client) GetC2SInfo() protocol.C2SInfo {
 	return c.c2sRegistrant.Info.(protocol.C2SInfo)
 }
 
-func (c *Client) GetConnections() []protocol.S2CInfo {
+func (c *Client) GetS2CConnections() []protocol.S2CInfo {
 	connections := c.c2sRegistrant.GetConnections()
 	s2cInfos := make([]protocol.S2CInfo, len(connections))
 	for i, c := range connections {
