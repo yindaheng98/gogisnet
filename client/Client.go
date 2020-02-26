@@ -25,7 +25,10 @@ func New(info protocol.ClientInfo, option Option) *Client {
 	return c
 }
 
-func (c *Client) GetInfo() protocol.C2SInfo {
+func (c *Client) GetClientInfo() protocol.ClientInfo {
+	return c.c2sRegistrant.Info.(protocol.C2SInfo).ClientInfo
+}
+func (c *Client) GetC2SInfo() protocol.C2SInfo {
 	return c.c2sRegistrant.Info.(protocol.C2SInfo)
 }
 
