@@ -5,6 +5,7 @@ import (
 	"github.com/yindaheng98/gogisnet/protocol"
 	exampleProto "github.com/yindaheng98/gogistry/example/protocol"
 	gogistryProto "github.com/yindaheng98/gogistry/protocol"
+	"sync"
 	"testing"
 	"time"
 )
@@ -60,7 +61,7 @@ func InitS2SRegistry() {
 	}
 }
 
-func ServerTest(t *testing.T, id int, Type string) {
+func ServerTest(t *testing.T, id int, Type string, wg *sync.WaitGroup) {
 	s := fmt.Sprintf("ServerTest(%d)----", id)
 	option := DefaultServerOption(initS2SRegistry,
 		exampleProto.NewChanNetResponseProtocol(),
@@ -117,10 +118,11 @@ func ServerTest(t *testing.T, id int, Type string) {
 			server.Stop()
 			t.Log(s + fmt.Sprintf("%s stopped manully.", server.GetServerInfo()))
 		}
+		wg.Done()
 	}()
 }
 
-func ClientTest(t *testing.T, id int, Type string) {
+func ClientTest(t *testing.T, id int, Type string, wg *sync.WaitGroup) {
 	s := fmt.Sprintf("ClientTest(%d)----", id)
 	option := DefaultClientOption(initS2CRegistry, exampleProto.NewChanNetRequestProtocol())
 	option.ResponseSendOption = exampleProto.ResponseSendOption{Timestamp: time.Now()}
@@ -158,6 +160,7 @@ func ClientTest(t *testing.T, id int, Type string) {
 			client.Stop()
 			fmt.Println(s + fmt.Sprintf("%s stopped manully.", client.GetClientInfo()))
 		}
+		wg.Done()
 	}()
 }
 
@@ -167,13 +170,18 @@ const CLIENTN = 30
 func TestServerClient(t *testing.T) {
 	InitS2SRegistry()
 	Type := "TYPE_0"
+	serverWG := new(sync.WaitGroup)
+	serverWG.Add(SERVERN)
 	for i := 0; i < SERVERN; i++ {
-		ServerTest(t, i, Type)
+		ServerTest(t, i, Type, serverWG)
 	}
 	time.Sleep(2e9)
+	clientWG := new(sync.WaitGroup)
+	clientWG.Add(CLIENTN)
 	for i := 0; i < CLIENTN; i++ {
-		ClientTest(t, i, Type)
+		ClientTest(t, i, Type, clientWG)
 		time.Sleep(0.5e9)
 	}
-	time.Sleep(30e9)
+	serverWG.Wait()
+	clientWG.Wait()
 }
