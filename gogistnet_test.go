@@ -114,7 +114,7 @@ func ServerTest(t *testing.T, id int, Type string, wg *sync.WaitGroup) {
 		select {
 		case <-stoppedChan:
 			t.Log(s + fmt.Sprintf("%s stopped itself.", server.GetServerInfo()))
-		case <-time.After(20e9):
+		case <-time.After(40e9):
 			server.Stop()
 			t.Log(s + fmt.Sprintf("%s stopped manully.", server.GetServerInfo()))
 		}
@@ -156,7 +156,7 @@ func ClientTest(t *testing.T, id int, Type string, wg *sync.WaitGroup) {
 		select {
 		case <-stoppedChan:
 			fmt.Println(s + fmt.Sprintf("%s stopped itself.", client.GetClientInfo()))
-		case <-time.After(8e9):
+		case <-time.After(16e9):
 			client.Stop()
 			fmt.Println(s + fmt.Sprintf("%s stopped manully.", client.GetClientInfo()))
 		}
@@ -164,8 +164,8 @@ func ClientTest(t *testing.T, id int, Type string, wg *sync.WaitGroup) {
 	}()
 }
 
-const SERVERN = 5
-const CLIENTN = 30
+const SERVERN = 10
+const CLIENTN = 60
 
 func TestServerClient(t *testing.T) {
 	InitS2SRegistry()
