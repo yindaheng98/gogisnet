@@ -105,7 +105,9 @@ func ServerTest(t *testing.T, id int, Type string, wg *sync.WaitGroup) {
 			for i := 0; ; i++ {
 				select {
 				case <-time.After(1e9):
-					t.Log(s + fmt.Sprintf("Check(%d)-\nS2C:%s\nS2S:%s", i, server.GetC2SConnections(), server.GetS2SConnections()))
+					C2SConnections := server.GetC2SConnections()
+					S2SConnections := server.GetS2SConnections()
+					t.Log(s + fmt.Sprintf("Check(%d)-S2C:%d\nS2S:%d,%s", i, len(C2SConnections), len(S2SConnections), S2SConnections))
 				case <-stoppedChan:
 					return
 				}
@@ -147,7 +149,7 @@ func ClientTest(t *testing.T, id int, Type string, wg *sync.WaitGroup) {
 			for i := 0; ; i++ {
 				select {
 				case <-time.After(1e9):
-					t.Log(s + fmt.Sprintf("Check(%d)-C2S:%s", i, client.GetS2CConnections()))
+					t.Log(s + fmt.Sprintf("Check(%d)-C2S:%d", i, len(client.GetS2CConnections())))
 				case <-stoppedChan:
 					return
 				}

@@ -71,6 +71,12 @@ func (s *Server) Run() {
 	go func() {
 		defer wg.Done()
 		for {
+			connections := s.GetS2SConnections()
+			candidates := make([]gogistryProto.RegistryInfo, len(connections))
+			for i, connection := range connections {
+				candidates[i] = connection.S2CInfo
+			}
+			s.s2sRegistrant.AddCandidates(candidates) //启动前要先添加候选列表
 			stoppedChan := make(chan bool, 1)
 			go func() {
 				s.s2sRegistrant.Run()
