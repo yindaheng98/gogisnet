@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"github.com/yindaheng98/gogisnet/protocol"
 	gogistry "github.com/yindaheng98/gogistry"
 	gogistryProto "github.com/yindaheng98/gogistry/protocol"
@@ -11,13 +12,11 @@ import (
 )
 
 type Server struct {
-	s2cRegistry              *registry.Registry
-	s2sRegistry              *registry.Registry
-	s2sRegistrant            *registrant.Registrant
-	s2sBlacklist             chan []gogistryProto.RegistrantInfo
-	s2sRegistrantStopChan    chan bool
-	s2sRegistrantStoppedChan chan bool
-	Events                   *events
+	s2cRegistry   *registry.Registry
+	s2sRegistry   *registry.Registry
+	s2sRegistrant *registrant.Registrant
+	s2sBlacklist  chan []gogistryProto.RegistrantInfo
+	Events        *events
 }
 
 func New(info protocol.ServerInfo, option Option) *Server {
@@ -50,23 +49,17 @@ func New(info protocol.ServerInfo, option Option) *Server {
 	}
 	s.s2sBlacklist = make(chan []gogistryProto.RegistrantInfo, 1)
 	s.s2sBlacklist <- []gogistryProto.RegistrantInfo{}
-	s.s2sRegistrantStopChan = make(chan bool, 1)
-	close(s.s2sRegistrantStopChan)
-	s.s2sRegistrantStoppedChan = make(chan bool, 1)
-	close(s.s2sRegistrantStoppedChan)
 	s.initConnectionLoader()
 	s.initEvents()
 	return s
 }
 
-func (s *Server) Run() {
-	s.s2sRegistrantStopChan = make(chan bool, 1)
-	s.s2sRegistrantStoppedChan = make(chan bool, 1)
+func (s *Server) Run(ctx context.Context) {
 	wg := new(sync.WaitGroup)
 	wg.Add(3)
 	go func() {
 		defer wg.Done()
-		s.s2sRegistry.Run()
+		s.s2sRegistry.Run(ctx)
 	}()
 	go func() {
 		defer wg.Done()
@@ -79,44 +72,21 @@ func (s *Server) Run() {
 			s.s2sRegistrant.AddCandidates(candidates) //启动前要先添加候选列表
 			stoppedChan := make(chan bool, 1)
 			go func() {
-				s.s2sRegistrant.Run()
+				s.s2sRegistrant.Run(ctx)
 				stoppedChan <- true
 				close(stoppedChan)
 			}()
 			select {
 			case <-stoppedChan: //s2sRegistrant正常退出则继续循环
-			case <-s.s2sRegistrantStopChan: //server要求停止
-				s.s2sRegistrant.Stop() //就让s2sRegistrant停止
-				<-stoppedChan          //并等待s2sRegistrant停止
-				s.s2sRegistrantStoppedChan <- true
-				close(s.s2sRegistrantStoppedChan)
-				return //然后退出
+			case <-ctx.Done(): //server要求停止
+				<-stoppedChan //并等待s2sRegistrant停止
+				return        //然后退出
 			}
 		}
 	}()
 	go func() {
 		defer wg.Done()
-		s.s2cRegistry.Run()
-	}()
-	wg.Wait()
-}
-
-func (s *Server) Stop() {
-	wg := new(sync.WaitGroup)
-	wg.Add(3)
-	go func() {
-		defer wg.Done()
-		s.s2sRegistry.Stop()
-	}()
-	go func() {
-		defer wg.Done()
-		s.s2sRegistrantStopChan <- true
-		close(s.s2sRegistrantStopChan)
-		<-s.s2sRegistrantStoppedChan
-	}()
-	go func() {
-		defer wg.Done()
-		s.s2cRegistry.Stop()
+		s.s2cRegistry.Run(ctx)
 	}()
 	wg.Wait()
 }

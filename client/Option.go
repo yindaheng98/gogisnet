@@ -9,7 +9,7 @@ import (
 
 type Option struct {
 	ResponseSendOption protocol.ResponseSendOption
-	RegistryN          uint
+	RegistryN          uint64
 	CandidateList      registrant.RegistryCandidateList
 	RetryNController   registrant.RetryNController
 	RequestProto       protocol.RequestProtocol

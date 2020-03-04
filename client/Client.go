@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"github.com/yindaheng98/gogisnet/protocol"
 	"github.com/yindaheng98/gogistry"
 	gogistryProto "github.com/yindaheng98/gogistry/protocol"
@@ -41,12 +42,8 @@ func (c *Client) GetS2CConnections() []protocol.S2CInfo {
 	return s2cInfos
 }
 
-func (c *Client) Run() {
-	c.c2sRegistrant.Run()
-}
-
-func (c *Client) Stop() {
-	c.c2sRegistrant.Stop()
+func (c *Client) Run(ctx context.Context) {
+	c.c2sRegistrant.Run(ctx)
 }
 
 func (c *Client) SetWatchdogTimeDelta(t time.Duration) {
