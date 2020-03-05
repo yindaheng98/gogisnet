@@ -19,6 +19,7 @@ func CreateS2CResponseProtocol(t *testing.T, ctx context.Context, port uint16) p
 	go func() {
 		errChan := make(chan error, 1)
 		go func() {
+			t.Log(fmt.Sprintf("Server:%d listen on %s.", port, GetAddr(port)))
 			listener, err := net.Listen("tcp", GetAddr(port))
 			if err != nil {
 				errChan <- err
@@ -143,9 +144,9 @@ func TestS2C(t *testing.T) {
 			}(i, j)
 		}
 	}
-	time.Sleep(20e9)
-	cancelTest()
 	wg.Wait()
+	fmt.Println("Test finished.")
+	cancelTest()
 	cancelServer()
 	time.Sleep(1e9)
 }

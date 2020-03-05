@@ -8,14 +8,14 @@ import (
 
 type S2CServiceServer struct {
 	*grpc.Server
-	service s2cService
+	service *s2cService
 }
 
 func NewS2CServiceServer(option GRPCServerOption) *S2CServiceServer {
 	Server := grpc.NewServer(option.InitOption...)
 	Service := newS2CService(option.BufferLen)
 	pb.RegisterS2CServiceServer(Server, Service)
-	return &S2CServiceServer{Server: Server}
+	return &S2CServiceServer{Server, Service}
 }
 
 func (s *S2CServiceServer) NewResponseProtocol() ResponseProtocol {
