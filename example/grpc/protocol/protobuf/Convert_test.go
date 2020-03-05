@@ -5,14 +5,26 @@ import (
 	"testing"
 )
 
+func NewClientInfo() *ClientInfo {
+	return &ClientInfo{
+		ClientID:       "Here's ID",
+		ServiceType:    "Here's Type",
+		AdditionalInfo: "Here's AdditionalInfo",
+	}
+}
+
+func NewServerInfo(s string, i uint) *ServerInfo {
+	return &ServerInfo{
+		ServerID:       fmt.Sprintf("Here's %s ID %d", s, i),
+		ServiceType:    fmt.Sprintf("Here's %s Type %d", s, i),
+		AdditionalInfo: fmt.Sprintf("Here's %s AdditionalInfo %d", s, i),
+	}
+}
+
 func TestConvertC2SRequest(t *testing.T) {
 	pbC2SReq := &C2SRequest{
 		C2SInfo: &C2SInfo{
-			ClientInfo: &ClientInfo{
-				ClientID:       "Here's ID",
-				ServiceType:    "Here's Type",
-				AdditionalInfo: "Here's AdditionalInfo",
-			},
+			ClientInfo:         NewClientInfo(),
 			ResponseSendOption: nil,
 		},
 		Disconnect: true,
@@ -33,11 +45,7 @@ func S2CInfoList(n uint) []*S2CInfo {
 	Candidates := make([]*S2CInfo, n)
 	for i := uint(1); i <= n; i++ {
 		Candidates[i-1] = &S2CInfo{
-			ServerInfo: &ServerInfo{
-				ServerID:       fmt.Sprintf("Here's S2C ID %d", i),
-				ServiceType:    fmt.Sprintf("Here's S2C Type %d", i),
-				AdditionalInfo: fmt.Sprintf("Here's S2C AdditionalInfo %d", i),
-			},
+			ServerInfo:        NewServerInfo("S2C", i),
 			RequestSendOption: nil,
 			Candidates:        nil,
 		}
@@ -48,14 +56,10 @@ func S2CInfoList(n uint) []*S2CInfo {
 func TestConvertS2CResponse(t *testing.T) {
 	pbS2CRes := &S2CResponse{
 		S2CInfo: &S2CInfo{
-			ServerInfo: &ServerInfo{
-				ServerID:       "Here's ID",
-				ServiceType:    "Here's Type",
-				AdditionalInfo: "Here's AdditionalInfo",
-			},
+			ServerInfo: NewServerInfo("", 0),
 			RequestSendOption: &RequestSendOption{
-				CallOption: nil,
-				Addr:       "Here's S2C Addr",
+				Option: nil,
+				Addr:   "Here's S2C Addr",
 			},
 			Candidates: S2CInfoList(3),
 		},
@@ -78,15 +82,11 @@ func S2SInfoList(n uint, m uint) []*S2SInfo {
 	Candidates := make([]*S2SInfo, n)
 	for i := uint(1); i <= n; i++ {
 		Candidates[i-1] = &S2SInfo{
-			ServerInfo: &ServerInfo{
-				ServerID:       fmt.Sprintf("Here's S2S ID %d", i),
-				ServiceType:    fmt.Sprintf("Here's S2S Type %d", i),
-				AdditionalInfo: fmt.Sprintf("Here's S2S AdditionalInfo %d", i),
-			},
+			ServerInfo:         NewServerInfo("", 0),
 			ResponseSendOption: nil,
 			RequestSendOption: &RequestSendOption{
-				CallOption: nil,
-				Addr:       fmt.Sprintf("Here's S2S Addr %d", i),
+				Option: nil,
+				Addr:   fmt.Sprintf("Here's S2S Addr %d", i),
 			},
 			Candidates: nil,
 			S2CInfo: &S2CInfo{
@@ -96,8 +96,8 @@ func S2SInfoList(n uint, m uint) []*S2SInfo {
 					AdditionalInfo: "Here's S2C AdditionalInfo",
 				},
 				RequestSendOption: &RequestSendOption{
-					CallOption: nil,
-					Addr:       fmt.Sprintf("Here's S2S Addr %d", i),
+					Option: nil,
+					Addr:   fmt.Sprintf("Here's S2S Addr %d", i),
 				},
 				Candidates: S2CInfoList(m),
 			},
@@ -109,14 +109,10 @@ func S2SInfoList(n uint, m uint) []*S2SInfo {
 func TestConvertS2SRequest(t *testing.T) {
 	pbS2SReq := &S2SRequest{
 		S2SInfo: &S2SInfo{
-			ServerInfo: &ServerInfo{
-				ServerID:       "Here's ID",
-				ServiceType:    "Here's Type",
-				AdditionalInfo: "Here's AdditionalInfo",
-			},
+			ServerInfo: NewServerInfo("", 0),
 			RequestSendOption: &RequestSendOption{
-				CallOption: nil,
-				Addr:       "Here's S2S Addr",
+				Option: nil,
+				Addr:   "Here's S2S Addr",
 			},
 			ResponseSendOption: &ResponseSendOption{
 				Option: nil,
@@ -149,19 +145,11 @@ func TestConvertS2SRequest(t *testing.T) {
 func TestConvertS2SResponse(t *testing.T) {
 	pbS2SRes := &S2SResponse{
 		S2SInfo: &S2SInfo{
-			ServerInfo: &ServerInfo{
-				ServerID:       "Here's ID",
-				ServiceType:    "Here's Type",
-				AdditionalInfo: "Here's AdditionalInfo",
-			},
+			ServerInfo:         NewServerInfo("", 0),
 			RequestSendOption:  nil,
 			ResponseSendOption: nil,
 			S2CInfo: &S2CInfo{
-				ServerInfo: &ServerInfo{
-					ServerID:       "Here's S2C ID",
-					ServiceType:    "Here's S2C Type",
-					AdditionalInfo: "Here's S2C AdditionalInfo",
-				},
+				ServerInfo:        NewServerInfo("S2C", 0),
 				RequestSendOption: nil,
 				Candidates:        nil,
 			},
