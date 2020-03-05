@@ -24,7 +24,7 @@ func (c *connections) GetClientConn(addr string) (connection *grpc.ClientConn, e
 	c.connectionsMu.RUnlock()
 	if !ok { //如果没有
 		connection, err = grpc.Dial(addr, c.DialOption...) //就新建
-		if err != nil {
+		if err == nil {
 			c.connectionsMu.Lock()
 			c.connections[addr] = connection
 			go func() { //过一段时间后删除

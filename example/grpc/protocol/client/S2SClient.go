@@ -17,7 +17,7 @@ func NewS2SClient(option GRPCClientOption) *S2SClient {
 		option.CallOption}
 }
 
-func (c *S2SClient) GetClient(addr string) (client pb.S2SServiceClient, err error) {
+func (c *S2SClient) getClient(addr string) (client pb.S2SServiceClient, err error) {
 	conn, err := c.connections.GetClientConn(addr)
 	if err != nil {
 		return
@@ -50,7 +50,7 @@ func (p S2SRequestProtocol) Request(ctx context.Context, requestChan <-chan prot
 		return
 	}
 
-	client, err := p.clients.GetClient(option.(*pb.RequestSendOption).Addr) //从请求中取出地址得到一个客户端
+	client, err := p.clients.getClient(option.(*pb.RequestSendOption).Addr) //从请求中取出地址得到一个客户端
 	if err != nil {
 		responseChan <- protocol.ReceivedResponse{Error: err}
 		return
