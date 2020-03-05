@@ -9,8 +9,8 @@ func TestConvertC2SRequest(t *testing.T) {
 	pbC2SReq := &C2SRequest{
 		C2SInfo: &C2SInfo{
 			ClientInfo: &ClientInfo{
-				ID:             "Here's ID",
-				Type:           "Here's Type",
+				ClientID:       "Here's ID",
+				ServiceType:    "Here's Type",
 				AdditionalInfo: "Here's AdditionalInfo",
 			},
 			ResponseSendOption: "Here's ResponseSendOption",
@@ -34,9 +34,8 @@ func S2CInfoList(n uint) []*S2CInfo {
 	for i := uint(1); i <= n; i++ {
 		Candidates[i-1] = &S2CInfo{
 			ServerInfo: &ServerInfo{
-				ID:             fmt.Sprintf("Here's S2C ID %d", i),
-				Type:           fmt.Sprintf("Here's S2C Type %d", i),
-				Addr:           fmt.Sprintf("Here's S2C Addr %d", i),
+				ServerID:       fmt.Sprintf("Here's S2C ID %d", i),
+				ServiceType:    fmt.Sprintf("Here's S2C Type %d", i),
 				AdditionalInfo: fmt.Sprintf("Here's S2C AdditionalInfo %d", i),
 			},
 			RequestSendOption: fmt.Sprintf("Here's S2C RequestSendOption %d", i),
@@ -50,9 +49,8 @@ func TestConvertS2CResponse(t *testing.T) {
 	pbS2CRes := &S2CResponse{
 		S2CInfo: &S2CInfo{
 			ServerInfo: &ServerInfo{
-				ID:             "Here's ID",
-				Type:           "Here's Type",
-				Addr:           "Here's Addr",
+				ServerID:       "Here's ID",
+				ServiceType:    "Here's Type",
 				AdditionalInfo: "Here's AdditionalInfo",
 			},
 			RequestSendOption: "Here's RequestSendOption",
@@ -78,9 +76,8 @@ func S2SInfoList(n uint, m uint) []*S2SInfo {
 	for i := uint(1); i <= n; i++ {
 		Candidates[i-1] = &S2SInfo{
 			ServerInfo: &ServerInfo{
-				ID:             fmt.Sprintf("Here's S2S ID %d", i),
-				Type:           fmt.Sprintf("Here's S2S Type %d", i),
-				Addr:           fmt.Sprintf("Here's S2S Addr %d", i),
+				ServerID:       fmt.Sprintf("Here's S2S ID %d", i),
+				ServiceType:    fmt.Sprintf("Here's S2S Type %d", i),
 				AdditionalInfo: fmt.Sprintf("Here's S2S AdditionalInfo %d", i),
 			},
 			ResponseSendOption: fmt.Sprintf("Here's S2S ResponseSendOption %d", i),
@@ -88,9 +85,8 @@ func S2SInfoList(n uint, m uint) []*S2SInfo {
 			Candidates:         nil,
 			S2CInfo: &S2CInfo{
 				ServerInfo: &ServerInfo{
-					ID:             "Here's S2C ID",
-					Type:           "Here's S2C Type",
-					Addr:           "Here's S2C addr",
+					ServerID:       "Here's S2C ID",
+					ServiceType:    "Here's S2C Type",
 					AdditionalInfo: "Here's S2C AdditionalInfo",
 				},
 				RequestSendOption: "Here's S2C RequestSendOption",
@@ -105,18 +101,16 @@ func TestConvertS2SRequest(t *testing.T) {
 	pbS2SReq := &S2SRequest{
 		S2SInfo: &S2SInfo{
 			ServerInfo: &ServerInfo{
-				ID:             "Here's ID",
-				Type:           "Here's Type",
-				Addr:           "Here's addr",
+				ServerID:       "Here's ID",
+				ServiceType:    "Here's Type",
 				AdditionalInfo: "Here's AdditionalInfo",
 			},
 			RequestSendOption:  "Here's S2C RequestSendOption",
 			ResponseSendOption: "Here's S2C ResponseSendOption",
 			S2CInfo: &S2CInfo{
 				ServerInfo: &ServerInfo{
-					ID:             "Here's S2C ID",
-					Type:           "Here's S2C Type",
-					Addr:           "Here's S2C addr",
+					ServerID:       "Here's S2C ID",
+					ServiceType:    "Here's S2C Type",
 					AdditionalInfo: "Here's S2C AdditionalInfo",
 				},
 				RequestSendOption: "Here's S2C RequestSendOption",
@@ -142,18 +136,16 @@ func TestConvertS2SResponse(t *testing.T) {
 	pbS2SRes := &S2SResponse{
 		S2SInfo: &S2SInfo{
 			ServerInfo: &ServerInfo{
-				ID:             "Here's ID",
-				Type:           "Here's Type",
-				Addr:           "Here's addr",
+				ServerID:       "Here's ID",
+				ServiceType:    "Here's Type",
 				AdditionalInfo: "Here's AdditionalInfo",
 			},
 			RequestSendOption:  "Here's S2C RequestSendOption",
 			ResponseSendOption: "Here's S2C ResponseSendOption",
 			S2CInfo: &S2CInfo{
 				ServerInfo: &ServerInfo{
-					ID:             "Here's S2C ID",
-					Type:           "Here's S2C Type",
-					Addr:           "Here's S2C addr",
+					ServerID:       "Here's S2C ID",
+					ServiceType:    "Here's S2C Type",
 					AdditionalInfo: "Here's S2C AdditionalInfo",
 				},
 				RequestSendOption: "Here's S2C RequestSendOption",

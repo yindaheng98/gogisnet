@@ -24,7 +24,7 @@ func (info *S2SInfo) Unpack() (*protocol.S2SInfo, error) {
 		return nil, err
 	}
 	return &protocol.S2SInfo{
-		ServerInfo:         ServerInfoPointer{ServerInfo: info.ServerInfo},
+		ServerInfo:         info.ServerInfo,
 		ResponseSendOption: SendOption{Option: info.ResponseSendOption},
 		RequestSendOption:  SendOption{Option: info.RequestSendOption},
 		Candidates:         Candidates,
@@ -53,7 +53,7 @@ func S2SInfoPack(info protocol.S2SInfo) (i *S2SInfo, e error) {
 		}
 	}()
 	return &S2SInfo{
-		ServerInfo:         info.ServerInfo.(ServerInfoPointer).ServerInfo,
+		ServerInfo:         info.ServerInfo.(*ServerInfo),
 		ResponseSendOption: info.ResponseSendOption.(SendOption).Option,
 		RequestSendOption:  info.RequestSendOption.(SendOption).Option,
 		Candidates:         Candidates,

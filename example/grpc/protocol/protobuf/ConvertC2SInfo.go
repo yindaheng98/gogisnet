@@ -14,7 +14,7 @@ func (info *C2SInfo) Unpack() (*protocol.C2SInfo, error) {
 		return nil, errors.New("ClientInfo is nil")
 	}
 	return &protocol.C2SInfo{
-		ClientInfo:         ClientInfoPointer{ClientInfo: info.ClientInfo},
+		ClientInfo:         info.ClientInfo,
 		ResponseSendOption: SendOption{Option: info.ResponseSendOption},
 	}, nil
 }
@@ -29,7 +29,7 @@ func C2SInfoPack(info protocol.C2SInfo) (i *C2SInfo, e error) {
 		}
 	}()
 	return &C2SInfo{
-		ClientInfo:         info.ClientInfo.(ClientInfoPointer).ClientInfo,
+		ClientInfo:         info.ClientInfo.(*ClientInfo),
 		ResponseSendOption: info.ResponseSendOption.(SendOption).Option,
 	}, nil
 }

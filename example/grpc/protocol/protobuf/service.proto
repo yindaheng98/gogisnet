@@ -13,10 +13,9 @@ message Timestamp {
   uint64 Timestamp = 1;
 }
 message ServerInfo {
-  string ID = 1;
-  string Type = 2;
-  string Addr = 3;
-  string AdditionalInfo = 4;
+  string ServerID = 1;
+  string ServiceType = 2;
+  string AdditionalInfo = 3;
 }
 message S2CInfo {
   ServerInfo ServerInfo = 1;
@@ -40,8 +39,8 @@ message S2SResponse {
   bool Reject = 3;
 }
 message ClientInfo {
-  string ID = 1;
-  string Type = 2;
+  string ClientID = 1;
+  string ServiceType = 2;
   string AdditionalInfo = 3;
 }
 message C2SInfo {
