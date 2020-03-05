@@ -13,7 +13,7 @@ func TestConvertC2SRequest(t *testing.T) {
 				ServiceType:    "Here's Type",
 				AdditionalInfo: "Here's AdditionalInfo",
 			},
-			ResponseSendOption: "Here's ResponseSendOption",
+			ResponseSendOption: nil,
 		},
 		Disconnect: true,
 	}
@@ -38,7 +38,7 @@ func S2CInfoList(n uint) []*S2CInfo {
 				ServiceType:    fmt.Sprintf("Here's S2C Type %d", i),
 				AdditionalInfo: fmt.Sprintf("Here's S2C AdditionalInfo %d", i),
 			},
-			RequestSendOption: fmt.Sprintf("Here's S2C RequestSendOption %d", i),
+			RequestSendOption: nil,
 			Candidates:        nil,
 		}
 	}
@@ -53,8 +53,11 @@ func TestConvertS2CResponse(t *testing.T) {
 				ServiceType:    "Here's Type",
 				AdditionalInfo: "Here's AdditionalInfo",
 			},
-			RequestSendOption: "Here's RequestSendOption",
-			Candidates:        S2CInfoList(3),
+			RequestSendOption: &RequestSendOption{
+				CallOption: nil,
+				Addr:       "Here's S2C Addr",
+			},
+			Candidates: S2CInfoList(3),
 		},
 		Reject:  true,
 		Timeout: 1e9,
@@ -80,17 +83,23 @@ func S2SInfoList(n uint, m uint) []*S2SInfo {
 				ServiceType:    fmt.Sprintf("Here's S2S Type %d", i),
 				AdditionalInfo: fmt.Sprintf("Here's S2S AdditionalInfo %d", i),
 			},
-			ResponseSendOption: fmt.Sprintf("Here's S2S ResponseSendOption %d", i),
-			RequestSendOption:  fmt.Sprintf("Here's S2S RequestSendOption %d", i),
-			Candidates:         nil,
+			ResponseSendOption: nil,
+			RequestSendOption: &RequestSendOption{
+				CallOption: nil,
+				Addr:       fmt.Sprintf("Here's S2S Addr %d", i),
+			},
+			Candidates: nil,
 			S2CInfo: &S2CInfo{
 				ServerInfo: &ServerInfo{
 					ServerID:       "Here's S2C ID",
 					ServiceType:    "Here's S2C Type",
 					AdditionalInfo: "Here's S2C AdditionalInfo",
 				},
-				RequestSendOption: "Here's S2C RequestSendOption",
-				Candidates:        S2CInfoList(m),
+				RequestSendOption: &RequestSendOption{
+					CallOption: nil,
+					Addr:       fmt.Sprintf("Here's S2S Addr %d", i),
+				},
+				Candidates: S2CInfoList(m),
 			},
 		}
 	}
@@ -105,15 +114,20 @@ func TestConvertS2SRequest(t *testing.T) {
 				ServiceType:    "Here's Type",
 				AdditionalInfo: "Here's AdditionalInfo",
 			},
-			RequestSendOption:  "Here's S2C RequestSendOption",
-			ResponseSendOption: "Here's S2C ResponseSendOption",
+			RequestSendOption: &RequestSendOption{
+				CallOption: nil,
+				Addr:       "Here's S2S Addr",
+			},
+			ResponseSendOption: &ResponseSendOption{
+				Option: nil,
+			},
 			S2CInfo: &S2CInfo{
 				ServerInfo: &ServerInfo{
 					ServerID:       "Here's S2C ID",
 					ServiceType:    "Here's S2C Type",
 					AdditionalInfo: "Here's S2C AdditionalInfo",
 				},
-				RequestSendOption: "Here's S2C RequestSendOption",
+				RequestSendOption: nil,
 				Candidates:        nil,
 			},
 			Candidates: S2SInfoList(3, 3),
@@ -140,15 +154,15 @@ func TestConvertS2SResponse(t *testing.T) {
 				ServiceType:    "Here's Type",
 				AdditionalInfo: "Here's AdditionalInfo",
 			},
-			RequestSendOption:  "Here's S2C RequestSendOption",
-			ResponseSendOption: "Here's S2C ResponseSendOption",
+			RequestSendOption:  nil,
+			ResponseSendOption: nil,
 			S2CInfo: &S2CInfo{
 				ServerInfo: &ServerInfo{
 					ServerID:       "Here's S2C ID",
 					ServiceType:    "Here's S2C Type",
 					AdditionalInfo: "Here's S2C AdditionalInfo",
 				},
-				RequestSendOption: "Here's S2C RequestSendOption",
+				RequestSendOption: nil,
 				Candidates:        nil,
 			},
 			Candidates: S2SInfoList(3, 3),

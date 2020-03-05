@@ -1,5 +1,6 @@
 syntax = "proto3";
 package protocol;
+import "google/protobuf/any.proto";
 service S2SService {
   rpc Poll(S2SRequest) returns (S2SResponse);
   rpc PING(Timestamp) returns (Timestamp);
@@ -9,6 +10,13 @@ service S2CService {
   rpc PING(Timestamp) returns (Timestamp);
 }
 
+message RequestSendOption {
+  repeated google.protobuf.Any CallOption = 1;
+  string Addr = 2;
+}
+message ResponseSendOption {
+  google.protobuf.Any Option = 1;
+}
 message Timestamp {
   uint64 Timestamp = 1;
 }
@@ -19,13 +27,13 @@ message ServerInfo {
 }
 message S2CInfo {
   ServerInfo ServerInfo = 1;
-  string RequestSendOption = 2;
+  RequestSendOption RequestSendOption = 2;
   repeated S2CInfo Candidates = 3;
 }
 message S2SInfo {
   ServerInfo ServerInfo = 1;
-  string ResponseSendOption = 2;
-  string RequestSendOption = 3;
+  ResponseSendOption ResponseSendOption = 2;
+  RequestSendOption RequestSendOption = 3;
   repeated S2SInfo Candidates = 4;
   S2CInfo S2CInfo = 5;
 }
@@ -45,7 +53,7 @@ message ClientInfo {
 }
 message C2SInfo {
   ClientInfo ClientInfo = 1;
-  string ResponseSendOption = 2;
+  ResponseSendOption ResponseSendOption = 2;
 }
 message C2SRequest {
   C2SInfo C2SInfo = 1;

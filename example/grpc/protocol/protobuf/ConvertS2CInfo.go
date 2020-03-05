@@ -21,7 +21,7 @@ func (info *S2CInfo) Unpack() (*protocol.S2CInfo, error) {
 	}
 	return &protocol.S2CInfo{
 		ServerInfo:        info.ServerInfo,
-		RequestSendOption: SendOption{Option: info.RequestSendOption},
+		RequestSendOption: info.RequestSendOption,
 		Candidates:        Candidates,
 	}, nil
 }
@@ -44,7 +44,7 @@ func S2CInfoPack(info protocol.S2CInfo) (i *S2CInfo, e error) {
 	}()
 	return &S2CInfo{
 		ServerInfo:        info.ServerInfo.(*ServerInfo),
-		RequestSendOption: info.RequestSendOption.(SendOption).Option,
+		RequestSendOption: info.RequestSendOption.(*RequestSendOption),
 		Candidates:        Candidates,
 	}, nil
 }
