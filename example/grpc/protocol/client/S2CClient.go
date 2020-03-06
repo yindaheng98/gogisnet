@@ -5,6 +5,7 @@ import (
 	pb "github.com/yindaheng98/gogisnet/example/grpc/protocol/protobuf"
 	"github.com/yindaheng98/gogistry/protocol"
 	"google.golang.org/grpc"
+	"time"
 )
 
 type S2CClient struct {
@@ -70,4 +71,25 @@ func (p C2SRequestProtocol) Request(ctx context.Context, requestChan <-chan prot
 	}
 
 	responseChan <- protocol.ReceivedResponse{Response: *response}
+}
+
+type C2SPINGer struct {
+	clients    *S2CClient
+	CallOption []grpc.CallOption
+}
+
+func (c *S2CClient) NewC2SPINGer() *C2SPINGer {
+	return &C2SPINGer{clients: c, CallOption: c.CallOption}
+}
+func (p C2SPINGer) PING(ctx context.Context, info protocol.RegistryInfo) (ok bool) {
+	ok = false
+	client, err := p.clients.getClient(info.GetRequestSendOption().(*pb.RequestSendOption).Addr)
+	if err != nil {
+		return
+	}
+	_, err = client.PING(ctx, &pb.Timestamp{Timestamp: uint64(time.Now().UnixNano())}, p.CallOption...)
+	if err != nil {
+		return
+	}
+	return true
 }

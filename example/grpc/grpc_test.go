@@ -102,6 +102,7 @@ func Test(t *testing.T) {
 				t.Log(err)
 			}
 		}(i)
+		time.Sleep(0.2e9)
 	}
 	time.Sleep(2e9)
 

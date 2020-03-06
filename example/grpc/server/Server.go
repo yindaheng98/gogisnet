@@ -6,6 +6,7 @@ import (
 	pb "github.com/yindaheng98/gogisnet/example/grpc/protocol/protobuf"
 	grpcServiceServer "github.com/yindaheng98/gogisnet/example/grpc/protocol/server"
 	"github.com/yindaheng98/gogisnet/server"
+	"github.com/yindaheng98/gogistry/util/CandidateList"
 	"net"
 )
 
@@ -28,6 +29,7 @@ func New(ServerInfo *pb.ServerInfo, option Option) *Server {
 	S2SClient := grpcServiceClient.NewS2SClient(GRPCOption.S2SClientOption)
 	RequestProtocol := S2SClient.NewRequestProtocol()
 	ServiceOption.S2SRegistrantOption.RequestProto = RequestProtocol
+	ServiceOption.S2SRegistrantOption.CandidateList = CandidateList.NewPingerCandidateList(3, S2SClient.NewS2SPINGer(), 1e9, option.initServer, 1e9, 10)
 
 	return &Server{
 		Server:        server.New(ServerInfo, ServiceOption),
