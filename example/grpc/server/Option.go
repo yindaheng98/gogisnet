@@ -18,10 +18,31 @@ type GRPCOption struct {
 	S2SClientOption grpcServiceClient.GRPCClientOption
 }
 
-func DefaultOption(initServer pb.S2SInfo) (option Option, err error) {
+func DefaultOption(initServer *pb.S2SInfo) (Option, error) {
+	if initServer == nil {
+		initServer = &pb.S2SInfo{
+			ServerInfo: &pb.ServerInfo{
+				ServerID:       "Undefined",
+				ServiceType:    "Undefined",
+				AdditionalInfo: "",
+			},
+			ResponseSendOption: &pb.ResponseSendOption{},
+			RequestSendOption:  &pb.RequestSendOption{Addr: "Undefined"},
+			Candidates:         nil,
+			S2CInfo: &pb.S2CInfo{
+				ServerInfo: &pb.ServerInfo{
+					ServerID:       "Undefined",
+					ServiceType:    "Undefined",
+					AdditionalInfo: "",
+				},
+				RequestSendOption: &pb.RequestSendOption{Addr: "Undefined"},
+				Candidates:        nil,
+			},
+		}
+	}
 	init, err := initServer.Unpack()
 	if err != nil {
-		return
+		return Option{}, err
 	}
 	return Option{
 		ServiceOption: server.DefaultOption(*init, nil, nil, nil),
