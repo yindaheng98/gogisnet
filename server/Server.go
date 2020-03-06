@@ -69,7 +69,7 @@ func (s *Server) Run(ctx context.Context) {
 			for i, connection := range connections {
 				candidates[i] = connection.S2CInfo
 			}
-			s.s2sRegistrant.AddCandidates(candidates) //启动前要先添加候选列表
+			s.s2sRegistrant.AddCandidates(ctx, candidates) //启动前要先添加候选列表
 			stoppedChan := make(chan bool, 1)
 			go func() {
 				s.s2sRegistrant.Run(ctx)
