@@ -1,6 +1,7 @@
 package server
 
 import (
+	gogisnetProto "github.com/yindaheng98/gogisnet/protocol"
 	"github.com/yindaheng98/gogistry/protocol"
 	"github.com/yindaheng98/gogistry/registrant"
 	"github.com/yindaheng98/gogistry/registry"
@@ -37,7 +38,7 @@ type S2CRegistryOption struct { //服务端面向客户端的接收设置
 	ResponseProto     protocol.ResponseProtocol
 }
 
-func DefaultOption(initS2SRegistry protocol.RegistryInfo,
+func DefaultOption(initS2SInfo gogisnetProto.S2SInfo,
 	S2SResponseProto protocol.ResponseProtocol,
 	S2SRequestProto protocol.RequestProtocol,
 	S2CResponseProto protocol.ResponseProtocol) Option {
@@ -49,7 +50,7 @@ func DefaultOption(initS2SRegistry protocol.RegistryInfo,
 		},
 		S2SRegistrantOption: S2SRegistrantOption{
 			RegistryN:        4,
-			CandidateList:    CandidateList.NewSimpleCandidateList(4, initS2SRegistry, 1e9, 3),
+			CandidateList:    CandidateList.NewSimpleCandidateList(4, initS2SInfo, 1e9, 3),
 			RetryNController: RetryNController.SimpleRetryNController{},
 			RequestProto:     S2SRequestProto,
 		},

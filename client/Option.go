@@ -1,6 +1,7 @@
 package client
 
 import (
+	gogisnetProto "github.com/yindaheng98/gogisnet/protocol"
 	"github.com/yindaheng98/gogistry/protocol"
 	"github.com/yindaheng98/gogistry/registrant"
 	"github.com/yindaheng98/gogistry/util/CandidateList"
@@ -15,10 +16,10 @@ type Option struct {
 	RequestProto       protocol.RequestProtocol
 }
 
-func DefaultOption(initRegistry protocol.RegistryInfo, RequestProto protocol.RequestProtocol) Option {
+func DefaultOption(initS2CInfo gogisnetProto.S2CInfo, RequestProto protocol.RequestProtocol) Option {
 	return Option{
 		RegistryN:        1,
-		CandidateList:    CandidateList.NewSimpleCandidateList(3, initRegistry, 1e9, 10),
+		CandidateList:    CandidateList.NewSimpleCandidateList(3, initS2CInfo, 1e9, 10),
 		RetryNController: RetryNController.SimpleRetryNController{},
 		RequestProto:     RequestProto,
 	}
