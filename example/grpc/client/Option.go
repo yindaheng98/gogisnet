@@ -11,7 +11,7 @@ type Option struct {
 	GRPCOption    grpcServiceClient.GRPCClientOption
 }
 
-func DefaultOption(initServer pb.S2CInfo) (option Option, err error) {
+func DefaultOption(initServer *pb.S2CInfo) (option Option, err error) {
 	init, err := initServer.Unpack()
 	if err != nil {
 		return
