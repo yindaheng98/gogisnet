@@ -51,6 +51,7 @@ func (s *chanpairService) response(ctx context.Context, requestChan chan<- proto
 		return
 	case pair := <-s.pairChan:
 		req := <-pair.requestChan
+		defer func() { recover() }()
 		requestChan <- protocol.ReceivedRequest{Request: req}
 		select {
 		case <-pair.ctx.Done():

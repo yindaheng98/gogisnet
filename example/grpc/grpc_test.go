@@ -17,7 +17,7 @@ func GetAddr(port uint16) string {
 
 var initS2SServer *pb.S2SInfo
 
-func ServerTest(ctx context.Context, S2SPort, S2CPort uint16) (err error) {
+func ServerTest(t *testing.T, ctx context.Context, S2SPort, S2CPort uint16) (err error) {
 	ServerID := fmt.Sprintf("Server-%d/%d", S2SPort, S2CPort)
 	ServerInfo := &pb.ServerInfo{
 		ServerID:       ServerID,
@@ -36,9 +36,7 @@ func ServerTest(ctx context.Context, S2SPort, S2CPort uint16) (err error) {
 	if S2CServer, err := pb.S2CInfoPack(s.GetS2CInfo()); err == nil {
 		initS2CServer = S2CServer
 	}
-	PutServerEvent(s, func(s string) {
-		fmt.Println(ServerID + s)
-	})
+	PutServerEvent(s, func(s string) { t.Log(ServerID + s) })
 	listenerOption := server.DefaultListenerOption()
 	listenerOption.S2SListenAddr = S2SBoardCastAddr
 	listenerOption.S2CListenAddr = S2CBoardCastAddr
@@ -70,6 +68,7 @@ func ClientTest(ctx context.Context, id uint16) (err error) {
 		return
 	}
 	c := client.New(ClientInfo, option)
+	PutClientEvent(c, func(s string) { fmt.Println(ClientID + s) })
 	c.SetWatchdogTimeDelta(3e9)
 	okChan := make(chan bool, 1)
 	go func() {
@@ -98,7 +97,7 @@ func Test(t *testing.T) {
 	for i := uint16(0); i < SERVERN; i++ {
 		go func(i uint16) {
 			defer serverWG.Done()
-			err := ServerTest(serverCtx, 4240+i*2, 4240+i*2+1)
+			err := ServerTest(t, serverCtx, 4240+i*2, 4240+i*2+1)
 			if err != nil {
 				t.Log(err)
 			}
