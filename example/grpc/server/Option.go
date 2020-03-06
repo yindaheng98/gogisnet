@@ -18,7 +18,7 @@ type GRPCOption struct {
 	S2SClientOption grpcServiceClient.GRPCClientOption
 }
 
-func DefaultWithNetworkOption(S2SBoardCastAddr, S2CBoardCastAddr string, initServer *pb.S2SInfo) (option Option, err error) {
+func DefaultOption(S2SBoardCastAddr, S2CBoardCastAddr string, initServer *pb.S2SInfo) (option Option, err error) {
 	option = Option{ //初始化
 		GRPCOption: GRPCOption{
 			S2SServerOption: grpcServiceServer.DefaultOption(),
