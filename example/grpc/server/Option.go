@@ -40,7 +40,7 @@ type GRPCOption struct {
 	S2SClientOption grpcServiceClient.GRPCClientOption
 }
 
-func DefaultOption(S2SGRPCServerNetworkOption, S2CGRPCServerNetworkOption GRPCServerNetworkOption, initServer *pb.S2SInfo) (option Option, err error) {
+func DefaultWithNetworkOption(S2SGRPCServerNetworkOption, S2CGRPCServerNetworkOption GRPCServerNetworkOption, initServer *pb.S2SInfo) (option Option, err error) {
 	option = Option{GRPCOption: GRPCOption{S2SClientOption: grpcServiceClient.DefaultOption()}} //初始化
 	var e error
 	option.GRPCOption.S2SServerOption, e = grpcServiceServer.DefaultOption(S2SGRPCServerNetworkOption.ListenNetwork, S2SGRPCServerNetworkOption.ListenAddr)
@@ -82,4 +82,8 @@ func DefaultOption(S2SGRPCServerNetworkOption, S2CGRPCServerNetworkOption GRPCSe
 	}
 	err = e
 	return
+}
+
+func DefaultOption(initServer *pb.S2SInfo) (option Option, err error) {
+	return DefaultWithNetworkOption(DefaultS2SGRPCServerNetworkOption(), DefaultS2CGRPCServerNetworkOption(), initServer)
 }
