@@ -18,7 +18,7 @@ type GRPCOption struct {
 	S2SClientOption grpcServiceClient.GRPCClientOption
 }
 
-func DefaultOption(initServer *pb.S2SInfo) (Option, error) {
+func DefaultOption(S2SListenAddr, S2CListenAddr string, initServer *pb.S2SInfo) (Option, error) {
 	if initServer == nil {
 		initServer = &pb.S2SInfo{
 			ServerInfo: &pb.ServerInfo{
@@ -44,8 +44,11 @@ func DefaultOption(initServer *pb.S2SInfo) (Option, error) {
 	if err != nil {
 		return Option{}, err
 	}
+	ServiceOption := server.DefaultOption(*init, nil, nil, nil)
+	ServiceOption.S2SRegistryOption.RequestSendOption = &pb.RequestSendOption{Addr: S2SListenAddr}
+	ServiceOption.S2CRegistryOption.RequestSendOption = &pb.RequestSendOption{Addr: S2CListenAddr}
 	return Option{
-		ServiceOption: server.DefaultOption(*init, nil, nil, nil),
+		ServiceOption: ServiceOption,
 		GRPCOption: GRPCOption{
 			S2SServerOption: grpcServiceServer.DefaultOption(),
 			S2CServerOption: grpcServiceServer.DefaultOption(),
