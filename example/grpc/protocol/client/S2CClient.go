@@ -43,6 +43,7 @@ func (p C2SRequestProtocol) Request(ctx context.Context, requestChan <-chan prot
 		return
 	}
 	request, option := tobeSendRequest.Request, tobeSendRequest.Option
+	defer func() { recover() }()
 
 	C2SRequest, err := pb.C2SRequestPack(request) //封装请求
 	if err != nil {

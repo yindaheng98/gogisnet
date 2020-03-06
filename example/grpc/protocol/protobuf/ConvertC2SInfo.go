@@ -23,6 +23,10 @@ func C2SInfoPack(info protocol.C2SInfo) (i *C2SInfo, e error) {
 	if info.ClientInfo == nil {
 		return nil, errors.New("ClientInfo is nil")
 	}
+	var rso *ResponseSendOption
+	if info.ResponseSendOption != nil {
+		rso = info.ResponseSendOption.(*ResponseSendOption)
+	}
 	defer func() {
 		if r := recover(); r != nil {
 			i, e = nil, errors.New(fmt.Sprint(r))
@@ -30,6 +34,6 @@ func C2SInfoPack(info protocol.C2SInfo) (i *C2SInfo, e error) {
 	}()
 	return &C2SInfo{
 		ClientInfo:         info.ClientInfo.(*ClientInfo),
-		ResponseSendOption: info.ResponseSendOption.(*ResponseSendOption),
+		ResponseSendOption: rso,
 	}, nil
 }

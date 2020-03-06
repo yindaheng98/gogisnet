@@ -48,7 +48,6 @@ func (s *chanpairService) Poll(ctx context.Context, request protocol.Request) (p
 func (s *chanpairService) response(ctx context.Context, requestChan chan<- protocol.ReceivedRequest, responseChan <-chan protocol.TobeSendResponse) {
 	select {
 	case <-ctx.Done():
-		requestChan <- protocol.ReceivedRequest{Error: errors.New("exited by ctx")}
 		return
 	case pair := <-s.pairChan:
 		req := <-pair.requestChan

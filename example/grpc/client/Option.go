@@ -16,8 +16,10 @@ func DefaultOption(initServer *pb.S2CInfo) (option Option, err error) {
 	if err != nil {
 		return
 	}
-	return Option{
+	option = Option{
 		ServiceOption: client.DefaultOption(*init, nil),
 		GRPCOption:    grpcServiceClient.DefaultOption(),
-	}, nil
+	}
+	option.ServiceOption.ResponseSendOption = &pb.ResponseSendOption{}
+	return
 }

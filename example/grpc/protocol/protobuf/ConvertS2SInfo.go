@@ -47,6 +47,10 @@ func S2SInfoPack(info protocol.S2SInfo) (i *S2SInfo, e error) {
 	if err != nil {
 		return nil, err
 	}
+	var rso *ResponseSendOption
+	if info.ResponseSendOption != nil {
+		rso = info.ResponseSendOption.(*ResponseSendOption)
+	}
 	defer func() {
 		if r := recover(); r != nil {
 			i, e = nil, errors.New(fmt.Sprint(r))
@@ -54,7 +58,7 @@ func S2SInfoPack(info protocol.S2SInfo) (i *S2SInfo, e error) {
 	}()
 	return &S2SInfo{
 		ServerInfo:         info.ServerInfo.(*ServerInfo),
-		ResponseSendOption: info.ResponseSendOption.(*ResponseSendOption),
+		ResponseSendOption: rso,
 		RequestSendOption:  info.RequestSendOption.(*RequestSendOption),
 		Candidates:         Candidates,
 		S2CInfo:            S2CInfo,

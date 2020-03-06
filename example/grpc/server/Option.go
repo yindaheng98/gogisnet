@@ -54,5 +54,6 @@ func DefaultOption(S2SBoardCastAddr, S2CBoardCastAddr string, initServer *pb.S2S
 	option.ServiceOption = server.DefaultOption(*init, nil, nil, nil)
 	option.ServiceOption.S2SRegistryOption.RequestSendOption = &pb.RequestSendOption{Addr: S2SBoardCastAddr}
 	option.ServiceOption.S2CRegistryOption.RequestSendOption = &pb.RequestSendOption{Addr: S2CBoardCastAddr}
+	option.ServiceOption.S2SRegistrantOption.ResponseSendOption = &pb.ResponseSendOption{}
 	return
 }
