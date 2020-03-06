@@ -54,7 +54,6 @@ func (s *chanpairService) response(ctx context.Context, requestChan chan<- proto
 		requestChan <- protocol.ReceivedRequest{Request: req}
 		select {
 		case <-pair.ctx.Done():
-			requestChan <- protocol.ReceivedRequest{Error: errors.New("polling timeout")}
 			return
 		case res := <-responseChan:
 			pair.responseChan <- res.Response
