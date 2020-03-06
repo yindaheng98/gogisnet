@@ -1,6 +1,7 @@
 package grpc
 
 import (
+	"fmt"
 	"github.com/yindaheng98/gogisnet/example/grpc/client"
 	"github.com/yindaheng98/gogisnet/example/grpc/server"
 	"github.com/yindaheng98/gogisnet/protocol"
@@ -8,14 +9,25 @@ import (
 )
 
 func PutServerEvent(s *server.Server, logger func(string)) {
-	s.Events.ServerNewConnection.AddHandler(func(info protocol.ServerInfo) {
+
+	s.Events.S2SRegistrantEvent.NewConnection.AddHandler(func(info protocol.S2SInfo) {
 		logger("-->ServerNewConnection-->" + info.GetServerID())
 	})
-	s.Events.ServerNewConnection.Enable()
-	s.Events.ServerDisconnection.AddHandler(func(info protocol.ServerInfo) {
+	s.Events.S2SRegistrantEvent.NewConnection.Enable()
+	s.Events.S2SRegistrantEvent.Disconnection.AddHandler(func(info protocol.S2SInfo, err error) {
 		logger("-->ServerDisconnection-->" + info.GetServerID())
 	})
-	s.Events.ServerDisconnection.Enable()
+	s.Events.S2SRegistrantEvent.Disconnection.Enable()
+
+	s.Events.S2SRegistryEvent.NewConnection.AddHandler(func(info protocol.S2SInfo) {
+		logger("<--ServerNewConnection<--" + info.GetServerID())
+	})
+	s.Events.S2SRegistryEvent.NewConnection.Enable()
+	s.Events.S2SRegistryEvent.Disconnection.AddHandler(func(info protocol.S2SInfo) {
+		logger("<--ServerDisconnection<--" + info.GetServerID())
+	})
+	s.Events.S2SRegistryEvent.Disconnection.Enable()
+
 	s.Events.ClientNewConnection.AddHandler(func(info protocol.ClientInfo) {
 		logger("-->ClientNewConnection-->" + info.GetClientID())
 	})
@@ -24,15 +36,16 @@ func PutServerEvent(s *server.Server, logger func(string)) {
 		logger("-->ClientDisconnection-->" + info.GetClientID())
 	})
 	s.Events.ClientDisconnection.Enable()
+
 }
 
 func PutClientEvent(c *client.Client, logger func(string)) {
 	c.Events.NewConnection.AddHandler(func(info protocol.S2CInfo) {
-		logger("--NewConnection-->" + info.String())
+		logger("--NewConnection-->" + info.GetServerID())
 	})
 	c.Events.NewConnection.Enable()
 	c.Events.Disconnection.AddHandler(func(info protocol.S2CInfo, err error) {
-		logger("--Disconnection-->" + info.GetServerID() + ",ERROR: " + err.Error())
+		logger("--Disconnection-->" + info.GetServerID() + fmt.Sprintf(",ERROR: %s", err))
 	})
 	c.Events.Disconnection.Enable()
 	c.Events.UpdateConnection.AddHandler(func(info protocol.S2CInfo) {
@@ -40,7 +53,7 @@ func PutClientEvent(c *client.Client, logger func(string)) {
 	})
 	c.Events.UpdateConnection.Enable()
 	c.Events.Retry.AddHandler(func(request gogistryProto.TobeSendRequest, err error) {
-		logger("--Retry-->" + request.Request.RegistrantInfo.GetRegistrantID() + ",ERROR: " + err.Error())
+		logger("--Retry-->" + request.Option.String() + fmt.Sprintf(",ERROR: %s", err))
 	})
 	c.Events.Retry.Enable()
 }
