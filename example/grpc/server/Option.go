@@ -13,6 +13,22 @@ type GRPCServerNetworkOption struct { //GRPC服务器网络设置
 	BoardCastAddr string //向外广播哪个地址
 }
 
+func DefaultS2SGRPCServerNetworkOption() GRPCServerNetworkOption {
+	return GRPCServerNetworkOption{
+		ListenNetwork: "tcp",
+		ListenAddr:    "locolhost:4241",
+		BoardCastAddr: "locolhost:4241",
+	}
+}
+
+func DefaultS2CGRPCServerNetworkOption() GRPCServerNetworkOption {
+	return GRPCServerNetworkOption{
+		ListenNetwork: "tcp",
+		ListenAddr:    "locolhost:4240",
+		BoardCastAddr: "locolhost:4240",
+	}
+}
+
 type Option struct {
 	ServiceOption server.Option
 	GRPCOption    GRPCOption
@@ -24,14 +40,14 @@ type GRPCOption struct {
 	S2SClientOption grpcServiceClient.GRPCClientOption
 }
 
-func DefaultOption(S2SNetworkOption, S2CNetworkOption GRPCServerNetworkOption, initServer *pb.S2SInfo) (option Option, err error) {
+func DefaultOption(S2SGRPCServerNetworkOption, S2CGRPCServerNetworkOption GRPCServerNetworkOption, initServer *pb.S2SInfo) (option Option, err error) {
 	option = Option{GRPCOption: GRPCOption{S2SClientOption: grpcServiceClient.DefaultOption()}} //初始化
 	var e error
-	option.GRPCOption.S2SServerOption, e = grpcServiceServer.DefaultOption(S2SNetworkOption.ListenNetwork, S2SNetworkOption.ListenAddr)
+	option.GRPCOption.S2SServerOption, e = grpcServiceServer.DefaultOption(S2SGRPCServerNetworkOption.ListenNetwork, S2SGRPCServerNetworkOption.ListenAddr)
 	if e != nil { //S2S服务器GRPC设置
 		err = e
 	}
-	option.GRPCOption.S2CServerOption, e = grpcServiceServer.DefaultOption(S2CNetworkOption.ListenNetwork, S2CNetworkOption.ListenAddr)
+	option.GRPCOption.S2CServerOption, e = grpcServiceServer.DefaultOption(S2CGRPCServerNetworkOption.ListenNetwork, S2CGRPCServerNetworkOption.ListenAddr)
 	if e != nil { //S2C服务器GRPC设置
 		err = e
 	}
@@ -60,8 +76,8 @@ func DefaultOption(S2SNetworkOption, S2CNetworkOption GRPCServerNetworkOption, i
 	init, e := initServer.Unpack() //解包初始轮询服务器
 	if e == nil {                  //构造服务设置
 		option.ServiceOption = server.DefaultOption(*init, nil, nil, nil)
-		option.ServiceOption.S2SRegistryOption.RequestSendOption = &pb.RequestSendOption{Addr: S2SNetworkOption.BoardCastAddr}
-		option.ServiceOption.S2CRegistryOption.RequestSendOption = &pb.RequestSendOption{Addr: S2CNetworkOption.BoardCastAddr}
+		option.ServiceOption.S2SRegistryOption.RequestSendOption = &pb.RequestSendOption{Addr: S2SGRPCServerNetworkOption.BoardCastAddr}
+		option.ServiceOption.S2CRegistryOption.RequestSendOption = &pb.RequestSendOption{Addr: S2CGRPCServerNetworkOption.BoardCastAddr}
 		return
 	}
 	err = e
