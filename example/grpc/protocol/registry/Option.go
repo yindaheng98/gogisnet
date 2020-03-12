@@ -1,4 +1,4 @@
-package server
+package registry
 
 import (
 	"google.golang.org/grpc"

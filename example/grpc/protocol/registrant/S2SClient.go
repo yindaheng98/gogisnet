@@ -1,4 +1,4 @@
-package client
+package registrant
 
 import (
 	"context"
@@ -8,35 +8,35 @@ import (
 	"time"
 )
 
-type S2CClient struct {
+type S2SClient struct {
 	connections *connections
 	CallOption  []grpc.CallOption
 }
 
-func NewS2CClient(option GRPCClientOption) *S2CClient {
-	return &S2CClient{newConnections(option.DialOption, option.MaxDialHoldDuration),
+func NewS2SClient(option GRPCClientOption) *S2SClient {
+	return &S2SClient{newConnections(option.DialOption, option.MaxDialHoldDuration),
 		option.CallOption}
 }
 
-func (c *S2CClient) getClient(addr string) (client pb.S2CServiceClient, err error) {
+func (c *S2SClient) getClient(addr string) (client pb.S2SServiceClient, err error) {
 	conn, err := c.connections.GetClientConn(addr)
 	if err != nil {
 		return
 	}
-	client = pb.NewS2CServiceClient(conn)
+	client = pb.NewS2SServiceClient(conn)
 	return
 }
 
-func (c *S2CClient) NewRequestProtocol() C2SRequestProtocol {
-	return C2SRequestProtocol{clients: c, CallOption: c.CallOption}
+func (c *S2SClient) NewRequestProtocol() S2SRequestProtocol {
+	return S2SRequestProtocol{clients: c, CallOption: c.CallOption}
 }
 
-type C2SRequestProtocol struct {
-	clients    *S2CClient
+type S2SRequestProtocol struct {
+	clients    *S2SClient
 	CallOption []grpc.CallOption
 }
 
-func (p C2SRequestProtocol) Request(ctx context.Context, requestChan <-chan protocol.TobeSendRequest, responseChan chan<- protocol.ReceivedResponse) {
+func (p S2SRequestProtocol) Request(ctx context.Context, requestChan <-chan protocol.TobeSendRequest, responseChan chan<- protocol.ReceivedResponse) {
 	var tobeSendRequest protocol.TobeSendRequest
 	select {
 	case tobeSendRequest = <-requestChan: //先取请求
@@ -46,7 +46,7 @@ func (p C2SRequestProtocol) Request(ctx context.Context, requestChan <-chan prot
 	request, option := tobeSendRequest.Request, tobeSendRequest.Option
 	defer func() { recover() }()
 
-	C2SRequest, err := pb.C2SRequestPack(request) //封装请求
+	S2SRequest, err := pb.S2SRequestPack(request) //封装请求
 	if err != nil {
 		responseChan <- protocol.ReceivedResponse{Error: err}
 		return
@@ -58,13 +58,13 @@ func (p C2SRequestProtocol) Request(ctx context.Context, requestChan <-chan prot
 		return
 	}
 
-	C2SResponse, err := client.Poll(ctx, C2SRequest, p.CallOption...) //发出请求
+	S2SResponse, err := client.Poll(ctx, S2SRequest, p.CallOption...) //发出请求
 	if err != nil {
 		responseChan <- protocol.ReceivedResponse{Error: err}
 		return
 	}
 
-	response, err := C2SResponse.Unpack() //解包响应
+	response, err := S2SResponse.Unpack() //解包响应
 	if err != nil {
 		responseChan <- protocol.ReceivedResponse{Error: err}
 		return
@@ -73,15 +73,15 @@ func (p C2SRequestProtocol) Request(ctx context.Context, requestChan <-chan prot
 	responseChan <- protocol.ReceivedResponse{Response: *response}
 }
 
-type C2SPINGer struct {
-	clients    *S2CClient
+type S2SPINGer struct {
+	clients    *S2SClient
 	CallOption []grpc.CallOption
 }
 
-func (c *S2CClient) NewC2SPINGer() *C2SPINGer {
-	return &C2SPINGer{clients: c, CallOption: c.CallOption}
+func (c *S2SClient) NewS2SPINGer() *S2SPINGer {
+	return &S2SPINGer{clients: c, CallOption: c.CallOption}
 }
-func (p C2SPINGer) PING(ctx context.Context, info protocol.RegistryInfo) (ok bool) {
+func (p S2SPINGer) PING(ctx context.Context, info protocol.RegistryInfo) (ok bool) {
 	ok = false
 	client, err := p.clients.getClient(info.GetRequestSendOption().(*pb.RequestSendOption).Addr)
 	if err != nil {

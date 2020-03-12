@@ -1,4 +1,4 @@
-package client
+package registrant
 
 import (
 	"google.golang.org/grpc"

@@ -3,9 +3,9 @@ package protocol
 import (
 	"context"
 	"fmt"
-	"github.com/yindaheng98/gogisnet/example/grpc/protocol/client"
 	pb "github.com/yindaheng98/gogisnet/example/grpc/protocol/protobuf"
-	"github.com/yindaheng98/gogisnet/example/grpc/protocol/server"
+	"github.com/yindaheng98/gogisnet/example/grpc/protocol/registrant"
+	"github.com/yindaheng98/gogisnet/example/grpc/protocol/registry"
 	"github.com/yindaheng98/gogistry/protocol"
 	"google.golang.org/grpc"
 	"net"
@@ -15,7 +15,7 @@ import (
 )
 
 func CreateS2SResponseProtocol(t *testing.T, ctx context.Context, port uint16) protocol.ResponseProtocol {
-	s := server.NewS2SServiceServer(server.DefaultOption())
+	s := registry.NewS2SServiceServer(registry.DefaultOption())
 	go func() {
 		errChan := make(chan error, 1)
 		go func() {
@@ -39,7 +39,7 @@ func CreateS2SResponseProtocol(t *testing.T, ctx context.Context, port uint16) p
 }
 
 func CreateS2SRequestProtocol() protocol.RequestProtocol {
-	c := client.NewS2SClient(client.DefaultOption())
+	c := registrant.NewS2SClient(registrant.DefaultOption())
 	return c.NewRequestProtocol()
 }
 

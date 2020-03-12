@@ -2,9 +2,9 @@ package server
 
 import (
 	"context"
-	grpcServiceClient "github.com/yindaheng98/gogisnet/example/grpc/protocol/client"
 	pb "github.com/yindaheng98/gogisnet/example/grpc/protocol/protobuf"
-	grpcServiceServer "github.com/yindaheng98/gogisnet/example/grpc/protocol/server"
+	grpcServiceClient "github.com/yindaheng98/gogisnet/example/grpc/protocol/registrant"
+	grpcServiceServer "github.com/yindaheng98/gogisnet/example/grpc/protocol/registry"
 	"github.com/yindaheng98/gogisnet/server"
 	"github.com/yindaheng98/gogistry/util/CandidateList"
 	"net"
