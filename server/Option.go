@@ -27,7 +27,7 @@ type S2SRegistrantOption struct { //服务端面向服务端的收发设置
 	ResponseSendOption protocol.ResponseSendOption
 	RegistryN          uint64
 	CandidateList      registrant.RegistryCandidateList
-	RetryNController   registrant.RetryNController
+	RetryNController   registrant.WaitTimeoutRetryNController
 	RequestProto       protocol.RequestProtocol
 }
 

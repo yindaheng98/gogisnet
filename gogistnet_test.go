@@ -6,21 +6,19 @@ import (
 	protobuf "github.com/yindaheng98/gogisnet/example/grpc/protocol/protobuf"
 	"github.com/yindaheng98/gogisnet/protocol"
 	exampleProto "github.com/yindaheng98/gogistry/example/protocol"
-	gogistryProto "github.com/yindaheng98/gogistry/protocol"
 	"sync"
 	"testing"
 	"time"
 )
 
-var initS2CRegistry gogistryProto.RegistryInfo
-var initS2SRegistry gogistryProto.RegistryInfo
+var initS2CRegistry protocol.S2CInfo
+var initS2SRegistry protocol.S2SInfo
 
 func InitS2SRegistry() {
-	ServerInfo := protobuf.ServerInfoPointer{
-		ServerInfo: &protobuf.ServerInfo{
-			ID:   "UNDEF",
-			Type: "UNDEF",
-		},
+	ServerInfo := &protobuf.ServerInfo{
+		ServerID:       "UNDEF",
+		ServiceType:    "UNDEF",
+		AdditionalInfo: "UNDEF",
 	}
 	initS2SRegistry = protocol.S2SInfo{
 		ServerInfo:         ServerInfo,
@@ -49,26 +47,30 @@ func ServerTest(t *testing.T, ctx context.Context, id int, Type string, wg *sync
 		RequestAddr: option.S2CRegistryOption.ResponseProto.(exampleProto.ChanNetResponseProtocol).GetAddr(),
 		Timestamp:   time.Now()}
 	server := NewServer(
-		protobuf.ServerInfoPointer{
-			ServerInfo: &protobuf.ServerInfo{
-				ID:   fmt.Sprintf("SERVER_%d", id),
-				Type: Type,
-			},
+		&protobuf.ServerInfo{
+			ServerID:    fmt.Sprintf("SERVER_%d", id),
+			ServiceType: Type,
 		}, option)
+
+	check := func() string {
+		C2SConnections := server.GetC2SConnections()
+		S2SConnections := server.GetS2SConnections()
+		return fmt.Sprintf("\nS2C:%d,%s\nS2S:%d,%s\n", len(C2SConnections), C2SConnections, len(S2SConnections), S2SConnections)
+	}
 	server.Events.ServerNewConnection.AddHandler(func(info protocol.ServerInfo) {
-		t.Log(s + fmt.Sprintf("%s---->ServerNewConnection--->%s", server.GetServerInfo(), info))
+		t.Log(s + fmt.Sprintf("%s---->ServerNewConnection--->%s", server.GetServerInfo(), info) + check())
 	})
 	server.Events.ServerNewConnection.Enable()
 	server.Events.ServerDisconnection.AddHandler(func(info protocol.ServerInfo) {
-		t.Log(s + fmt.Sprintf("%s---->ServerDisconnection--->%s", server.GetServerInfo(), info))
+		t.Log(s + fmt.Sprintf("%s---->ServerDisconnection--->%s", server.GetServerInfo(), info) + check())
 	})
 	server.Events.ServerDisconnection.Enable()
 	server.Events.ClientNewConnection.AddHandler(func(info protocol.ClientInfo) {
-		t.Log(s + fmt.Sprintf("%s---->ClientNewConnection--->%s", server.GetServerInfo(), info))
+		t.Log(s + fmt.Sprintf("%s---->ClientNewConnection--->%s", server.GetServerInfo(), info) + check())
 	})
 	server.Events.ClientNewConnection.Enable()
 	server.Events.ClientDisconnection.AddHandler(func(info protocol.ClientInfo) {
-		t.Log(s + fmt.Sprintf("%s---->ClientDisconnection--->%s", server.GetServerInfo(), info))
+		t.Log(s + fmt.Sprintf("%s---->ClientDisconnection--->%s", server.GetServerInfo(), info) + check())
 	})
 	server.Events.ClientDisconnection.Enable()
 	initS2SRegistry = server.GetS2SInfo()
@@ -80,18 +82,6 @@ func ServerTest(t *testing.T, ctx context.Context, id int, Type string, wg *sync
 			server.Run(ctx)
 			t.Log(s + fmt.Sprintf("%s stopped itself.", server.GetServerInfo()))
 		}()
-		go func() {
-			for i := 0; ; i++ {
-				select {
-				case <-time.After(1e9):
-					C2SConnections := server.GetC2SConnections()
-					S2SConnections := server.GetS2SConnections()
-					t.Log(s + fmt.Sprintf("Check(%d)-S2C:%d\nS2S:%d,%s", i, len(C2SConnections), len(S2SConnections), S2SConnections))
-				case <-ctx.Done():
-					return
-				}
-			}
-		}()
 	}()
 }
 
@@ -100,18 +90,21 @@ func ClientTest(t *testing.T, ctx context.Context, id int, Type string, wg *sync
 	option := DefaultClientOption(initS2CRegistry, exampleProto.NewChanNetRequestProtocol())
 	option.ResponseSendOption = exampleProto.ResponseSendOption{Timestamp: time.Now()}
 	client := NewClient(
-		protobuf.ClientInfoPointer{
-			ClientInfo: &protobuf.ClientInfo{
-				ID:   fmt.Sprintf("CLIENT_%d", id),
-				Type: Type,
-			},
+		&protobuf.ClientInfo{
+			ClientID:    fmt.Sprintf("CLIENT_%d", id),
+			ServiceType: Type,
 		}, option)
+
+	check := func() string {
+		S2CConnections := client.GetS2CConnections()
+		return fmt.Sprintf("\nC2S:%d,%s", len(S2CConnections), S2CConnections)
+	}
 	client.Events.NewConnection.AddHandler(func(info protocol.S2CInfo) {
-		t.Log(s + fmt.Sprintf("%s---->NewConnection---->%s", client.GetClientInfo(), info.ServerInfo))
+		t.Log(s + fmt.Sprintf("%s---->NewConnection---->%s", client.GetClientInfo(), info.ServerInfo) + check())
 	})
 	client.Events.NewConnection.Enable()
 	client.Events.Disconnection.AddHandler(func(info protocol.S2CInfo, err error) {
-		t.Log(s + fmt.Sprintf("%s---->Disconnection---->%s, error:%s", client.GetClientInfo(), info.ServerInfo, err))
+		t.Log(s + fmt.Sprintf("%s---->Disconnection---->%s, error:%s", client.GetClientInfo(), info.ServerInfo, err) + check())
 	})
 	client.Events.Disconnection.Enable()
 	go func() {
@@ -120,16 +113,6 @@ func ClientTest(t *testing.T, ctx context.Context, id int, Type string, wg *sync
 			t.Log(s + fmt.Sprintf("%s is going to start.", client.GetClientInfo()))
 			client.Run(ctx)
 			fmt.Println(s + fmt.Sprintf("%s stopped itself.", client.GetClientInfo()))
-		}()
-		go func() {
-			for i := 0; ; i++ {
-				select {
-				case <-time.After(1e9):
-					t.Log(s + fmt.Sprintf("Check(%d)-C2S:%d", i, len(client.GetS2CConnections())))
-				case <-ctx.Done():
-					return
-				}
-			}
 		}()
 	}()
 }
