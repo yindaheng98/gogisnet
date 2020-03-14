@@ -2,10 +2,10 @@ package client
 
 import (
 	gogisnetProto "github.com/yindaheng98/gogisnet/protocol"
+	"github.com/yindaheng98/gogistry/example/CandidateList"
+	"github.com/yindaheng98/gogistry/example/RetryNController"
 	"github.com/yindaheng98/gogistry/protocol"
 	"github.com/yindaheng98/gogistry/registrant"
-	"github.com/yindaheng98/gogistry/util/CandidateList"
-	"github.com/yindaheng98/gogistry/util/RetryNController"
 )
 
 type Option struct {

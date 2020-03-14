@@ -4,8 +4,8 @@ import (
 	"github.com/yindaheng98/go-utility/Emitter"
 	"github.com/yindaheng98/gogisnet/emitters"
 	"github.com/yindaheng98/gogisnet/protocol"
+	gogistryEmitters "github.com/yindaheng98/gogistry/emitters"
 	gogistryProto "github.com/yindaheng98/gogistry/protocol"
-	gogistryEmitters "github.com/yindaheng98/gogistry/util/emitters"
 )
 
 type events struct {

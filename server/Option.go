@@ -2,12 +2,12 @@ package server
 
 import (
 	gogisnetProto "github.com/yindaheng98/gogisnet/protocol"
+	"github.com/yindaheng98/gogistry/example/CandidateList"
+	"github.com/yindaheng98/gogistry/example/RetryNController"
+	"github.com/yindaheng98/gogistry/example/TimeoutController"
 	"github.com/yindaheng98/gogistry/protocol"
 	"github.com/yindaheng98/gogistry/registrant"
 	"github.com/yindaheng98/gogistry/registry"
-	"github.com/yindaheng98/gogistry/util/CandidateList"
-	"github.com/yindaheng98/gogistry/util/RetryNController"
-	"github.com/yindaheng98/gogistry/util/TimeoutController"
 )
 
 type Option struct {
