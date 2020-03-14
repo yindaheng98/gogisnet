@@ -47,7 +47,7 @@ func PutServerEvent(s *server.Server, logger func(string)) {
 func PutClientEvent(c *client.Client, logger func(string)) {
 	check := func() string {
 		S2CConnections := c.GetS2CConnections()
-		return fmt.Sprintf("\nC2S:%d,%s", len(S2CConnections), S2CConnections)
+		return fmt.Sprintf("\n\tC2S:%d,%s", len(S2CConnections), S2CConnections)
 	}
 	c.Events.NewConnection.AddHandler(func(info protocol.S2CInfo) {
 		logger("--NewConnection-->" + info.GetServerID() + check())

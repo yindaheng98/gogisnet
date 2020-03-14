@@ -1,21 +1,33 @@
 package server
 
 import (
+	"context"
 	"github.com/yindaheng98/gogisnet/protocol"
 	gogistryProto "github.com/yindaheng98/gogistry/protocol"
 )
 
 func (s *Server) initConnectionLoader() {
-	loadFromS2SRegistry := func(gogistryProto.RegistrantInfo) { s.loadFromS2SRegistry() }
-	loadFromS2SRegistrant := func(gogistryProto.RegistryInfo) { s.loadFromS2SRegistrant() }
-	loadFromS2SRegistrant2 := func(gogistryProto.RegistryInfo, error) { s.loadFromS2SRegistrant() }
-	s.s2sRegistry.Events.NewConnection.AddHandler(loadFromS2SRegistry)
+	s.s2sRegistry.Events.NewConnection.AddHandler( //有服务端上线
+		func(gogistryProto.RegistrantInfo) {
+			s.loadFromS2SRegistry() //影响s2sRegistrant的黑名单和s2cRegistry的候选连接列表
+		})
 	s.s2sRegistry.Events.NewConnection.Enable()
-	s.s2sRegistry.Events.Disconnection.AddHandler(loadFromS2SRegistry)
+	s.s2sRegistry.Events.Disconnection.AddHandler( //有服务端下线
+		func(info gogistryProto.RegistrantInfo) {
+			s.loadFromS2SRegistry() //影响s2sRegistrant的黑名单和s2cRegistry的候选连接列表
+			//还会影响s2sRegistrant的候选连接列表
+			s.s2sRegistrant.AddCandidates(context.Background(), []gogistryProto.RegistryInfo{info.(protocol.S2SInfo)})
+		})
 	s.s2sRegistry.Events.Disconnection.Enable()
-	s.s2sRegistrant.Events.NewConnection.AddHandler(loadFromS2SRegistrant)
+	s.s2sRegistrant.Events.NewConnection.AddHandler( //有服务端上线
+		func(gogistryProto.RegistryInfo) {
+			s.loadFromS2SRegistrant() //影响s2cRegistry的候选连接列表
+		})
 	s.s2sRegistrant.Events.NewConnection.Enable()
-	s.s2sRegistrant.Events.Disconnection.AddHandler(loadFromS2SRegistrant2)
+	s.s2sRegistrant.Events.Disconnection.AddHandler( //有服务端掉线
+		func(gogistryProto.RegistryInfo, error) {
+			s.loadFromS2SRegistrant() //影响s2cRegistry的候选连接列表
+		})
 	s.s2sRegistrant.Events.Disconnection.Enable()
 	//一旦有连接变化，立马更新黑名单和候选连接列表
 }
