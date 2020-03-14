@@ -23,7 +23,7 @@ message Timestamp {
 message ServerInfo {
   string ServerID = 1;
   string ServiceType = 2;
-  string AdditionalInfo = 3;
+  bytes AdditionalInfo = 3;
 }
 message S2CInfo {
   ServerInfo ServerInfo = 1;
@@ -49,7 +49,7 @@ message S2SResponse {
 message ClientInfo {
   string ClientID = 1;
   string ServiceType = 2;
-  string AdditionalInfo = 3;
+  bytes AdditionalInfo = 3;
 }
 message C2SInfo {
   ClientInfo ClientInfo = 1;

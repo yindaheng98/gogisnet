@@ -18,7 +18,7 @@ func InitS2SRegistry() {
 	ServerInfo := &protobuf.ServerInfo{
 		ServerID:       "UNDEF",
 		ServiceType:    "UNDEF",
-		AdditionalInfo: "UNDEF",
+		AdditionalInfo: []byte("UNDEF"),
 	}
 	initS2SRegistry = protocol.S2SInfo{
 		ServerInfo:         ServerInfo,

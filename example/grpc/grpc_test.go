@@ -20,9 +20,8 @@ var initS2SServer *pb.S2SInfo
 func ServerTest(t *testing.T, ctx context.Context, S2SPort, S2CPort uint16) (err error) {
 	ServerID := fmt.Sprintf("Server-%d/%d", S2SPort, S2CPort)
 	ServerInfo := &pb.ServerInfo{
-		ServerID:       ServerID,
-		ServiceType:    "Hello World Service",
-		AdditionalInfo: "",
+		ServerID:    ServerID,
+		ServiceType: "Hello World Service",
 	}
 	S2SBoardCastAddr, S2CBoardCastAddr := GetAddr(S2SPort), GetAddr(S2CPort)
 	option, err := server.DefaultOption(S2SBoardCastAddr, S2CBoardCastAddr, initS2SServer)
@@ -59,9 +58,8 @@ var initS2CServer *pb.S2CInfo
 func ClientTest(ctx context.Context, id uint16) (err error) {
 	ClientID := fmt.Sprintf("Client-%02d", id)
 	ClientInfo := &pb.ClientInfo{
-		ClientID:       ClientID,
-		ServiceType:    "Hello World Service",
-		AdditionalInfo: "",
+		ClientID:    ClientID,
+		ServiceType: "Hello World Service",
 	}
 	option, err := client.DefaultOption(initS2CServer)
 	if err != nil {

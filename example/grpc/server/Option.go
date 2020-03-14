@@ -31,18 +31,16 @@ func DefaultOption(S2SBoardCastAddr, S2CBoardCastAddr string, initServer *pb.S2S
 	if initServer == nil { //构造初始轮询服务器
 		initServer = &pb.S2SInfo{
 			ServerInfo: &pb.ServerInfo{
-				ServerID:       "Undefined",
-				ServiceType:    "Undefined",
-				AdditionalInfo: "",
+				ServerID:    "Undefined",
+				ServiceType: "Undefined",
 			},
 			ResponseSendOption: &pb.ResponseSendOption{},
 			RequestSendOption:  &pb.RequestSendOption{Addr: "Undefined"},
 			Candidates:         nil,
 			S2CInfo: &pb.S2CInfo{
 				ServerInfo: &pb.ServerInfo{
-					ServerID:       "Undefined",
-					ServiceType:    "Undefined",
-					AdditionalInfo: "",
+					ServerID:    "Undefined",
+					ServiceType: "Undefined",
 				},
 				RequestSendOption: &pb.RequestSendOption{Addr: "Undefined"},
 				Candidates:        nil,
