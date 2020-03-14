@@ -6,7 +6,7 @@ import (
 	grpcServiceClient "github.com/yindaheng98/gogisnet/example/grpc/protocol/registrant"
 	grpcServiceServer "github.com/yindaheng98/gogisnet/example/grpc/protocol/registry"
 	"github.com/yindaheng98/gogisnet/server"
-	"github.com/yindaheng98/gogistry/util/CandidateList"
+	"github.com/yindaheng98/gogistry/example/CandidateList"
 	"net"
 )
 

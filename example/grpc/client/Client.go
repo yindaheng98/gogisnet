@@ -4,7 +4,7 @@ import (
 	"github.com/yindaheng98/gogisnet/client"
 	pb "github.com/yindaheng98/gogisnet/example/grpc/protocol/protobuf"
 	grpcServiceClient "github.com/yindaheng98/gogisnet/example/grpc/protocol/registrant"
-	"github.com/yindaheng98/gogistry/util/CandidateList"
+	"github.com/yindaheng98/gogistry/example/CandidateList"
 )
 
 type Client struct {
