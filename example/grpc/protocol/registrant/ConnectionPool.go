@@ -6,19 +6,19 @@ import (
 	"time"
 )
 
-type connections struct {
+type ConnectionPool struct {
 	connections         map[string]*grpc.ClientConn
 	connectionsMu       *sync.RWMutex
 	DialOption          []grpc.DialOption
 	MaxDialHoldDuration time.Duration
 }
 
-func newConnections(DialOption []grpc.DialOption, MaxDialHoldDuration time.Duration) *connections {
-	return &connections{make(map[string]*grpc.ClientConn), new(sync.RWMutex),
+func NewConnectionPool(DialOption []grpc.DialOption, MaxDialHoldDuration time.Duration) *ConnectionPool {
+	return &ConnectionPool{make(map[string]*grpc.ClientConn), new(sync.RWMutex),
 		DialOption, MaxDialHoldDuration}
 }
 
-func (c *connections) GetClientConn(addr string) (connection *grpc.ClientConn, err error) {
+func (c *ConnectionPool) GetClientConn(addr string) (connection *grpc.ClientConn, err error) {
 	c.connectionsMu.RLock()
 	connection, ok := c.connections[addr]
 	c.connectionsMu.RUnlock()
