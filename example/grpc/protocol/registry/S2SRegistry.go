@@ -8,7 +8,7 @@ import (
 
 type S2SRegistryServer struct {
 	*grpc.Server
-	service *s2sService
+	service *s2sServiceServer
 }
 
 func NewS2SRegistryServer(option GRPCRegistryOption) *S2SRegistryServer {
@@ -22,15 +22,15 @@ func (s *S2SRegistryServer) NewResponseProtocol() ResponseProtocol {
 	return s.service.newResponseProtocol()
 }
 
-type s2sService struct {
+type s2sServiceServer struct {
 	chanpairService
 }
 
-func newS2SService(bufn uint64) *s2sService {
-	return &s2sService{newChanpairService(bufn)}
+func newS2SService(bufn uint64) *s2sServiceServer {
+	return &s2sServiceServer{newChanpairService(bufn)}
 }
 
-func (s *s2sService) Poll(ctx context.Context, S2SRequest *pb.S2SRequest) (*pb.S2SResponse, error) {
+func (s *s2sServiceServer) Poll(ctx context.Context, S2SRequest *pb.S2SRequest) (*pb.S2SResponse, error) {
 	request, err := S2SRequest.Unpack()
 	if err != nil {
 		return nil, err
