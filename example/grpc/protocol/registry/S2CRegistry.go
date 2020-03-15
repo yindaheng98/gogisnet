@@ -11,7 +11,7 @@ type S2CRegistryServer struct {
 	service *s2cService
 }
 
-func NewS2CRegistryServer(option GRPCServerOption) *S2CRegistryServer {
+func NewS2CRegistryServer(option GRPCRegistryOption) *S2CRegistryServer {
 	Server := grpc.NewServer(option.InitOption...)
 	Service := newS2CService(option.BufferLen)
 	pb.RegisterS2CRegistryServer(Server, Service)

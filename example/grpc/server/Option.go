@@ -2,8 +2,8 @@ package server
 
 import (
 	pb "github.com/yindaheng98/gogisnet/example/grpc/protocol/protobuf"
-	grpcServiceClient "github.com/yindaheng98/gogisnet/example/grpc/protocol/registrant"
-	grpcServiceServer "github.com/yindaheng98/gogisnet/example/grpc/protocol/registry"
+	"github.com/yindaheng98/gogisnet/example/grpc/protocol/registrant"
+	"github.com/yindaheng98/gogisnet/example/grpc/protocol/registry"
 	"github.com/yindaheng98/gogisnet/protocol"
 	"github.com/yindaheng98/gogisnet/server"
 )
@@ -15,17 +15,17 @@ type Option struct {
 }
 
 type GRPCOption struct {
-	S2SRegistryOption   grpcServiceServer.GRPCServerOption
-	S2CRegistryOption   grpcServiceServer.GRPCServerOption
-	S2SRegistrantOption grpcServiceClient.GRPCClientOption
+	S2SRegistryOption   registry.GRPCRegistryOption
+	S2CRegistryOption   registry.GRPCRegistryOption
+	S2SRegistrantOption registrant.GRPCRegistrantOption
 }
 
 func DefaultOption(S2SBoardCastAddr, S2CBoardCastAddr string, initServer *pb.S2SInfo) (option Option, err error) {
 	option = Option{ //初始化
 		GRPCOption: GRPCOption{
-			S2SRegistryOption:   grpcServiceServer.DefaultOption(),
-			S2CRegistryOption:   grpcServiceServer.DefaultOption(),
-			S2SRegistrantOption: grpcServiceClient.DefaultOption(),
+			S2SRegistryOption:   registry.DefaultOption(),
+			S2CRegistryOption:   registry.DefaultOption(),
+			S2SRegistrantOption: registrant.DefaultOption(),
 		},
 	}
 	if initServer == nil { //构造初始轮询服务器

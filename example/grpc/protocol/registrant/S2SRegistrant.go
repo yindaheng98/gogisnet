@@ -13,7 +13,7 @@ type S2SRegistrant struct {
 	CallOption  []grpc.CallOption
 }
 
-func NewS2SRegistrant(option GRPCClientOption) *S2SRegistrant {
+func NewS2SRegistrant(option GRPCRegistrantOption) *S2SRegistrant {
 	return &S2SRegistrant{newConnections(option.DialOption, option.MaxDialHoldDuration),
 		option.CallOption}
 }

@@ -4,13 +4,13 @@ import (
 	"google.golang.org/grpc"
 )
 
-type GRPCServerOption struct {
+type GRPCRegistryOption struct {
 	InitOption []grpc.ServerOption
 	BufferLen  uint64
 }
 
-func DefaultOption() GRPCServerOption {
-	return GRPCServerOption{
+func DefaultOption() GRPCRegistryOption {
+	return GRPCRegistryOption{
 		InitOption: nil,
 		BufferLen:  100,
 	}
