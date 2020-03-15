@@ -16,9 +16,17 @@ type Server struct {
 	s2sRegistry   *registry.Registry
 	s2sRegistrant *registrant.Registrant
 	s2sBlacklist  chan []gogistryProto.RegistrantInfo
-	Events        *events
+
+	//If want to use Server.GetGraph to get the topology graph of the whole gogisnet,
+	//you should implement message.GraphQueryProtocol and assign a value to Server.GraphQueryProtocol
+	GraphQueryProtocol message.GraphQueryProtocol
+
+	//Events contains a series of emitters to emit and handle events.
+	//Type of those emitters: https://godoc.org/github.com/yindaheng98/go-utility/Emitter
+	Events *events
 }
 
+//Construct a Server according to the option and return its pointer.
 func New(info message.ServerInfo, option Option) *Server {
 	S2SRegistryOption, S2SRegistrantOption, S2CRegistryOption :=
 		option.S2SRegistryOption, option.S2SRegistrantOption, option.S2CRegistryOption
@@ -54,6 +62,7 @@ func New(info message.ServerInfo, option Option) *Server {
 	return s
 }
 
+//Run the server.
 func (s *Server) Run(ctx context.Context) {
 	wg := new(sync.WaitGroup)
 	wg.Add(3)
@@ -91,10 +100,14 @@ func (s *Server) Run(ctx context.Context) {
 	wg.Wait()
 }
 
+//SetS2SWatchdogTimeDelta can change the WatchdogTimeDelta in S2SRegistrant.
+//About WatchdogTimeDelta: https://godoc.org/github.com/yindaheng98/gogistry/registrant#Registrant
 func (s *Server) SetS2SWatchdogTimeDelta(t time.Duration) {
 	s.s2sRegistrant.WatchdogTimeDelta = t
 }
 
+//SetS2SCandidateBlacklist can change the CandidateBlacklist for S2SRegistrant.
+//About CandidateBlacklist: https://godoc.org/github.com/yindaheng98/gogistry/registrant#Registrant
 func (s *Server) SetS2SCandidateBlacklist(blacklist []message.ServerInfo) {
 	<-s.s2sBlacklist
 	CandidateBlacklist := make([]gogistryProto.RegistrantInfo, len(blacklist))
