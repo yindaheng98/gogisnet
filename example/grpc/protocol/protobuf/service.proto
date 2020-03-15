@@ -23,7 +23,8 @@ message Timestamp {
 message ServerInfo {
   string ServerID = 1;
   string ServiceType = 2;
-  bytes AdditionalInfo = 3;
+  string GraphQueryAddr = 3;
+  bytes AdditionalInfo = 4;
 }
 message S2CInfo {
   ServerInfo ServerInfo = 1;

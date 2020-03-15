@@ -169,3 +169,24 @@ func TestConvertS2SResponse(t *testing.T) {
 		t.Log("Convert failed: ", err.Error())
 	}
 }
+
+func TestGraphQueryInfo(t *testing.T) {
+	s := "GraphQueryInfo"
+	pbGraphQueryInfo := &GraphQueryInfo{
+		ServerInfo: NewServerInfo(s, 0),
+		Indegree:   []*ServerInfo{NewServerInfo(s, 1), NewServerInfo(s, 2), nil},
+		Outdegree:  []*ServerInfo{NewServerInfo(s, 3), nil, NewServerInfo(s, 4)},
+		Clients:    []*ClientInfo{NewClientInfo(), NewClientInfo(), nil},
+	}
+	if GraphQueryInfo, err := pbGraphQueryInfo.Unpack(); err == nil {
+		t.Log(fmt.Sprintf("Convert success: %s", GraphQueryInfo))
+		if pbGraphQueryInfo, err = GraphQueryInfoPack(*GraphQueryInfo); err == nil {
+			t.Log("Convert back success: ", pbGraphQueryInfo)
+		} else {
+			t.Log("Convert back failed: ", err.Error())
+		}
+	} else {
+		t.Log("Convert failed: ", err.Error())
+	}
+
+}

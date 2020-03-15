@@ -1,0 +1,17 @@
+syntax = "proto3";
+package protocol;
+import "service.proto";
+
+service GraphQuery {
+  rpc Query(Empty) returns (GraphQueryInfo);
+}
+
+message Empty {
+}
+
+message GraphQueryInfo {
+  ServerInfo ServerInfo = 1;
+  repeated ServerInfo Indegree = 2;
+  repeated ServerInfo Outdegree = 3;
+  repeated ClientInfo Clients = 4;
+}
