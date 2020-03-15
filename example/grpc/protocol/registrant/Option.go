@@ -5,14 +5,14 @@ import (
 	"time"
 )
 
-type GRPCRegistrantOption struct {
+type GRPCClientOption struct {
 	DialOption          []grpc.DialOption
 	CallOption          []grpc.CallOption
 	MaxDialHoldDuration time.Duration //保持连接的最大时长
 }
 
-func DefaultOption() GRPCRegistrantOption {
-	return GRPCRegistrantOption{
+func DefaultOption() GRPCClientOption {
+	return GRPCClientOption{
 		DialOption:          []grpc.DialOption{grpc.WithInsecure()},
 		CallOption:          nil,
 		MaxDialHoldDuration: 1e9,

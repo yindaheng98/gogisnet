@@ -9,7 +9,7 @@ import (
 
 type Option struct {
 	ServiceOption client.Option
-	GRPCOption    registrant.GRPCRegistrantOption
+	GRPCOption    registrant.GRPCClientOption
 	initServer    message.S2CInfo
 }
 

@@ -17,7 +17,7 @@ type Option struct {
 type GRPCOption struct {
 	S2SRegistryOption   registry.GRPCRegistryOption
 	S2CRegistryOption   registry.GRPCRegistryOption
-	S2SRegistrantOption registrant.GRPCRegistrantOption
+	S2SRegistrantOption registrant.GRPCClientOption
 }
 
 func DefaultOption(S2SBoardCastAddr, S2CBoardCastAddr string, initServer *pb.S2SInfo) (option Option, err error) {
