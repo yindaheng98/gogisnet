@@ -15,17 +15,17 @@ type Option struct {
 }
 
 type GRPCOption struct {
-	S2SServerOption grpcServiceServer.GRPCServerOption
-	S2CServerOption grpcServiceServer.GRPCServerOption
-	S2SClientOption grpcServiceClient.GRPCClientOption
+	S2SRegistryOption   grpcServiceServer.GRPCServerOption
+	S2CRegistryOption   grpcServiceServer.GRPCServerOption
+	S2SRegistrantOption grpcServiceClient.GRPCClientOption
 }
 
 func DefaultOption(S2SBoardCastAddr, S2CBoardCastAddr string, initServer *pb.S2SInfo) (option Option, err error) {
 	option = Option{ //初始化
 		GRPCOption: GRPCOption{
-			S2SServerOption: grpcServiceServer.DefaultOption(),
-			S2CServerOption: grpcServiceServer.DefaultOption(),
-			S2SClientOption: grpcServiceClient.DefaultOption(),
+			S2SRegistryOption:   grpcServiceServer.DefaultOption(),
+			S2CRegistryOption:   grpcServiceServer.DefaultOption(),
+			S2SRegistrantOption: grpcServiceClient.DefaultOption(),
 		},
 	}
 	if initServer == nil { //构造初始轮询服务器

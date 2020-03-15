@@ -13,8 +13,8 @@ type Client struct {
 
 func New(ClientInfo *pb.ClientInfo, option Option) *Client {
 	ServiceOption, GRPCOption := option.ServiceOption, option.GRPCOption
-	S2CClient := registrant.NewS2CRegistrant(GRPCOption)
-	ServiceOption.RequestProto = S2CClient.NewRequestProtocol()
-	ServiceOption.CandidateList = CandidateList.NewPingerCandidateList(3, S2CClient.NewC2SPINGer(), 1e9, option.initServer, 1e9, 10)
+	S2CRegistrant := registrant.NewS2CRegistrant(GRPCOption)
+	ServiceOption.RequestProto = S2CRegistrant.NewRequestProtocol()
+	ServiceOption.CandidateList = CandidateList.NewPingerCandidateList(3, S2CRegistrant.NewC2SPINGer(), 1e9, option.initServer, 1e9, 10)
 	return &Client{client.New(ClientInfo, ServiceOption)}
 }
