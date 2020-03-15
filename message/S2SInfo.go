@@ -5,7 +5,9 @@ import (
 	"github.com/yindaheng98/gogistry/protocol"
 )
 
-//服务器面向服务器的信息
+//Message that send from server to server.
+//Implementation of "github.com/yindaheng98/gogistry/protocol".RegistryInfo
+//Implementation of "github.com/yindaheng98/gogistry/protocol".RegistrantInfo
 type S2SInfo struct {
 	ServerInfo
 	ResponseSendOption protocol.ResponseSendOption

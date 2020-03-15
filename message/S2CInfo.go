@@ -5,7 +5,8 @@ import (
 	"github.com/yindaheng98/gogistry/protocol"
 )
 
-//服务器面向客户端的信息
+//Message that send from server to client.
+//Implementation of "github.com/yindaheng98/gogistry/protocol".RegistryInfo
 type S2CInfo struct {
 	ServerInfo
 	RequestSendOption protocol.RequestSendOption

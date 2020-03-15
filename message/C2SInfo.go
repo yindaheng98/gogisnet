@@ -5,7 +5,8 @@ import (
 	"github.com/yindaheng98/gogistry/protocol"
 )
 
-//客户端面向服务器的信息
+//Message that send from client to server.
+//Implementation of "github.com/yindaheng98/gogistry/protocol".RegistrantInfo
 type C2SInfo struct {
 	ClientInfo
 	ResponseSendOption protocol.ResponseSendOption
