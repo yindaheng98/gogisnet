@@ -9,17 +9,17 @@ import (
 )
 
 type S2CRegistrant struct {
-	connections *connections
-	CallOption  []grpc.CallOption
+	pool       *ConnectionPool
+	CallOption []grpc.CallOption
 }
 
 func NewS2CRegistrant(option GRPCRegistrantOption) *S2CRegistrant {
-	return &S2CRegistrant{newConnections(option.DialOption, option.MaxDialHoldDuration),
+	return &S2CRegistrant{NewConnectionPool(option.DialOption, option.MaxDialHoldDuration),
 		option.CallOption}
 }
 
 func (c *S2CRegistrant) getClient(addr string) (client pb.S2CRegistryClient, err error) {
-	conn, err := c.connections.GetClientConn(addr)
+	conn, err := c.pool.GetClientConn(addr)
 	if err != nil {
 		return
 	}
