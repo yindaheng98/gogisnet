@@ -11,9 +11,10 @@ import (
 func PutServerEvent(s *server.Server, logger func(string)) {
 
 	check := func() string {
+		ss := fmt.Sprintf("\n%s", s.GetGraphQueryInfo())
 		C2SConnections := s.GetC2SConnections()
 		S2SConnections := s.GetS2SConnections()
-		return fmt.Sprintf("\nS2C:%d,%s\nS2S:%d,%s\n", len(C2SConnections), C2SConnections, len(S2SConnections), S2SConnections)
+		return ss + fmt.Sprintf("\nS2C:%d,%s\nS2S:%d,%s\n", len(C2SConnections), C2SConnections, len(S2SConnections), S2SConnections)
 	}
 	s.Events.S2SRegistrantEvent.NewConnection.AddHandler(func(info message.S2SInfo) {
 		logger("-->ServerNewConnection-->" + info.GetServerID() + check())
