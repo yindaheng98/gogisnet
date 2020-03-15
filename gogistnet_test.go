@@ -53,9 +53,10 @@ func ServerTest(t *testing.T, ctx context.Context, id int, Type string, wg *sync
 		}, option)
 
 	check := func() string {
+		ss := s + "\nGraphQueryInfo: " + fmt.Sprintf("%s", server.GetGraphQueryInfo())
 		C2SConnections := server.GetC2SConnections()
 		S2SConnections := server.GetS2SConnections()
-		return fmt.Sprintf("\nS2C:%d,%s\nS2S:%d,%s\n", len(C2SConnections), C2SConnections, len(S2SConnections), S2SConnections)
+		return ss + fmt.Sprintf("\nS2C:%d,%s\nS2S:%d,%s\n", len(C2SConnections), C2SConnections, len(S2SConnections), S2SConnections)
 	}
 	server.Events.ServerNewConnection.AddHandler(func(info message.ServerInfo) {
 		t.Log(s + fmt.Sprintf("%s---->ServerNewConnection--->%s", server.GetServerInfo(), info) + check())
@@ -76,12 +77,10 @@ func ServerTest(t *testing.T, ctx context.Context, id int, Type string, wg *sync
 	initS2SRegistry = server.GetS2SInfo()
 	initS2CRegistry = server.GetS2CInfo()
 	go func() {
-		go func() {
-			defer wg.Done()
-			fmt.Println(s + fmt.Sprintf("%s is going to start.", server.GetServerInfo()))
-			server.Run(ctx)
-			t.Log(s + fmt.Sprintf("%s stopped itself.", server.GetServerInfo()))
-		}()
+		defer wg.Done()
+		fmt.Println(s + fmt.Sprintf("%s is going to start.", server.GetServerInfo()))
+		server.Run(ctx)
+		t.Log(s + fmt.Sprintf("%s stopped itself.", server.GetServerInfo()))
 	}()
 }
 
@@ -108,12 +107,10 @@ func ClientTest(t *testing.T, ctx context.Context, id int, Type string, wg *sync
 	})
 	client.Events.Disconnection.Enable()
 	go func() {
-		go func() {
-			defer wg.Done()
-			t.Log(s + fmt.Sprintf("%s is going to start.", client.GetClientInfo()))
-			client.Run(ctx)
-			fmt.Println(s + fmt.Sprintf("%s stopped itself.", client.GetClientInfo()))
-		}()
+		defer wg.Done()
+		t.Log(s + fmt.Sprintf("%s is going to start.", client.GetClientInfo()))
+		client.Run(ctx)
+		fmt.Println(s + fmt.Sprintf("%s stopped itself.", client.GetClientInfo()))
 	}()
 }
 
@@ -130,15 +127,15 @@ func TestServerClient(t *testing.T) {
 	for i := 0; i < SERVERN; i++ {
 		ServerTest(t, serverCtx, i, Type, serverWG)
 	}
-	time.Sleep(2e9)
+	time.Sleep(1e9)
 	clientWG := new(sync.WaitGroup)
 	clientWG.Add(CLIENTN)
 	clientCtx, cancelClient := context.WithCancel(ctx)
 	for i := 0; i < CLIENTN; i++ {
 		ClientTest(t, clientCtx, i, Type, clientWG)
-		time.Sleep(0.5e9)
+		time.Sleep(0.2e9)
 	}
-	time.Sleep(10e9)
+	time.Sleep(1e9)
 	cancelServer()
 	cancelClient()
 	serverWG.Wait()
