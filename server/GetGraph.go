@@ -26,7 +26,6 @@ func constructGraph(ctx context.Context, info message.GraphQueryInfo, graphChan 
 	var graph *message.Graph
 	select {
 	case graph = <-graphChan: //等待其他进程完成graph处理
-		defer func() { graphChan <- graph }() //结束后放回graph
 	case <-ctx.Done():
 		return //超时
 	}
@@ -59,11 +58,15 @@ func constructGraph(ctx context.Context, info message.GraphQueryInfo, graphChan 
 			wg.Add(1)
 			go func() { //就递归进行遍历
 				defer wg.Done() //结束时报告线程结束
-				constructGraph(ctx, proto.Query(ctx, s), graphChan, proto)
+				i, err := proto.Query(ctx, s)
+				if err == nil && i != nil {
+					constructGraph(ctx, *i, graphChan, proto)
+				}
 			}()
 		}
 	}
-	wg.Wait() //等待完成
+	graphChan <- graph //结束后放回graph
+	wg.Wait()          //等待完成
 }
 
 //Get the GraphQueryInfo of this server.

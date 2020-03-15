@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/yindaheng98/gogisnet/example/grpc/protocol/graph"
 	pb "github.com/yindaheng98/gogisnet/example/grpc/protocol/protobuf"
 	"github.com/yindaheng98/gogisnet/example/grpc/protocol/registrant"
 	"github.com/yindaheng98/gogisnet/example/grpc/protocol/registry"
@@ -17,15 +18,17 @@ type Option struct {
 type GRPCOption struct {
 	S2SRegistryOption   registry.GRPCRegistryOption
 	S2CRegistryOption   registry.GRPCRegistryOption
-	S2SRegistrantOption registrant.GRPCClientOption
+	S2SRegistrantOption registrant.GRPCRegistrantOption
+	GraphQueryOption    graph.GraphQueryOption
 }
 
-func DefaultOption(S2SBoardCastAddr, S2CBoardCastAddr string, initServer *pb.S2SInfo) (option Option, err error) {
+func DefaultOption(S2SBoardCastAddr, S2CBoardCastAddr, GraphQueryBoardCastAddr string, initServer *pb.S2SInfo) (option Option, err error) {
 	option = Option{ //初始化
 		GRPCOption: GRPCOption{
 			S2SRegistryOption:   registry.DefaultOption(),
 			S2CRegistryOption:   registry.DefaultOption(),
 			S2SRegistrantOption: registrant.DefaultOption(),
+			GraphQueryOption:    graph.DefaultOption(GraphQueryBoardCastAddr),
 		},
 	}
 	if initServer == nil { //构造初始轮询服务器

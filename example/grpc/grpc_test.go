@@ -17,14 +17,14 @@ func GetAddr(port uint16) string {
 
 var initS2SServer *pb.S2SInfo
 
-func ServerTest(t *testing.T, ctx context.Context, S2SPort, S2CPort uint16) (err error) {
+func ServerTest(t *testing.T, ctx context.Context, S2SPort, S2CPort, GQPort uint16) (err error) {
 	ServerID := fmt.Sprintf("Server-%d/%d", S2SPort, S2CPort)
 	ServerInfo := &pb.ServerInfo{
 		ServerID:    ServerID,
 		ServiceType: "Hello World Service",
 	}
-	S2SBoardCastAddr, S2CBoardCastAddr := GetAddr(S2SPort), GetAddr(S2CPort)
-	option, err := server.DefaultOption(S2SBoardCastAddr, S2CBoardCastAddr, initS2SServer)
+	S2SBoardCastAddr, S2CBoardCastAddr, GQBoardCastAddr := GetAddr(S2SPort), GetAddr(S2CPort), GetAddr(GQPort)
+	option, err := server.DefaultOption(S2SBoardCastAddr, S2CBoardCastAddr, GQBoardCastAddr, initS2SServer)
 	if err != nil {
 		return
 	}
@@ -39,6 +39,7 @@ func ServerTest(t *testing.T, ctx context.Context, S2SPort, S2CPort uint16) (err
 	listenerOption := server.DefaultListenerOption()
 	listenerOption.S2SListenAddr = S2SBoardCastAddr
 	listenerOption.S2CListenAddr = S2CBoardCastAddr
+	listenerOption.GraphQueryListenAddr = GQBoardCastAddr
 	errChan := make(chan error, 1)
 	go func() {
 		fmt.Println(ServerID + " started.")
@@ -95,7 +96,7 @@ func Test(t *testing.T) {
 	for i := uint16(0); i < SERVERN; i++ {
 		go func(i uint16) {
 			defer serverWG.Done()
-			err := ServerTest(t, serverCtx, 4240+i*2, 4240+i*2+1)
+			err := ServerTest(t, serverCtx, 4240+i*3, 4240+i*3+1, 4240+i*3+2)
 			if err != nil {
 				t.Log(err)
 			}
@@ -119,7 +120,7 @@ func Test(t *testing.T) {
 
 	time.Sleep(10e9)
 	cancelServer()
-	time.Sleep(10e9)
+	time.Sleep(1e9)
 	cancelClient()
 	serverWG.Wait()
 	clientWG.Wait()

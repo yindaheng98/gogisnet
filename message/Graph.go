@@ -49,5 +49,5 @@ type GraphQueryInfo struct {
 
 //GraphQueryProtocol is used to query vertex information among servers to generate topology graph.
 type GraphQueryProtocol interface {
-	Query(context.Context, ServerInfo) GraphQueryInfo
+	Query(context.Context, ServerInfo) (*GraphQueryInfo, error)
 }

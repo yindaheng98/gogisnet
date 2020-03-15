@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"github.com/yindaheng98/gogisnet/example/grpc/protocol/graph"
 	pb "github.com/yindaheng98/gogisnet/example/grpc/protocol/protobuf"
 	"github.com/yindaheng98/gogisnet/example/grpc/protocol/registrant"
 	"github.com/yindaheng98/gogisnet/example/grpc/protocol/registry"
@@ -12,8 +13,9 @@ import (
 
 type Server struct {
 	*server.Server
-	grpcS2SRegistry *registry.S2SRegistryServer
-	grpcS2CRegistry *registry.S2CRegistryServer
+	grpcS2SRegistry  *registry.S2SRegistryServer
+	grpcS2CRegistry  *registry.S2CRegistryServer
+	graphQueryServer *graph.GraphQueryServer
 }
 
 func New(ServerInfo *pb.ServerInfo, option Option) *Server {
@@ -31,10 +33,15 @@ func New(ServerInfo *pb.ServerInfo, option Option) *Server {
 	ServiceOption.S2SRegistrantOption.RequestProto = RequestProtocol
 	ServiceOption.S2SRegistrantOption.CandidateList = CandidateList.NewPingerCandidateList(3, S2SRegistrant.NewS2SPINGer(), 1e9, option.initServer, 1e9, 10)
 
+	GraphQueryOption := GRPCOption.GraphQueryOption
+	ServerInfo.GraphQueryAddr = GraphQueryOption.GraphQueryServerOption.BoardCastAddr
+	s := server.New(ServerInfo, ServiceOption)
+	s.GraphQueryProtocol = graph.NewGraphQueryClient(GraphQueryOption.GraphQueryClientOption).NewGraphQueryProtocol()
 	return &Server{
-		Server:          server.New(ServerInfo, ServiceOption),
-		grpcS2SRegistry: S2SRegistryServer,
-		grpcS2CRegistry: S2CRegistryServer,
+		Server:           s,
+		grpcS2SRegistry:  S2SRegistryServer,
+		grpcS2CRegistry:  S2CRegistryServer,
+		graphQueryServer: graph.NewGraphQueryServer(s, GraphQueryOption.GraphQueryServerOption),
 	}
 }
 
@@ -46,6 +53,7 @@ func (s *Server) Run(ctx context.Context, option ListenerOption) (err error) {
 		Listener, err := net.Listen(option.S2SListenNetwork, option.S2SListenAddr)
 		if err != nil {
 			S2SErrChan <- err
+			return
 		}
 		S2SErrChan <- s.grpcS2SRegistry.Serve(Listener)
 	}()
@@ -55,16 +63,29 @@ func (s *Server) Run(ctx context.Context, option ListenerOption) (err error) {
 		Listener, err := net.Listen(option.S2CListenNetwork, option.S2CListenAddr)
 		if err != nil {
 			S2CErrChan <- err
+			return
 		}
 		S2CErrChan <- s.grpcS2CRegistry.Serve(Listener)
+	}()
+
+	GQErrChan := make(chan error, 1)
+	go func() {
+		Listener, err := net.Listen(option.GraphQueryListenNetwork, option.GraphQueryListenAddr)
+		if err != nil {
+			GQErrChan <- err
+			return
+		}
+		GQErrChan <- s.graphQueryServer.Serve(Listener)
 	}()
 
 	select {
 	case err = <-S2SErrChan:
 	case err = <-S2CErrChan:
+	case err = <-GQErrChan:
 	case <-ctx.Done():
 	}
 	s.grpcS2SRegistry.GracefulStop()
 	s.grpcS2CRegistry.GracefulStop()
+	s.graphQueryServer.GracefulStop()
 	return
 }
