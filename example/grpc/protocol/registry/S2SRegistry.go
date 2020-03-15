@@ -6,19 +6,19 @@ import (
 	"google.golang.org/grpc"
 )
 
-type S2SServiceServer struct {
+type S2SRegistryServer struct {
 	*grpc.Server
 	service *s2sService
 }
 
-func NewS2SServiceServer(option GRPCServerOption) *S2SServiceServer {
+func NewS2SRegistryServer(option GRPCServerOption) *S2SRegistryServer {
 	Server := grpc.NewServer(option.InitOption...)
 	Service := newS2SService(option.BufferLen)
-	pb.RegisterS2SServiceServer(Server, Service)
-	return &S2SServiceServer{Server, Service}
+	pb.RegisterS2SRegistryServer(Server, Service)
+	return &S2SRegistryServer{Server, Service}
 }
 
-func (s *S2SServiceServer) NewResponseProtocol() ResponseProtocol {
+func (s *S2SRegistryServer) NewResponseProtocol() ResponseProtocol {
 	return s.service.newResponseProtocol()
 }
 

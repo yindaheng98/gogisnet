@@ -1,11 +1,11 @@
 syntax = "proto3";
 package protocol;
 import "google/protobuf/any.proto";
-service S2SService {
+service S2SRegistry {
   rpc Poll(S2SRequest) returns (S2SResponse);
   rpc PING(Timestamp) returns (Timestamp);
 }
-service S2CService {
+service S2CRegistry {
   rpc Poll(C2SRequest) returns (S2CResponse);
   rpc PING(Timestamp) returns (Timestamp);
 }

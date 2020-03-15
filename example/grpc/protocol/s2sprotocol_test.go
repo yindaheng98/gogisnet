@@ -15,7 +15,7 @@ import (
 )
 
 func CreateS2SResponseProtocol(t *testing.T, ctx context.Context, port uint16) protocol.ResponseProtocol {
-	s := registry.NewS2SServiceServer(registry.DefaultOption())
+	s := registry.NewS2SRegistryServer(registry.DefaultOption())
 	go func() {
 		errChan := make(chan error, 1)
 		go func() {
@@ -39,7 +39,7 @@ func CreateS2SResponseProtocol(t *testing.T, ctx context.Context, port uint16) p
 }
 
 func CreateS2SRequestProtocol() protocol.RequestProtocol {
-	c := registrant.NewS2SClient(registrant.DefaultOption())
+	c := registrant.NewS2SRegistrant(registrant.DefaultOption())
 	return c.NewRequestProtocol()
 }
 

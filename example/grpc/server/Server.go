@@ -3,8 +3,8 @@ package server
 import (
 	"context"
 	pb "github.com/yindaheng98/gogisnet/example/grpc/protocol/protobuf"
-	grpcServiceClient "github.com/yindaheng98/gogisnet/example/grpc/protocol/registrant"
-	grpcServiceServer "github.com/yindaheng98/gogisnet/example/grpc/protocol/registry"
+	"github.com/yindaheng98/gogisnet/example/grpc/protocol/registrant"
+	"github.com/yindaheng98/gogisnet/example/grpc/protocol/registry"
 	"github.com/yindaheng98/gogisnet/server"
 	"github.com/yindaheng98/gogistry/example/CandidateList"
 	"net"
@@ -12,29 +12,29 @@ import (
 
 type Server struct {
 	*server.Server
-	grpcS2SServer *grpcServiceServer.S2SServiceServer
-	grpcS2CServer *grpcServiceServer.S2CServiceServer
+	grpcS2SServer *registry.S2SRegistryServer
+	grpcS2CServer *registry.S2CRegistryServer
 }
 
 func New(ServerInfo *pb.ServerInfo, option Option) *Server {
 	ServiceOption, GRPCOption := option.ServiceOption, option.GRPCOption
 
 	//注册中心初始化
-	S2SServiceServer := grpcServiceServer.NewS2SServiceServer(GRPCOption.S2SServerOption)
-	S2CServiceServer := grpcServiceServer.NewS2CServiceServer(GRPCOption.S2CServerOption)
-	ServiceOption.S2SRegistryOption.ResponseProto = S2SServiceServer.NewResponseProtocol()
-	ServiceOption.S2CRegistryOption.ResponseProto = S2CServiceServer.NewResponseProtocol()
+	S2SRegistryServer := registry.NewS2SRegistryServer(GRPCOption.S2SServerOption)
+	S2CRegistryServer := registry.NewS2CRegistryServer(GRPCOption.S2CServerOption)
+	ServiceOption.S2SRegistryOption.ResponseProto = S2SRegistryServer.NewResponseProtocol()
+	ServiceOption.S2CRegistryOption.ResponseProto = S2CRegistryServer.NewResponseProtocol()
 
 	//注册器初始化
-	S2SClient := grpcServiceClient.NewS2SClient(GRPCOption.S2SClientOption)
+	S2SClient := registrant.NewS2SRegistrant(GRPCOption.S2SClientOption)
 	RequestProtocol := S2SClient.NewRequestProtocol()
 	ServiceOption.S2SRegistrantOption.RequestProto = RequestProtocol
 	ServiceOption.S2SRegistrantOption.CandidateList = CandidateList.NewPingerCandidateList(3, S2SClient.NewS2SPINGer(), 1e9, option.initServer, 1e9, 10)
 
 	return &Server{
 		Server:        server.New(ServerInfo, ServiceOption),
-		grpcS2SServer: S2SServiceServer,
-		grpcS2CServer: S2CServiceServer,
+		grpcS2SServer: S2SRegistryServer,
+		grpcS2CServer: S2CRegistryServer,
 	}
 }
 

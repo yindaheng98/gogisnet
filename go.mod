@@ -10,7 +10,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
 	github.com/yindaheng98/go-utility v0.0.0-20200309115846-83b304e8e086
-	github.com/yindaheng98/gogistry v0.0.0-20200314082649-e24331f779e1
+	github.com/yindaheng98/gogistry v0.0.0-20200314154143-3f318b478377
 	golang.org/x/crypto v0.0.0-20200208060501-ecb85df21340 // indirect
 	golang.org/x/net v0.0.0-20200202094626-16171245cfb2 // indirect
 	golang.org/x/sys v0.0.0-20200202164722-d101bd2416d5 // indirect
