@@ -3,7 +3,7 @@ package client
 import (
 	"github.com/yindaheng98/go-utility/Emitter"
 	"github.com/yindaheng98/gogisnet/emitters"
-	"github.com/yindaheng98/gogisnet/protocol"
+	"github.com/yindaheng98/gogisnet/message"
 	gogistryEmitters "github.com/yindaheng98/gogistry/emitters"
 	gogistryProto "github.com/yindaheng98/gogistry/protocol"
 )
@@ -26,13 +26,13 @@ func (c *Client) newEvent() *events {
 		Retry:            gogistryEmitters.NewAsyncTobeSendRequestErrorEmitter(),
 	}
 	oldEvents.NewConnection.AddHandler(func(info gogistryProto.RegistryInfo) {
-		newEvents.NewConnection.Emit(info.(protocol.S2CInfo))
+		newEvents.NewConnection.Emit(info.(message.S2CInfo))
 	})
 	oldEvents.UpdateConnection.AddHandler(func(info gogistryProto.RegistryInfo) {
-		newEvents.UpdateConnection.Emit(info.(protocol.S2CInfo))
+		newEvents.UpdateConnection.Emit(info.(message.S2CInfo))
 	})
 	oldEvents.Disconnection.AddHandler(func(info gogistryProto.RegistryInfo, err error) {
-		newEvents.Disconnection.Emit(info.(protocol.S2CInfo), err)
+		newEvents.Disconnection.Emit(info.(message.S2CInfo), err)
 	})
 	oldEvents.Retry.AddHandler(func(request gogistryProto.TobeSendRequest, err error) {
 		newEvents.Retry.Emit(request, err)

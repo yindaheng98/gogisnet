@@ -3,7 +3,7 @@ package server
 import (
 	"github.com/yindaheng98/go-utility/Emitter"
 	"github.com/yindaheng98/gogisnet/emitters"
-	"github.com/yindaheng98/gogisnet/protocol"
+	"github.com/yindaheng98/gogisnet/message"
 	gogistryEmitters "github.com/yindaheng98/gogistry/emitters"
 	gogistryProto "github.com/yindaheng98/gogistry/protocol"
 )
@@ -127,22 +127,22 @@ func (s *Server) newEvents() *events {
 		S2CRegistryEvent:    s.newS2CRegistryEvents(),
 	}
 	s.s2sRegistry.Events.NewConnection.AddHandler(func(info gogistryProto.RegistrantInfo) {
-		newEvents.ServerNewConnection.Emit(info.(protocol.S2SInfo).ServerInfo)
+		newEvents.ServerNewConnection.Emit(info.(message.S2SInfo).ServerInfo)
 	})
 	s.s2sRegistrant.Events.NewConnection.AddHandler(func(info gogistryProto.RegistryInfo) {
-		newEvents.ServerNewConnection.Emit(info.(protocol.S2SInfo).ServerInfo)
+		newEvents.ServerNewConnection.Emit(info.(message.S2SInfo).ServerInfo)
 	})
 	s.s2sRegistry.Events.Disconnection.AddHandler(func(info gogistryProto.RegistrantInfo) {
-		newEvents.ServerDisconnection.Emit(info.(protocol.S2SInfo).ServerInfo)
+		newEvents.ServerDisconnection.Emit(info.(message.S2SInfo).ServerInfo)
 	})
 	s.s2sRegistrant.Events.Disconnection.AddHandler(func(info gogistryProto.RegistryInfo, err error) {
-		newEvents.ServerDisconnection.Emit(info.(protocol.S2SInfo).ServerInfo)
+		newEvents.ServerDisconnection.Emit(info.(message.S2SInfo).ServerInfo)
 	})
 	s.s2cRegistry.Events.NewConnection.AddHandler(func(info gogistryProto.RegistrantInfo) {
-		newEvents.ClientNewConnection.Emit(info.(protocol.C2SInfo).ClientInfo)
+		newEvents.ClientNewConnection.Emit(info.(message.C2SInfo).ClientInfo)
 	})
 	s.s2cRegistry.Events.Disconnection.AddHandler(func(info gogistryProto.RegistrantInfo) {
-		newEvents.ClientDisconnection.Emit(info.(protocol.C2SInfo).ClientInfo)
+		newEvents.ClientDisconnection.Emit(info.(message.C2SInfo).ClientInfo)
 	})
 	return newEvents
 }

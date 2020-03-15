@@ -3,23 +3,23 @@ package protocol
 import (
 	"errors"
 	"fmt"
-	"github.com/yindaheng98/gogisnet/protocol"
+	"github.com/yindaheng98/gogisnet/message"
 )
 
-func (info *C2SInfo) Unpack() (*protocol.C2SInfo, error) {
+func (info *C2SInfo) Unpack() (*message.C2SInfo, error) {
 	if info == nil {
 		return nil, errors.New("C2SInfo is nil")
 	}
 	if info.ClientInfo == nil {
 		return nil, errors.New("ClientInfo is nil")
 	}
-	return &protocol.C2SInfo{
+	return &message.C2SInfo{
 		ClientInfo:         info.ClientInfo,
 		ResponseSendOption: info.ResponseSendOption,
 	}, nil
 }
 
-func C2SInfoPack(info protocol.C2SInfo) (i *C2SInfo, e error) {
+func C2SInfoPack(info message.C2SInfo) (i *C2SInfo, e error) {
 	if info.ClientInfo == nil {
 		return nil, errors.New("ClientInfo is nil")
 	}

@@ -4,13 +4,13 @@ import (
 	"github.com/yindaheng98/gogisnet/client"
 	pb "github.com/yindaheng98/gogisnet/example/grpc/protocol/protobuf"
 	"github.com/yindaheng98/gogisnet/example/grpc/protocol/registrant"
-	"github.com/yindaheng98/gogisnet/protocol"
+	"github.com/yindaheng98/gogisnet/message"
 )
 
 type Option struct {
 	ServiceOption client.Option
 	GRPCOption    registrant.GRPCRegistrantOption
-	initServer    protocol.S2CInfo
+	initServer    message.S2CInfo
 }
 
 func DefaultOption(initServer *pb.S2CInfo) (option Option, err error) {

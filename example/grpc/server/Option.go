@@ -4,14 +4,14 @@ import (
 	pb "github.com/yindaheng98/gogisnet/example/grpc/protocol/protobuf"
 	"github.com/yindaheng98/gogisnet/example/grpc/protocol/registrant"
 	"github.com/yindaheng98/gogisnet/example/grpc/protocol/registry"
-	"github.com/yindaheng98/gogisnet/protocol"
+	"github.com/yindaheng98/gogisnet/message"
 	"github.com/yindaheng98/gogisnet/server"
 )
 
 type Option struct {
 	ServiceOption server.Option
 	GRPCOption    GRPCOption
-	initServer    protocol.S2SInfo
+	initServer    message.S2SInfo
 }
 
 type GRPCOption struct {

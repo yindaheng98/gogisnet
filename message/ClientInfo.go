@@ -1,4 +1,4 @@
-package protocol
+package message
 
 type ClientInfo interface {
 	GetClientID() string

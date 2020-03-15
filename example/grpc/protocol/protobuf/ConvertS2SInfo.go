@@ -3,14 +3,14 @@ package protocol
 import (
 	"errors"
 	"fmt"
-	"github.com/yindaheng98/gogisnet/protocol"
+	"github.com/yindaheng98/gogisnet/message"
 )
 
-func (info *S2SInfo) Unpack() (*protocol.S2SInfo, error) {
+func (info *S2SInfo) Unpack() (*message.S2SInfo, error) {
 	if info == nil {
 		return nil, errors.New("S2SInfo is nil")
 	}
-	var Candidates []protocol.S2SInfo
+	var Candidates []message.S2SInfo
 	if info.Candidates != nil {
 		for _, c := range info.Candidates {
 			Candidate, _ := c.Unpack()
@@ -23,7 +23,7 @@ func (info *S2SInfo) Unpack() (*protocol.S2SInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &protocol.S2SInfo{
+	return &message.S2SInfo{
 		ServerInfo:         info.ServerInfo,
 		ResponseSendOption: info.ResponseSendOption,
 		RequestSendOption:  info.RequestSendOption,
@@ -32,7 +32,7 @@ func (info *S2SInfo) Unpack() (*protocol.S2SInfo, error) {
 	}, nil
 }
 
-func S2SInfoPack(info protocol.S2SInfo) (i *S2SInfo, e error) {
+func S2SInfoPack(info message.S2SInfo) (i *S2SInfo, e error) {
 	i, e = nil, nil
 	var Candidates []*S2SInfo
 	if info.Candidates != nil {

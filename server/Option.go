@@ -1,7 +1,7 @@
 package server
 
 import (
-	gogisnetProto "github.com/yindaheng98/gogisnet/protocol"
+	"github.com/yindaheng98/gogisnet/message"
 	"github.com/yindaheng98/gogistry/example/CandidateList"
 	"github.com/yindaheng98/gogistry/example/RetryNController"
 	"github.com/yindaheng98/gogistry/example/TimeoutController"
@@ -38,7 +38,7 @@ type S2CRegistryOption struct { //服务端面向客户端的接收设置
 	ResponseProto     protocol.ResponseProtocol
 }
 
-func DefaultOption(initS2SInfo gogisnetProto.S2SInfo,
+func DefaultOption(initS2SInfo message.S2SInfo,
 	S2SResponseProto protocol.ResponseProtocol,
 	S2SRequestProto protocol.RequestProtocol,
 	S2CResponseProto protocol.ResponseProtocol) Option {

@@ -2,7 +2,7 @@ package emitters
 
 import (
 	"github.com/yindaheng98/go-utility/Emitter"
-	"github.com/yindaheng98/gogisnet/protocol"
+	"github.com/yindaheng98/gogisnet/message"
 )
 
 type ServerInfoEmitter struct {
@@ -16,12 +16,12 @@ func NewAsyncServerInfoEmitter() *ServerInfoEmitter {
 	return &ServerInfoEmitter{Emitter.NewAsyncEmitter()}
 }
 
-func (e *ServerInfoEmitter) AddHandler(handler func(info protocol.ServerInfo)) {
+func (e *ServerInfoEmitter) AddHandler(handler func(info message.ServerInfo)) {
 	e.Emitter.AddHandler(func(i interface{}) {
-		handler(i.(protocol.ServerInfo))
+		handler(i.(message.ServerInfo))
 	})
 }
 
-func (e *ServerInfoEmitter) Emit(info protocol.ServerInfo) {
+func (e *ServerInfoEmitter) Emit(info message.ServerInfo) {
 	e.Emitter.Emit(info)
 }

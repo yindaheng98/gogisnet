@@ -2,7 +2,7 @@ package server
 
 import (
 	"context"
-	"github.com/yindaheng98/gogisnet/protocol"
+	"github.com/yindaheng98/gogisnet/message"
 	gogistry "github.com/yindaheng98/gogistry"
 	gogistryProto "github.com/yindaheng98/gogistry/protocol"
 	"github.com/yindaheng98/gogistry/registrant"
@@ -19,18 +19,18 @@ type Server struct {
 	Events        *events
 }
 
-func New(info protocol.ServerInfo, option Option) *Server {
+func New(info message.ServerInfo, option Option) *Server {
 	S2SRegistryOption, S2SRegistrantOption, S2CRegistryOption :=
 		option.S2SRegistryOption, option.S2SRegistrantOption, option.S2CRegistryOption
-	s2cInfo := protocol.S2CInfo{
+	s2cInfo := message.S2CInfo{
 		ServerInfo:        info,
 		RequestSendOption: S2CRegistryOption.RequestSendOption,
-		Candidates:        []protocol.S2CInfo{}}
-	s2sInfo := protocol.S2SInfo{
+		Candidates:        []message.S2CInfo{}}
+	s2sInfo := message.S2SInfo{
 		ServerInfo:         info,
 		ResponseSendOption: S2SRegistrantOption.ResponseSendOption,
 		RequestSendOption:  S2SRegistryOption.RequestSendOption,
-		Candidates:         []protocol.S2SInfo{},
+		Candidates:         []message.S2SInfo{},
 		S2CInfo:            s2cInfo}
 	s := &Server{
 		s2sRegistry: gogistry.NewRegistry(s2sInfo,
@@ -95,11 +95,11 @@ func (s *Server) SetS2SWatchdogTimeDelta(t time.Duration) {
 	s.s2sRegistrant.WatchdogTimeDelta = t
 }
 
-func (s *Server) SetS2SCandidateBlacklist(blacklist []protocol.ServerInfo) {
+func (s *Server) SetS2SCandidateBlacklist(blacklist []message.ServerInfo) {
 	<-s.s2sBlacklist
 	CandidateBlacklist := make([]gogistryProto.RegistrantInfo, len(blacklist))
 	for i, c := range blacklist {
-		CandidateBlacklist[i] = protocol.S2SInfo{ServerInfo: c}
+		CandidateBlacklist[i] = message.S2SInfo{ServerInfo: c}
 	}
 	s.s2sBlacklist <- CandidateBlacklist
 }

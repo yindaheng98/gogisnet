@@ -3,7 +3,7 @@ package protocol
 import (
 	"errors"
 	"fmt"
-	"github.com/yindaheng98/gogisnet/protocol"
+	"github.com/yindaheng98/gogisnet/message"
 	gogistryProto "github.com/yindaheng98/gogistry/protocol"
 )
 
@@ -28,7 +28,7 @@ func C2SRequestPack(request gogistryProto.Request) (i *C2SRequest, e error) {
 			i, e = nil, errors.New(fmt.Sprint(r))
 		}
 	}()
-	C2SInfo, err := C2SInfoPack(request.RegistrantInfo.(protocol.C2SInfo))
+	C2SInfo, err := C2SInfoPack(request.RegistrantInfo.(message.C2SInfo))
 	if err != nil {
 		return nil, err
 	}

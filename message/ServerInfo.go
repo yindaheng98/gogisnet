@@ -1,4 +1,4 @@
-package protocol
+package message
 
 //服务器信息
 type ServerInfo interface {

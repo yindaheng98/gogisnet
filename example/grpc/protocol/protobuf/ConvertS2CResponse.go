@@ -3,7 +3,7 @@ package protocol
 import (
 	"errors"
 	"fmt"
-	"github.com/yindaheng98/gogisnet/protocol"
+	"github.com/yindaheng98/gogisnet/message"
 	gogistryProto "github.com/yindaheng98/gogistry/protocol"
 	"time"
 )
@@ -29,7 +29,7 @@ func S2CResponsePack(response gogistryProto.Response) (i *S2CResponse, e error) 
 			i, e = nil, errors.New(fmt.Sprint(r))
 		}
 	}()
-	S2CInfo, err := S2CInfoPack(response.RegistryInfo.(protocol.S2CInfo))
+	S2CInfo, err := S2CInfoPack(response.RegistryInfo.(message.S2CInfo))
 	if err != nil {
 		return nil, err
 	}
