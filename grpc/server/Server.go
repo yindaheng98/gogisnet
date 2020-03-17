@@ -7,7 +7,6 @@ import (
 	"github.com/yindaheng98/gogisnet/grpc/protocol/registrant"
 	"github.com/yindaheng98/gogisnet/grpc/protocol/registry"
 	"github.com/yindaheng98/gogisnet/server"
-	"github.com/yindaheng98/gogistry/example/CandidateList"
 	"net"
 )
 
@@ -31,7 +30,7 @@ func New(ServerInfo *pb.ServerInfo, option Option) *Server {
 	S2SRegistrant := registrant.NewS2SRegistrant(GRPCOption.S2SRegistrantOption)
 	RequestProtocol := S2SRegistrant.NewRequestProtocol()
 	ServiceOption.S2SRegistrantOption.RequestProto = RequestProtocol
-	ServiceOption.S2SRegistrantOption.CandidateList = CandidateList.NewPingerCandidateList(3, S2SRegistrant.NewS2SPINGer(), 1e9, option.initServer, 1e9, 10)
+	ServiceOption.S2SRegistrantOption.CandidateList = S2SRegistrant.NewCandidateList(option.initServer, GRPCOption.CandidateListOption)
 
 	GraphQueryOption := GRPCOption.GraphQueryOption
 	ServerInfo.GraphQueryAddr = GraphQueryOption.GraphQueryServerOption.BoardCastAddr

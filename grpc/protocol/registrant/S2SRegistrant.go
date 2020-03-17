@@ -3,19 +3,37 @@ package registrant
 import (
 	"context"
 	pb "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
+	"github.com/yindaheng98/gogistry/example/CandidateList"
 	"github.com/yindaheng98/gogistry/protocol"
 	"google.golang.org/grpc"
 	"time"
 )
 
+//S2CRegistrant defines the gRPC client for S2SRegistrant
 type S2SRegistrant struct {
-	pool       *ConnectionPool
+	pool *ConnectionPool
+
+	//CallOption is the option when call Poll or PING in gRPC
 	CallOption []grpc.CallOption
 }
 
+//NewS2SRegistrant implements a S2SRegistrant and returns its pointer.
 func NewS2SRegistrant(option GRPCRegistrantOption) *S2SRegistrant {
 	return &S2SRegistrant{NewConnectionPool(option.DialOption, option.MaxDialHoldDuration),
 		option.CallOption}
+}
+
+//NewCandidateList implements a RequestProtocol using current S2SRegistrant and returns it.
+func (c *S2SRegistrant) NewRequestProtocol() S2SRequestProtocol {
+	return S2SRequestProtocol{clients: c, CallOption: c.CallOption}
+}
+
+//NewCandidateList implements a CandidateList.PingerCandidateList using current S2SRegistrant and returns its pointer.
+func (c *S2SRegistrant) NewCandidateList(initServer *pb.S2SInfo, option CandidateListOption) *CandidateList.PingerCandidateList {
+	InitServer, _ := initServer.Unpack()
+	return CandidateList.NewPingerCandidateList(
+		option.Size, s2sPINGer{clients: c}, option.MaxPingTimeout,
+		InitServer, option.InitTimeout, option.InitRetryN)
 }
 
 func (c *S2SRegistrant) getClient(addr string) (client pb.S2SRegistryClient, err error) {
@@ -25,10 +43,6 @@ func (c *S2SRegistrant) getClient(addr string) (client pb.S2SRegistryClient, err
 	}
 	client = pb.NewS2SRegistryClient(conn)
 	return
-}
-
-func (c *S2SRegistrant) NewRequestProtocol() S2SRequestProtocol {
-	return S2SRequestProtocol{clients: c, CallOption: c.CallOption}
 }
 
 type S2SRequestProtocol struct {
@@ -73,21 +87,17 @@ func (p S2SRequestProtocol) Request(ctx context.Context, requestChan <-chan prot
 	responseChan <- protocol.ReceivedResponse{Response: *response}
 }
 
-type S2SPINGer struct {
-	clients    *S2SRegistrant
-	CallOption []grpc.CallOption
+type s2sPINGer struct {
+	clients *S2SRegistrant
 }
 
-func (c *S2SRegistrant) NewS2SPINGer() *S2SPINGer {
-	return &S2SPINGer{clients: c, CallOption: c.CallOption}
-}
-func (p S2SPINGer) PING(ctx context.Context, info protocol.RegistryInfo) (ok bool) {
+func (p s2sPINGer) PING(ctx context.Context, info protocol.RegistryInfo) (ok bool) {
 	ok = false
 	client, err := p.clients.getClient(info.GetRequestSendOption().(*pb.RequestSendOption).Addr)
 	if err != nil {
 		return
 	}
-	_, err = client.PING(ctx, &pb.Timestamp{Timestamp: uint64(time.Now().UnixNano())}, p.CallOption...)
+	_, err = client.PING(ctx, &pb.Timestamp{Timestamp: uint64(time.Now().UnixNano())}, p.clients.CallOption...)
 	if err != nil {
 		return
 	}

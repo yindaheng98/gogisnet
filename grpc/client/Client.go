@@ -4,7 +4,6 @@ import (
 	"github.com/yindaheng98/gogisnet/client"
 	pb "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
 	"github.com/yindaheng98/gogisnet/grpc/protocol/registrant"
-	"github.com/yindaheng98/gogistry/example/CandidateList"
 )
 
 type Client struct {
@@ -15,6 +14,6 @@ func New(ClientInfo *pb.ClientInfo, option Option) *Client {
 	ServiceOption, GRPCOption := option.ServiceOption, option.GRPCOption
 	S2CRegistrant := registrant.NewS2CRegistrant(GRPCOption)
 	ServiceOption.RequestProto = S2CRegistrant.NewRequestProtocol()
-	ServiceOption.CandidateList = CandidateList.NewPingerCandidateList(3, S2CRegistrant.NewC2SPINGer(), 1e9, option.initServer, 1e9, 10)
+	ServiceOption.CandidateList = S2CRegistrant.NewCandidateList(option.initServer, option.CandidateListOption)
 	return &Client{client.New(ClientInfo, ServiceOption)}
 }
