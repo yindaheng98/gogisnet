@@ -18,7 +18,7 @@ type Option struct {
 
 type RegistryOption struct { //服务端面向服务端的收发设置
 	RequestSendOption protocol.RequestSendOption
-	MaxRegistrants    uint
+	MaxRegistrants    uint64
 	TimeoutController registry.TimeoutController
 	ResponseProto     protocol.ResponseProtocol
 }
