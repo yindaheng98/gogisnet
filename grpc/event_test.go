@@ -3,8 +3,8 @@ package grpc
 import (
 	"context"
 	"fmt"
-	"github.com/yindaheng98/gogisnet/example/grpc/client"
-	"github.com/yindaheng98/gogisnet/example/grpc/server"
+	"github.com/yindaheng98/gogisnet/grpc/client"
+	"github.com/yindaheng98/gogisnet/grpc/server"
 	"github.com/yindaheng98/gogisnet/message"
 	gogistryProto "github.com/yindaheng98/gogistry/protocol"
 )
@@ -14,7 +14,7 @@ func PutServerEvent(s *server.Server, logger func(string)) {
 	check := func() string {
 		go func() {
 			graph := s.GetGraph(context.Background())
-			fmt.Println(graph)
+			fmt.Println("Graph:", graph)
 		}()
 		ss := fmt.Sprintf("\n%s", s.GetGraphQueryInfo())
 		C2SConnections := s.GetC2SConnections()

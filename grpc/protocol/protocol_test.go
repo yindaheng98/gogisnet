@@ -3,7 +3,7 @@ package protocol
 import (
 	"context"
 	"fmt"
-	pb "github.com/yindaheng98/gogisnet/example/grpc/protocol/protobuf"
+	pb "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
 	"github.com/yindaheng98/gogistry/protocol"
 )
 

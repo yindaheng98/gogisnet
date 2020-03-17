@@ -2,7 +2,7 @@ package registry
 
 import (
 	"context"
-	pb "github.com/yindaheng98/gogisnet/example/grpc/protocol/protobuf"
+	pb "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
 	"google.golang.org/grpc"
 )
 

@@ -3,9 +3,9 @@ package grpc
 import (
 	"context"
 	"fmt"
-	"github.com/yindaheng98/gogisnet/example/grpc/client"
-	pb "github.com/yindaheng98/gogisnet/example/grpc/protocol/protobuf"
-	"github.com/yindaheng98/gogisnet/example/grpc/server"
+	"github.com/yindaheng98/gogisnet/grpc/client"
+	pb "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
+	"github.com/yindaheng98/gogisnet/grpc/server"
 	"sync"
 	"testing"
 	"time"

@@ -1,7 +1,7 @@
 package graph
 
 import (
-	"github.com/yindaheng98/gogisnet/example/grpc/protocol/registrant"
+	"github.com/yindaheng98/gogisnet/grpc/protocol/registrant"
 	"google.golang.org/grpc"
 )
 

@@ -3,9 +3,9 @@ package protocol
 import (
 	"context"
 	"fmt"
-	pb "github.com/yindaheng98/gogisnet/example/grpc/protocol/protobuf"
-	"github.com/yindaheng98/gogisnet/example/grpc/protocol/registrant"
-	"github.com/yindaheng98/gogisnet/example/grpc/protocol/registry"
+	pb "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
+	"github.com/yindaheng98/gogisnet/grpc/protocol/registrant"
+	"github.com/yindaheng98/gogisnet/grpc/protocol/registry"
 	"github.com/yindaheng98/gogistry/protocol"
 	"google.golang.org/grpc"
 	"net"

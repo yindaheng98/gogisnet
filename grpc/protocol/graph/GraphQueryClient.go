@@ -2,8 +2,8 @@ package graph
 
 import (
 	"context"
-	pb "github.com/yindaheng98/gogisnet/example/grpc/protocol/protobuf"
-	"github.com/yindaheng98/gogisnet/example/grpc/protocol/registrant"
+	pb "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
+	"github.com/yindaheng98/gogisnet/grpc/protocol/registrant"
 	"github.com/yindaheng98/gogisnet/message"
 	"google.golang.org/grpc"
 )

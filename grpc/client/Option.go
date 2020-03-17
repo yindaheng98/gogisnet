@@ -2,8 +2,8 @@ package client
 
 import (
 	"github.com/yindaheng98/gogisnet/client"
-	pb "github.com/yindaheng98/gogisnet/example/grpc/protocol/protobuf"
-	"github.com/yindaheng98/gogisnet/example/grpc/protocol/registrant"
+	pb "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
+	"github.com/yindaheng98/gogisnet/grpc/protocol/registrant"
 	"github.com/yindaheng98/gogisnet/message"
 )
 

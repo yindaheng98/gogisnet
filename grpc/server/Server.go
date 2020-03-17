@@ -2,10 +2,10 @@ package server
 
 import (
 	"context"
-	"github.com/yindaheng98/gogisnet/example/grpc/protocol/graph"
-	pb "github.com/yindaheng98/gogisnet/example/grpc/protocol/protobuf"
-	"github.com/yindaheng98/gogisnet/example/grpc/protocol/registrant"
-	"github.com/yindaheng98/gogisnet/example/grpc/protocol/registry"
+	"github.com/yindaheng98/gogisnet/grpc/protocol/graph"
+	pb "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
+	"github.com/yindaheng98/gogisnet/grpc/protocol/registrant"
+	"github.com/yindaheng98/gogisnet/grpc/protocol/registry"
 	"github.com/yindaheng98/gogisnet/server"
 	"github.com/yindaheng98/gogistry/example/CandidateList"
 	"net"
