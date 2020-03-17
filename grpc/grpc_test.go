@@ -3,9 +3,7 @@ package grpc
 import (
 	"context"
 	"fmt"
-	"github.com/yindaheng98/gogisnet/grpc/client"
 	pb "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
-	"github.com/yindaheng98/gogisnet/grpc/server"
 	"sync"
 	"testing"
 	"time"
@@ -24,11 +22,11 @@ func ServerTest(t *testing.T, ctx context.Context, S2SPort, S2CPort, GQPort uint
 		ServiceType: "Hello World Service",
 	}
 	S2SBoardCastAddr, S2CBoardCastAddr, GQBoardCastAddr := GetAddr(S2SPort), GetAddr(S2CPort), GetAddr(GQPort)
-	option, err := server.DefaultOption(S2SBoardCastAddr, S2CBoardCastAddr, GQBoardCastAddr, initS2SServer)
+	option, err := DefaultServerOption(S2SBoardCastAddr, S2CBoardCastAddr, GQBoardCastAddr, initS2SServer)
 	if err != nil {
 		return
 	}
-	s := server.New(ServerInfo, option)
+	s := NewServer(ServerInfo, option)
 	if S2SServer, err := pb.S2SInfoPack(s.GetS2SInfo()); err == nil {
 		initS2SServer = S2SServer
 	}
@@ -36,7 +34,7 @@ func ServerTest(t *testing.T, ctx context.Context, S2SPort, S2CPort, GQPort uint
 		initS2CServer = S2CServer
 	}
 	PutServerEvent(s, func(s string) { t.Log(ServerID + s) })
-	listenerOption := server.DefaultListenerOption()
+	listenerOption := DefaultServerListenerOption()
 	listenerOption.S2SListenAddr = S2SBoardCastAddr
 	listenerOption.S2CListenAddr = S2CBoardCastAddr
 	listenerOption.GraphQueryListenAddr = GQBoardCastAddr
@@ -62,11 +60,11 @@ func ClientTest(ctx context.Context, id uint16) (err error) {
 		ClientID:    ClientID,
 		ServiceType: "Hello World Service",
 	}
-	option, err := client.DefaultOption(initS2CServer)
+	option, err := DefaultClientOption(initS2CServer)
 	if err != nil {
 		return
 	}
-	c := client.New(ClientInfo, option)
+	c := NewClient(ClientInfo, option)
 	PutClientEvent(c, func(s string) { fmt.Println(ClientID + s) })
 	c.SetWatchdogTimeDelta(3e9)
 	okChan := make(chan bool, 1)
