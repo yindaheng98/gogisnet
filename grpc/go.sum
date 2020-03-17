@@ -30,6 +30,7 @@ github.com/go-check/check v0.0.0-20180628173108-788fd7840127/go.mod h1:9ES+weclK
 github.com/gobwas/httphead v0.0.0-20180130184737-2c6c146eadee/go.mod h1:L0fX3K22YWvt/FAX9NnzrNzcI4wNYi9Yku4O0LKYflo=
 github.com/gobwas/pool v0.2.0/go.mod h1:q8bcK0KcYlCgd9e7WYLm9LpyS+YeLd8JVDW6WezmKEw=
 github.com/gobwas/ws v1.0.2/go.mod h1:szmBTxLgaFppYjEmNtny/v3w89xOydFnnZMcgRRu/EM=
+github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b h1:VKtxabqXZkF25pY9ekfRL6a582T4P37/31XEstQ5p58=
 github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b/go.mod h1:SBH7ygxi8pfUlaOkMMuAQtPIUF8ecWP5IEl/CR7VP2Q=
 github.com/golang/mock v1.1.1/go.mod h1:oTYuIxOrZwtPieC+H1uAHpcLFnEyAGVDL/k47Jfbm0A=
 github.com/golang/protobuf v1.2.0/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
@@ -37,6 +38,7 @@ github.com/golang/protobuf v1.3.1/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5y
 github.com/golang/protobuf v1.3.2/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
 github.com/golang/protobuf v1.3.4/go.mod h1:vzj43D7+SQXF/4pzW/hwtAqwc6iTitCiVSaWz5lYuqw=
 github.com/gomodule/redigo v1.7.1-0.20190724094224-574c33c3df38/go.mod h1:B4C85qUVwatsJoIUNIfCRsp7qO0iAmpGFZ4EELWSbC4=
+github.com/google/go-cmp v0.2.0 h1:+dTQ8DZQJz0Mb/HjFlkptS1FeQ4cWSnN941F8aEG4SQ=
 github.com/google/go-cmp v0.2.0/go.mod h1:oXzfMopK8JAjlY9xF4vHSVASa0yLyX7SntLO5aqRK0M=
 github.com/google/gofuzz v1.0.0/go.mod h1:dBl0BpW6vV/+mYPU4Po3pmUjxk6FQPldtuIdl/M65Eg=
 github.com/gorilla/websocket v1.4.1/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
@@ -95,10 +97,8 @@ github.com/valyala/bytebufferpool v1.0.0/go.mod h1:6bBcMArwyJ5K/AmCkWv1jt77kVWyC
 github.com/xordataexchange/crypt v0.0.3-0.20170626215501-b2862e3d0a77/go.mod h1:aYKd//L2LvnjZzWKhF00oedf4jCCReLcmhLdhm1A27Q=
 github.com/yindaheng98/go-utility v0.0.0-20200309115846-83b304e8e086 h1:xx+tMQFfiw7hx7VS48MrLhIgGWamppUWk+DDL4O7l9A=
 github.com/yindaheng98/go-utility v0.0.0-20200309115846-83b304e8e086/go.mod h1:jAdOhT7aQmcfOW901gOCnOLvS4qKrO5Dz/McsDrsyl8=
-github.com/yindaheng98/gogisnet v0.0.0-20200315152155-6727e419d182 h1:SeMohi3CNeErcmBAC4iOU9luyLQGkuamjp8UVMGqhx4=
-github.com/yindaheng98/gogisnet v0.0.0-20200315152155-6727e419d182/go.mod h1:va/HUQuzlhL/4HV27prKILA7tOI75wJgezxlU6+8Z9s=
-github.com/yindaheng98/gogisnet v0.0.0-20200317093735-716fe987adef h1:CkP84DKB0MviNtE7Yls5xweyNRKdxyS+Vl7xORBJnnM=
-github.com/yindaheng98/gogisnet v0.0.0-20200317093735-716fe987adef/go.mod h1:va/HUQuzlhL/4HV27prKILA7tOI75wJgezxlU6+8Z9s=
+github.com/yindaheng98/gogisnet v0.0.0-20200317095548-16b840398661 h1:v/AMbF7GoZv/xPFyPn38URcYhxdDL3o/qkdxUyaiXL4=
+github.com/yindaheng98/gogisnet v0.0.0-20200317095548-16b840398661/go.mod h1:va/HUQuzlhL/4HV27prKILA7tOI75wJgezxlU6+8Z9s=
 github.com/yindaheng98/gogistry v0.0.0-20200314154143-3f318b478377 h1:q6Nvsny5sXTF9ph/7vbhujkqSWPG1jrux8iZyXuvq+c=
 github.com/yindaheng98/gogistry v0.0.0-20200314154143-3f318b478377/go.mod h1:BSicXPEG7rEiY3QVcNfc8iXTiDsapsNlhjABLw3eCRQ=
 golang.org/x/crypto v0.0.0-20181203042331-505ab145d0a9/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=
