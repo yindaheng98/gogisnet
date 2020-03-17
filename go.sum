@@ -98,6 +98,9 @@ github.com/yindaheng98/go-utility v0.0.0-20200224143759-554ac9a27290/go.mod h1:j
 github.com/yindaheng98/go-utility v0.0.0-20200226124055-d95d6364dc44/go.mod h1:jAdOhT7aQmcfOW901gOCnOLvS4qKrO5Dz/McsDrsyl8=
 github.com/yindaheng98/go-utility v0.0.0-20200309115846-83b304e8e086 h1:xx+tMQFfiw7hx7VS48MrLhIgGWamppUWk+DDL4O7l9A=
 github.com/yindaheng98/go-utility v0.0.0-20200309115846-83b304e8e086/go.mod h1:jAdOhT7aQmcfOW901gOCnOLvS4qKrO5Dz/McsDrsyl8=
+github.com/yindaheng98/gogisnet v0.0.0-20200317093735-716fe987adef/go.mod h1:va/HUQuzlhL/4HV27prKILA7tOI75wJgezxlU6+8Z9s=
+github.com/yindaheng98/gogisnet/grpc v0.0.0-20200317095548-16b840398661 h1:sCLVkXH9+tQ4DKttfTlOOjCfN5MQ5x+mDpAQkmd0zHI=
+github.com/yindaheng98/gogisnet/grpc v0.0.0-20200317095548-16b840398661/go.mod h1:TTGjzynHviM3yX0ysxR+AkYMTlqO5YVjSUzRvzBqW1s=
 github.com/yindaheng98/gogistry v0.0.0-20200306144207-e82e419f4ace/go.mod h1:/xIc4uyM2EG6KNmvXWStFzXINY87Kx4dA44zdAYVQpM=
 github.com/yindaheng98/gogistry v0.0.0-20200314082244-898758e7cedc h1:YQzpoGsHy5Ufyt16TEc0gQYlLq4etBB7P0xUCvdjoog=
 github.com/yindaheng98/gogistry v0.0.0-20200314082244-898758e7cedc/go.mod h1:BSicXPEG7rEiY3QVcNfc8iXTiDsapsNlhjABLw3eCRQ=

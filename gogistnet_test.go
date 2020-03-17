@@ -3,7 +3,7 @@ package gogisnet
 import (
 	"context"
 	"fmt"
-	protobuf "github.com/yindaheng98/gogisnet/example/grpc/protocol/protobuf"
+	protobuf "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
 	"github.com/yindaheng98/gogisnet/message"
 	exampleProto "github.com/yindaheng98/gogistry/example/protocol"
 	"sync"
