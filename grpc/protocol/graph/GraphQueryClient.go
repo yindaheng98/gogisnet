@@ -45,7 +45,7 @@ type GraphQueryProtocol struct {
 
 //Implementation of message.GraphQueryProtocol.Query
 func (p GraphQueryProtocol) Query(ctx context.Context, info message.ServerInfo) (ginfo *message.GraphQueryInfo, err error) {
-	client, err := p.clients.getClient(info.(*pb.ServerInfo).GraphQueryAddr)
+	client, err := p.clients.getClient(info.(*pb.ServerInfo).GraphQueryBroadCastAddr)
 	if err != nil {
 		return
 	}

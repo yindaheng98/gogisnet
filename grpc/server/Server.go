@@ -33,7 +33,7 @@ func New(ServerInfo *pb.ServerInfo, option Option) *Server {
 	ServiceOption.S2SRegistrantOption.CandidateList = S2SRegistrant.NewCandidateList(option.initServer, GRPCOption.CandidateListOption)
 
 	GraphQueryOption := GRPCOption.GraphQueryOption
-	ServerInfo.GraphQueryAddr = GraphQueryOption.GraphQueryServerOption.BoardCastAddr
+	ServerInfo.GraphQueryBroadCastAddr = GraphQueryOption.GraphQueryServerOption.BoardCastAddr
 	s := server.New(ServerInfo, ServiceOption)
 	s.GraphQueryProtocol = graph.NewGraphQueryClient(GraphQueryOption.GraphQueryClientOption).NewGraphQueryProtocol()
 	return &Server{
