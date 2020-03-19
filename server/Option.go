@@ -38,18 +38,18 @@ func DefaultOption(initS2SInfo message.S2SInfo,
 	return Option{
 		S2SRegistryOption: RegistryOption{
 			MaxRegistrants:    4,
-			TimeoutController: TimeoutController.NewLogTimeoutController(1e9, 10e9, 2),
+			TimeoutController: TimeoutController.DefaultLogTimeoutController(),
 			ResponseProto:     S2SResponseProto,
 		},
 		S2SRegistrantOption: RegistrantOption{
 			RegistryN:        4,
-			CandidateList:    CandidateList.NewSimpleCandidateList(4, initS2SInfo, 1e9, 3),
-			RetryNController: RetryNController.SimpleRetryNController{},
+			CandidateList:    CandidateList.NewSimpleCandidateList(8, initS2SInfo),
+			RetryNController: RetryNController.DefaultLinearRetryNController(),
 			RequestProto:     S2SRequestProto,
 		},
 		S2CRegistryOption: RegistryOption{
-			MaxRegistrants:    8,
-			TimeoutController: TimeoutController.NewLogTimeoutController(1e9, 10e9, 2),
+			MaxRegistrants:    16,
+			TimeoutController: TimeoutController.DefaultLogTimeoutController(),
 			ResponseProto:     S2CResponseProto,
 		},
 	}
