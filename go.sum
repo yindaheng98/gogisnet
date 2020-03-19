@@ -112,6 +112,8 @@ github.com/yindaheng98/go-utility v0.0.0-20200313133210-0b5b19c7235c h1:oQkSoxcS
 github.com/yindaheng98/go-utility v0.0.0-20200313133210-0b5b19c7235c/go.mod h1:jAdOhT7aQmcfOW901gOCnOLvS4qKrO5Dz/McsDrsyl8=
 github.com/yindaheng98/go-utility v0.0.0-20200319101516-b29dcaf7dc16 h1:dj67eCN1CTZa76kLQJiCW9rLpNVMlIk7OM5x5aKCqc0=
 github.com/yindaheng98/go-utility v0.0.0-20200319101516-b29dcaf7dc16/go.mod h1:jAdOhT7aQmcfOW901gOCnOLvS4qKrO5Dz/McsDrsyl8=
+github.com/yindaheng98/go-utility v0.0.0-20200319143556-a35c01a7ba8d h1:ZvuYfmJOWYLgToToujEh4av2TYGIy09DqK2UoGo/VII=
+github.com/yindaheng98/go-utility v0.0.0-20200319143556-a35c01a7ba8d/go.mod h1:jAdOhT7aQmcfOW901gOCnOLvS4qKrO5Dz/McsDrsyl8=
 github.com/yindaheng98/gogisnet v0.0.0-20200317093735-716fe987adef/go.mod h1:va/HUQuzlhL/4HV27prKILA7tOI75wJgezxlU6+8Z9s=
 github.com/yindaheng98/gogisnet v0.0.0-20200317095548-16b840398661/go.mod h1:va/HUQuzlhL/4HV27prKILA7tOI75wJgezxlU6+8Z9s=
 github.com/yindaheng98/gogisnet/grpc v0.0.0-20200317095548-16b840398661 h1:sCLVkXH9+tQ4DKttfTlOOjCfN5MQ5x+mDpAQkmd0zHI=
@@ -135,6 +137,8 @@ github.com/yindaheng98/gogistry v0.0.0-20200319101411-b4dabc1f6332 h1:YJaVKIuPKo
 github.com/yindaheng98/gogistry v0.0.0-20200319101411-b4dabc1f6332/go.mod h1:OknBNal0e0jEpHcCgCnR6rlIJT03Ub3bgJkdYakE2Sw=
 github.com/yindaheng98/gogistry v0.0.0-20200319112105-abca5ab90108 h1:CYPDkSXVFAQqKnb+4RTGUzaPbL7dxDraUyTbohPbB+4=
 github.com/yindaheng98/gogistry v0.0.0-20200319112105-abca5ab90108/go.mod h1:eOk+fUgDkCGguoR4gCzY73LGsBlI4+cBn3sofpGOIqQ=
+github.com/yindaheng98/gogistry v0.0.0-20200319145125-3977e030114c h1:2I6vvWRGJ41/O/RtGfhr6zSyFi4TMZRJcqU0xaInnCQ=
+github.com/yindaheng98/gogistry v0.0.0-20200319145125-3977e030114c/go.mod h1:EBfIkBYo8ccDmv0QPEZhZe98CBNTZxyhqilpG25Jbp0=
 golang.org/x/crypto v0.0.0-20181203042331-505ab145d0a9/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20191227163750-53104e6ec876/go.mod h1:LzIPMQfyMNhhGPhUkYOs5KpL4U8rLKemX1yGLhDgUto=
