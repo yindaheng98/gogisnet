@@ -84,7 +84,7 @@ func ClientTest(ctx context.Context, id uint16) (err error) {
 }
 
 const SERVERN = 5
-const CLIENTN = 30
+const CLIENTN = 60
 
 func Test(t *testing.T) {
 	ctx := context.Background()
@@ -117,7 +117,7 @@ func Test(t *testing.T) {
 		}(i)
 	}
 
-	time.Sleep(100e9)
+	time.Sleep(40e9)
 	cancelServer()
 	time.Sleep(1e9)
 	cancelClient()
