@@ -22,7 +22,10 @@ func ServerTest(t *testing.T, ctx context.Context, S2SPort, S2CPort, GQPort uint
 		ServiceType: "Hello World Service",
 	}
 	S2SBoardCastAddr, S2CBoardCastAddr, GQBoardCastAddr := GetAddr(S2SPort), GetAddr(S2CPort), GetAddr(GQPort)
-	option := DefaultServerOption(S2SBoardCastAddr, S2CBoardCastAddr, GQBoardCastAddr)
+	option := DefaultServerOption()
+	option.ServiceOption.S2SRegistryOption.BoardCastAddr = S2SBoardCastAddr
+	option.ServiceOption.S2CRegistryOption.BoardCastAddr = S2CBoardCastAddr
+	option.InitServer.S2CInfo.ServerInfo.GraphQueryBroadCastAddr = GQBoardCastAddr
 	if initS2SServer != nil {
 		option.InitServer = initS2SServer
 	}
@@ -60,10 +63,8 @@ func ClientTest(ctx context.Context, id uint16) (err error) {
 		ClientID:    ClientID,
 		ServiceType: "Hello World Service",
 	}
-	option, err := DefaultClientOption(initS2CServer)
-	if err != nil {
-		return
-	}
+	option := DefaultClientOption()
+	option.InitServer = initS2CServer
 	c := NewClient(ClientInfo, option)
 	PutClientEvent(c, func(s string) { fmt.Println(ClientID + s) })
 	c.SetWatchdogTimeDelta(3e9)
@@ -82,8 +83,8 @@ func ClientTest(ctx context.Context, id uint16) (err error) {
 	return
 }
 
-const SERVERN = 10
-const CLIENTN = 60
+const SERVERN = 5
+const CLIENTN = 30
 
 func Test(t *testing.T) {
 	ctx := context.Background()
@@ -116,7 +117,7 @@ func Test(t *testing.T) {
 		}(i)
 	}
 
-	time.Sleep(10e9)
+	time.Sleep(100e9)
 	cancelServer()
 	time.Sleep(1e9)
 	cancelClient()

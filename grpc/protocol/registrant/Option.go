@@ -18,22 +18,6 @@ type GRPCRegistrantOption struct {
 	MaxDialHoldDuration time.Duration //保持连接的最大时长
 }
 
-//Option for CandidateList in S2CRegistrant and S2SRegistrant
-type CandidateListOption struct {
-
-	//Default timeout
-	InitTimeout time.Duration
-
-	//Default retryN
-	InitRetryN uint64
-
-	//How many elements can the CandidateList store at most
-	Size uint64
-
-	//How many ms can a PING hold at most before received a response
-	MaxPingTimeout time.Duration
-}
-
 //DefaultOption returns a default GRPCRegistrantOption
 func DefaultOption() GRPCRegistrantOption {
 	return GRPCRegistrantOption{
@@ -43,11 +27,26 @@ func DefaultOption() GRPCRegistrantOption {
 	}
 }
 
-//DefaultCandidateListOption returns a default CandidateListOption
-func DefaultCandidateListOption() CandidateListOption {
-	return CandidateListOption{
-		InitTimeout:    1e9,
-		InitRetryN:     10,
+//PingerCandidateListOption is the option for PingerCandidateList used in S2CRegistrant and S2SRegistrant
+type PingerCandidateListOption struct {
+
+	//Default timeout
+	DefaultTimeout time.Duration
+
+	//Default retryN
+	DefaultRetryN uint64
+
+	//How many elements can the CandidateList store at most
+	Size uint64
+
+	//How many ms can a PING hold at most before received a response
+	MaxPingTimeout time.Duration
+}
+
+func DefaultPingerCandidateListOption() PingerCandidateListOption {
+	return PingerCandidateListOption{
+		DefaultTimeout: 1e9,
+		DefaultRetryN:  10,
 		Size:           8,
 		MaxPingTimeout: 1e9,
 	}

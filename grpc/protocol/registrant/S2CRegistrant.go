@@ -29,11 +29,12 @@ func (c *S2CRegistrant) NewRequestProtocol() C2SRequestProtocol {
 }
 
 //NewCandidateList implements a CandidateList.PingerCandidateList using current S2CRegistrant and returns its pointer.
-func (c *S2CRegistrant) NewCandidateList(initServer *pb.S2CInfo, option CandidateListOption) *CandidateList.PingerCandidateList {
+func (c *S2CRegistrant) NewPingerCandidateList(initServer *pb.S2CInfo, option PingerCandidateListOption) *CandidateList.PingerCandidateList {
 	InitServer, _ := initServer.Unpack()
-	return CandidateList.NewPingerCandidateList(
-		option.Size, c2sPINGer{clients: c}, option.MaxPingTimeout,
-		InitServer, option.InitTimeout, option.InitRetryN)
+	l := CandidateList.NewPingerCandidateList(option.Size, InitServer, c2sPINGer{clients: c}, option.MaxPingTimeout)
+	l.DefaultRetryN = option.DefaultRetryN
+	l.DefaultTimeout = option.DefaultTimeout
+	return l
 }
 
 func (c *S2CRegistrant) getClient(addr string) (client pb.S2CRegistryClient, err error) {

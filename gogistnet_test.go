@@ -114,7 +114,7 @@ func ClientTest(t *testing.T, ctx context.Context, id int, Type string, wg *sync
 	}()
 }
 
-const SERVERN = 10
+const SERVERN = 5
 const CLIENTN = 60
 
 func TestServerClient(t *testing.T) {
@@ -140,4 +140,5 @@ func TestServerClient(t *testing.T) {
 	cancelClient()
 	serverWG.Wait()
 	clientWG.Wait()
+	time.Sleep(1e9)
 }

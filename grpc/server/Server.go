@@ -10,6 +10,7 @@ import (
 	"net"
 )
 
+//Server is gRPC-implemented gogisnet server
 type Server struct {
 	*server.Server
 	grpcS2SRegistry  *registry.S2SRegistryServer
@@ -17,33 +18,50 @@ type Server struct {
 	graphQueryServer *graph.GraphQueryServer
 }
 
+//New returns a instance of Server
 func New(ServerInfo *pb.ServerInfo, option Option) *Server {
-	ServiceOption, GRPCOption := option.ServiceOption, option.GRPCOption
+	GRPCOption := option.GRPCOption
+	grpcS2SRegistry := registry.NewS2SRegistryServer(GRPCOption.S2SRegistryOption)   //注册中心gRPC初始化
+	grpcS2CRegistry := registry.NewS2CRegistryServer(GRPCOption.S2CRegistryOption)   //注册中心gRPC初始化
+	grpcS2SRegistrant := registrant.NewS2SRegistrant(GRPCOption.S2SRegistrantOption) //注册器gRPC初始化
 
-	//注册中心初始化
-	S2SRegistryServer := registry.NewS2SRegistryServer(GRPCOption.S2SRegistryOption)
-	S2CRegistryServer := registry.NewS2CRegistryServer(GRPCOption.S2CRegistryOption)
-	ServiceOption.S2SRegistryOption.ResponseProto = S2SRegistryServer.NewResponseProtocol()
-	ServiceOption.S2CRegistryOption.ResponseProto = S2CRegistryServer.NewResponseProtocol()
+	//设置协议
+	InitServer, err := option.InitServer.Unpack()
+	if err != nil {
+		panic(err)
+	}
+	ServiceOption := server.DefaultOption(*InitServer,
+		grpcS2SRegistry.NewResponseProtocol(),
+		grpcS2SRegistrant.NewRequestProtocol(),
+		grpcS2CRegistry.NewResponseProtocol())
 
-	//注册器初始化
-	S2SRegistrant := registrant.NewS2SRegistrant(GRPCOption.S2SRegistrantOption)
-	RequestProtocol := S2SRegistrant.NewRequestProtocol()
-	ServiceOption.S2SRegistrantOption.RequestProto = RequestProtocol
-	ServiceOption.S2SRegistrantOption.CandidateList = S2SRegistrant.NewCandidateList(option.InitServer, GRPCOption.CandidateListOption)
+	//生成注册中心设置
+	option.ServiceOption.S2CRegistryOption.PutOption(&ServiceOption.S2CRegistryOption)
+	option.ServiceOption.S2SRegistryOption.PutOption(&ServiceOption.S2SRegistryOption)
 
-	GraphQueryOption := GRPCOption.GraphQueryOption
-	ServerInfo.GraphQueryBroadCastAddr = GraphQueryOption.GraphQueryServerOption.BoardCastAddr
+	//生成注册器设置
+	S2SRegistrantOption := option.ServiceOption.S2SRegistrantOption
+	ServiceOption.S2SRegistrantOption.RegistryN = S2SRegistrantOption.RegistryN
+	ServiceOption.S2SRegistrantOption.RetryNController = S2SRegistrantOption.RetryNController
+	ServiceOption.S2SRegistrantOption.ResponseSendOption = &pb.ResponseSendOption{}
+	ServiceOption.S2SRegistrantOption.CandidateList =
+		grpcS2SRegistrant.NewPingerCandidateList(option.InitServer, S2SRegistrantOption.CandidateListOption)
+
+	//初始化服务器
 	s := server.New(ServerInfo, ServiceOption)
+
+	//初始化GraphQuery
+	GraphQueryOption := GRPCOption.GraphQueryOption
 	s.GraphQueryProtocol = graph.NewGraphQueryClient(GraphQueryOption.GraphQueryClientOption).NewGraphQueryProtocol()
 	return &Server{
 		Server:           s,
-		grpcS2SRegistry:  S2SRegistryServer,
-		grpcS2CRegistry:  S2CRegistryServer,
+		grpcS2SRegistry:  grpcS2SRegistry,
+		grpcS2CRegistry:  grpcS2CRegistry,
 		graphQueryServer: graph.NewGraphQueryServer(s, GraphQueryOption.GraphQueryServerOption),
 	}
 }
 
+//Run the server until <-ctx.Done() is done
 func (s *Server) Run(ctx context.Context, option ListenerOption) (err error) {
 	go s.Server.Run(ctx)
 

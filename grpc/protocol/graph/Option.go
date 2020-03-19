@@ -19,15 +19,12 @@ type GraphQueryOption struct {
 type GraphQueryClientOption registrant.GRPCRegistrantOption
 
 //GraphQueryServerOption contains the options for GraphQueryServer
-type GraphQueryServerOption struct {
-	ServerOption  []grpc.ServerOption
-	BoardCastAddr string
-}
+type GraphQueryServerOption []grpc.ServerOption
 
 //DefaultOption returns a default GraphQueryOption
-func DefaultOption(GraphQueryBoardCastAddr string) GraphQueryOption {
+func DefaultOption() GraphQueryOption {
 	return GraphQueryOption{
 		GraphQueryClientOption: GraphQueryClientOption(registrant.DefaultOption()),
-		GraphQueryServerOption: GraphQueryServerOption{BoardCastAddr: GraphQueryBoardCastAddr},
+		GraphQueryServerOption: []grpc.ServerOption{},
 	}
 }

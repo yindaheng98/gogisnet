@@ -16,7 +16,7 @@ type GraphQueryServer struct {
 
 //NewGraphQueryServer returns the pointer to a GraphQueryServer.
 func NewGraphQueryServer(s *server.Server, Option GraphQueryServerOption) *GraphQueryServer {
-	Server := grpc.NewServer(Option.ServerOption...)
+	Server := grpc.NewServer(Option...)
 	Service := &graphQueryService{s}
 	pb.RegisterGraphQueryServer(Server, Service)
 	return &GraphQueryServer{Server, Service}

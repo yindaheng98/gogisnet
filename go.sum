@@ -110,6 +110,8 @@ github.com/yindaheng98/go-utility v0.0.0-20200309115846-83b304e8e086 h1:xx+tMQFf
 github.com/yindaheng98/go-utility v0.0.0-20200309115846-83b304e8e086/go.mod h1:jAdOhT7aQmcfOW901gOCnOLvS4qKrO5Dz/McsDrsyl8=
 github.com/yindaheng98/go-utility v0.0.0-20200313133210-0b5b19c7235c h1:oQkSoxcS1TpnrszYE1Z2SiaBqw9NyULnmvpvfqh2kgI=
 github.com/yindaheng98/go-utility v0.0.0-20200313133210-0b5b19c7235c/go.mod h1:jAdOhT7aQmcfOW901gOCnOLvS4qKrO5Dz/McsDrsyl8=
+github.com/yindaheng98/go-utility v0.0.0-20200319101516-b29dcaf7dc16 h1:dj67eCN1CTZa76kLQJiCW9rLpNVMlIk7OM5x5aKCqc0=
+github.com/yindaheng98/go-utility v0.0.0-20200319101516-b29dcaf7dc16/go.mod h1:jAdOhT7aQmcfOW901gOCnOLvS4qKrO5Dz/McsDrsyl8=
 github.com/yindaheng98/gogisnet v0.0.0-20200317093735-716fe987adef/go.mod h1:va/HUQuzlhL/4HV27prKILA7tOI75wJgezxlU6+8Z9s=
 github.com/yindaheng98/gogisnet v0.0.0-20200317095548-16b840398661/go.mod h1:va/HUQuzlhL/4HV27prKILA7tOI75wJgezxlU6+8Z9s=
 github.com/yindaheng98/gogisnet/grpc v0.0.0-20200317095548-16b840398661 h1:sCLVkXH9+tQ4DKttfTlOOjCfN5MQ5x+mDpAQkmd0zHI=
@@ -129,6 +131,10 @@ github.com/yindaheng98/gogistry v0.0.0-20200314154143-3f318b478377 h1:q6Nvsny5sX
 github.com/yindaheng98/gogistry v0.0.0-20200314154143-3f318b478377/go.mod h1:BSicXPEG7rEiY3QVcNfc8iXTiDsapsNlhjABLw3eCRQ=
 github.com/yindaheng98/gogistry v0.0.0-20200317114041-512e814b6701 h1:g13J+BgBRJpUSqn6Nj4Ozo+JUsDbHvcHfcbgKauS4M8=
 github.com/yindaheng98/gogistry v0.0.0-20200317114041-512e814b6701/go.mod h1:BSicXPEG7rEiY3QVcNfc8iXTiDsapsNlhjABLw3eCRQ=
+github.com/yindaheng98/gogistry v0.0.0-20200319101411-b4dabc1f6332 h1:YJaVKIuPKo9FB9QcbDUpGrh8rlIuw9XOPQmmjcbfUc0=
+github.com/yindaheng98/gogistry v0.0.0-20200319101411-b4dabc1f6332/go.mod h1:OknBNal0e0jEpHcCgCnR6rlIJT03Ub3bgJkdYakE2Sw=
+github.com/yindaheng98/gogistry v0.0.0-20200319112105-abca5ab90108 h1:CYPDkSXVFAQqKnb+4RTGUzaPbL7dxDraUyTbohPbB+4=
+github.com/yindaheng98/gogistry v0.0.0-20200319112105-abca5ab90108/go.mod h1:eOk+fUgDkCGguoR4gCzY73LGsBlI4+cBn3sofpGOIqQ=
 golang.org/x/crypto v0.0.0-20181203042331-505ab145d0a9/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20191227163750-53104e6ec876/go.mod h1:LzIPMQfyMNhhGPhUkYOs5KpL4U8rLKemX1yGLhDgUto=
@@ -187,6 +193,10 @@ google.golang.org/genproto v0.0.0-20200316142031-303a05041dad h1:X7UJIdVkigJ9Se+
 google.golang.org/genproto v0.0.0-20200316142031-303a05041dad/go.mod h1:55QSHmfGQM9UVYDPBsyGGes0y52j32PQ3BqQfXhyH3c=
 google.golang.org/genproto v0.0.0-20200317114155-1f3552e48f24 h1:IGPykv426z7LZSVPlaPufOyphngM4at5uZ7x5alaFvE=
 google.golang.org/genproto v0.0.0-20200317114155-1f3552e48f24/go.mod h1:55QSHmfGQM9UVYDPBsyGGes0y52j32PQ3BqQfXhyH3c=
+google.golang.org/genproto v0.0.0-20200318110522-7735f76e9fa5 h1:Bs8aCQBqwnuSvG/tB3ip/W8JLeuQt1+1ppSHYi4n9RM=
+google.golang.org/genproto v0.0.0-20200318110522-7735f76e9fa5/go.mod h1:55QSHmfGQM9UVYDPBsyGGes0y52j32PQ3BqQfXhyH3c=
+google.golang.org/genproto v0.0.0-20200319113533-08878b785e9c h1:5aI3/f/3eCZps9xwoEnmgfDJDhMbnJpfqeGpjVNgVEI=
+google.golang.org/genproto v0.0.0-20200319113533-08878b785e9c/go.mod h1:55QSHmfGQM9UVYDPBsyGGes0y52j32PQ3BqQfXhyH3c=
 google.golang.org/grpc v1.19.0/go.mod h1:mqu4LbDTu4XGKhr4mRzUsmM4RtVoemTSY81AxZiDr8c=
 google.golang.org/grpc v1.23.0/go.mod h1:Y5yQAOtifL1yxbo5wqy6BxZv8vAUGQwXBOALyacEbxg=
 google.golang.org/grpc v1.25.1/go.mod h1:c3i+UQWmh7LiEpx4sFZnkU36qjEYZ0imhYfXVyQciAY=

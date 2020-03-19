@@ -7,8 +7,8 @@ import (
 )
 
 //DefaultServerOption returns the default option for server initialization.
-func DefaultServerOption(S2SBoardCastAddr, S2CBoardCastAddr, GraphQueryBoardCastAddr string) server.Option {
-	return server.DefaultOption(S2SBoardCastAddr, S2CBoardCastAddr, GraphQueryBoardCastAddr)
+func DefaultServerOption() server.Option {
+	return server.DefaultOption()
 }
 
 //DefaultServerListenerOption returns the default option for the port listen when server running.
@@ -17,8 +17,8 @@ func DefaultServerListenerOption() server.ListenerOption {
 }
 
 //DefaultServerOption returns the default option for client initialization.
-func DefaultClientOption(initServer *pb.S2CInfo) (option client.Option, err error) {
-	return client.DefaultOption(initServer)
+func DefaultClientOption() client.Option {
+	return client.DefaultOption()
 }
 
 //NewServer initialize a server and returns its pointer.
