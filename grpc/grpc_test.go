@@ -22,9 +22,9 @@ func ServerTest(t *testing.T, ctx context.Context, S2SPort, S2CPort, GQPort uint
 		ServiceType: "Hello World Service",
 	}
 	S2SBoardCastAddr, S2CBoardCastAddr, GQBoardCastAddr := GetAddr(S2SPort), GetAddr(S2CPort), GetAddr(GQPort)
-	option, err := DefaultServerOption(S2SBoardCastAddr, S2CBoardCastAddr, GQBoardCastAddr, initS2SServer)
-	if err != nil {
-		return
+	option := DefaultServerOption(S2SBoardCastAddr, S2CBoardCastAddr, GQBoardCastAddr)
+	if initS2SServer != nil {
+		option.InitServer = initS2SServer
 	}
 	s := NewServer(ServerInfo, option)
 	if S2SServer, err := pb.S2SInfoPack(s.GetS2SInfo()); err == nil {
