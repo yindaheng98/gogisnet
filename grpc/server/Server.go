@@ -41,9 +41,7 @@ func New(ServerInfo *pb.ServerInfo, option Option) *Server {
 
 	//生成注册器设置
 	S2SRegistrantOption := option.ServiceOption.S2SRegistrantOption
-	ServiceOption.S2SRegistrantOption.RegistryN = S2SRegistrantOption.RegistryN
-	ServiceOption.S2SRegistrantOption.RetryNController = S2SRegistrantOption.RetryNController
-	ServiceOption.S2SRegistrantOption.ResponseSendOption = &pb.ResponseSendOption{}
+	option.ServiceOption.S2SRegistrantOption.PutOption(&ServiceOption.S2SRegistrantOption)
 	ServiceOption.S2SRegistrantOption.CandidateList =
 		grpcS2SRegistrant.NewPingerCandidateList(option.InitServer, S2SRegistrantOption.CandidateListOption)
 
