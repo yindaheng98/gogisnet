@@ -16,8 +16,12 @@ func New(ClientInfo *pb.ClientInfo, option Option) *Client {
 		panic(err)
 	}
 	GRPCOption := option.GRPCOption
-	grpcS2CRegistrant := registrant.NewS2CRegistrant(GRPCOption)
+
+	grpcS2CRegistrant := registrant.NewS2CRegistrant(GRPCOption) //注册器gRPC初始化
+
 	ServiceOption := client.DefaultOption(*InitServer, grpcS2CRegistrant.NewRequestProtocol())
+
 	ServiceOption.CandidateList = grpcS2CRegistrant.NewPingerCandidateList(option.InitServer, option.ServiceOption.CandidateListOption)
+
 	return &Client{client.New(ClientInfo, ServiceOption)}
 }

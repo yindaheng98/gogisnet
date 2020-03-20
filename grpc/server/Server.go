@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"github.com/yindaheng98/gogisnet/grpc/option"
 	"github.com/yindaheng98/gogisnet/grpc/protocol/graph"
 	pb "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
 	"github.com/yindaheng98/gogisnet/grpc/protocol/registrant"
@@ -28,7 +29,10 @@ func New(ServerInfo *pb.ServerInfo, option Option) *Server {
 	//设置协议
 	InitServer, err := option.InitServer.Unpack()
 	if err != nil {
-		panic(err)
+		InitServer, err = defaultInitServer().Unpack()
+		if err != nil {
+			panic(err)
+		}
 	}
 	ServiceOption := server.DefaultOption(*InitServer,
 		grpcS2SRegistry.NewResponseProtocol(),
@@ -41,9 +45,11 @@ func New(ServerInfo *pb.ServerInfo, option Option) *Server {
 
 	//生成注册器设置
 	S2SRegistrantOption := option.ServiceOption.S2SRegistrantOption
-	ServiceOption.S2SRegistrantOption.RegistryN = S2SRegistrantOption.RegistryN
-	ServiceOption.S2SRegistrantOption.RetryNController = S2SRegistrantOption.RetryNController
-	ServiceOption.S2SRegistrantOption.ResponseSendOption = &pb.ResponseSendOption{}
+	S2SRegistrantOption.PutOption(&ServiceOption.S2SRegistrantOption)
+	if option.InitServer == nil {
+		ServiceOption.S2SRegistrantOption.CandidateList =
+			grpcS2SRegistrant.NewPingerCandidateList(option.InitServer, S2SRegistrantOption.CandidateListOption)
+	}
 	ServiceOption.S2SRegistrantOption.CandidateList =
 		grpcS2SRegistrant.NewPingerCandidateList(option.InitServer, S2SRegistrantOption.CandidateListOption)
 
@@ -62,7 +68,7 @@ func New(ServerInfo *pb.ServerInfo, option Option) *Server {
 }
 
 //Run the server until <-ctx.Done() is done
-func (s *Server) Run(ctx context.Context, option ListenerOption) (err error) {
+func (s *Server) Run(ctx context.Context, option option.ListenerOption) (err error) {
 	go s.Server.Run(ctx)
 
 	S2SErrChan := make(chan error, 1)

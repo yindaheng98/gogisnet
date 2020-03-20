@@ -25,7 +25,7 @@ func ServerTest(t *testing.T, ctx context.Context, S2SPort, S2CPort, GQPort uint
 	option := DefaultServerOption()
 	option.ServiceOption.S2SRegistryOption.BoardCastAddr = S2SBoardCastAddr
 	option.ServiceOption.S2CRegistryOption.BoardCastAddr = S2CBoardCastAddr
-	option.InitServer.S2CInfo.ServerInfo.GraphQueryBroadCastAddr = GQBoardCastAddr
+	ServerInfo.GraphQueryBroadCastAddr = GQBoardCastAddr
 	if initS2SServer != nil {
 		option.InitServer = initS2SServer
 	}
