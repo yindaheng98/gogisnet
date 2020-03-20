@@ -35,9 +35,9 @@ type ServiceOption struct {
 func defaultServiceOption() ServiceOption {
 	ip := GetIP()
 	S2SRegistryOption := option.DefaultRegistryOption()
-	S2SRegistryOption.BoardCastAddr = ip + "4241"
+	S2SRegistryOption.BoardCastAddr = ip + ":4241"
 	S2CRegistryOption := option.DefaultRegistryOption()
-	S2CRegistryOption.BoardCastAddr = ip + "4240"
+	S2CRegistryOption.BoardCastAddr = ip + ":4240"
 	S2CRegistryOption.MaxRegistrants = 16
 	return ServiceOption{
 		S2SRegistryOption:   S2SRegistryOption,
