@@ -27,18 +27,10 @@ func DefaultOption() GRPCRegistrantOption {
 
 //PingerCandidateListOption is the option for PingerCandidateList used in S2CRegistrant and S2SRegistrant
 type PingerCandidateListOption struct {
-
-	//Default timeout
-	DefaultTimeout time.Duration
-
-	//Default retryN
-	DefaultRetryN uint64
-
-	//How many elements can the CandidateList store at most
-	Size uint64
-
-	//How many ms can a PING hold at most before received a response
-	MaxPingTimeout time.Duration
+	DefaultTimeout time.Duration `yaml:"DefaultTimeout" usage:"Default timeout output of the CandidateList."`
+	DefaultRetryN  uint64        `yaml:"DefaultRetryN" usage:"Default retryN output of the CandidateList."`
+	Size           uint64        `yaml:"Size" usage:"How many elements can the CandidateList store at most."`
+	MaxPingTimeout time.Duration `yaml:"MaxPingTimeout" usage:"How many ms can a PING hold at most before received a response."`
 }
 
 func DefaultPingerCandidateListOption() PingerCandidateListOption {
