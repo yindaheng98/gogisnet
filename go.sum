@@ -141,6 +141,10 @@ github.com/yindaheng98/gogistry v0.0.0-20200319145125-3977e030114c h1:2I6vvWRGJ4
 github.com/yindaheng98/gogistry v0.0.0-20200319145125-3977e030114c/go.mod h1:EBfIkBYo8ccDmv0QPEZhZe98CBNTZxyhqilpG25Jbp0=
 github.com/yindaheng98/gogistry v0.0.0-20200320091633-8243bc1af8ab h1:LlE7Zvvw1Dt8uUQPxl0iiLAvWZDYcF8Jk8hqXWUMJuM=
 github.com/yindaheng98/gogistry v0.0.0-20200320091633-8243bc1af8ab/go.mod h1:EBfIkBYo8ccDmv0QPEZhZe98CBNTZxyhqilpG25Jbp0=
+github.com/yindaheng98/gogistry v0.0.0-20200320133700-6fa948ff2f00 h1:NbOLTQMWTIaarHvkYfa2cUAJP/oEI+u4tX4bwA+9dKU=
+github.com/yindaheng98/gogistry v0.0.0-20200320133700-6fa948ff2f00/go.mod h1:EBfIkBYo8ccDmv0QPEZhZe98CBNTZxyhqilpG25Jbp0=
+github.com/yindaheng98/gogistry v0.0.0-20200320135928-1a781052e5ba h1:oyMCcGuYdQZk0dzaLHhQxNwMT6Zf2g/LsT/Rw3Axq7o=
+github.com/yindaheng98/gogistry v0.0.0-20200320135928-1a781052e5ba/go.mod h1:EBfIkBYo8ccDmv0QPEZhZe98CBNTZxyhqilpG25Jbp0=
 golang.org/x/crypto v0.0.0-20181203042331-505ab145d0a9/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20191227163750-53104e6ec876/go.mod h1:LzIPMQfyMNhhGPhUkYOs5KpL4U8rLKemX1yGLhDgUto=
