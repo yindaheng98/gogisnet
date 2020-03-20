@@ -6,7 +6,8 @@ import (
 
 //GRPCRegistryOption is the options for gRPC server in Registry
 type GRPCRegistryOption struct {
-	ServerOption []grpc.ServerOption `yaml:"ServerOption" usage:"Option for initialize gRPC server."`
+	//ServerOption is the option for initialize gRPC server.
+	ServerOption []grpc.ServerOption `yaml:"-"`
 	BufferSize   uint64              `yaml:"BufferSize" usage:"Size of the receiving buffer."`
 }
 
