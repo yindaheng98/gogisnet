@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/yindaheng98/gogisnet/grpc/option"
 	"github.com/yindaheng98/gogisnet/grpc/protocol/graph"
 	pb "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
 	"github.com/yindaheng98/gogisnet/grpc/protocol/registrant"
@@ -51,4 +52,26 @@ func DefaultOption() (option Option) {
 		},
 	}
 	return
+}
+
+//Option for Gogisnet service
+type ServiceOption struct {
+	S2SRegistryOption   option.RegistryOption   `yaml:"S2SRegistryOption" usage:"Option for S2SRegistry in gogisnet server."`
+	S2SRegistrantOption option.RegistrantOption `yaml:"S2SRegistrantOption" usage:"Option for S2SRegistrant in gogisnet server."`
+	S2CRegistryOption   option.RegistryOption   `yaml:"S2CRegistryOption" usage:"Option for S2CRegistry in gogisnet server."`
+}
+
+//DefaultServiceOption returns a default ServiceOption
+func DefaultServiceOption() ServiceOption {
+	ip := GetIP()
+	S2SRegistryOption := option.DefaultRegistryOption()
+	S2SRegistryOption.BoardCastAddr = ip + ":4241"
+	S2CRegistryOption := option.DefaultRegistryOption()
+	S2CRegistryOption.BoardCastAddr = ip + ":4240"
+	S2CRegistryOption.MaxRegistrants = 16
+	return ServiceOption{
+		S2SRegistryOption:   S2SRegistryOption,
+		S2SRegistrantOption: option.DefaultRegistrantOption(),
+		S2CRegistryOption:   S2CRegistryOption,
+	}
 }
