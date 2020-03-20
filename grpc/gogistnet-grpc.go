@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"github.com/yindaheng98/gogisnet/grpc/client"
+	"github.com/yindaheng98/gogisnet/grpc/option"
 	pb "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
 	"github.com/yindaheng98/gogisnet/grpc/server"
 )
@@ -12,8 +13,8 @@ func DefaultServerOption() server.Option {
 }
 
 //DefaultServerListenerOption returns the default option for the port listen when server running.
-func DefaultServerListenerOption() server.ListenerOption {
-	return server.DefaultListenerOption()
+func DefaultServerListenerOption() option.ListenerOption {
+	return option.DefaultListenerOption()
 }
 
 //DefaultServerOption returns the default option for client initialization.

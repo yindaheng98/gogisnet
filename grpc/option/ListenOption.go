@@ -1,4 +1,4 @@
-package server
+package option
 
 type ListenerOption struct {
 	S2SListenNetwork        string `yaml:"S2SListenNetwork" usage:"Network type that the S2SRegistry listen on (e.g. tcp, udp)."`

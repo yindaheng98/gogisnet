@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"github.com/yindaheng98/gogisnet/grpc/option"
 	"github.com/yindaheng98/gogisnet/grpc/protocol/graph"
 	pb "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
 	"github.com/yindaheng98/gogisnet/grpc/protocol/registrant"
@@ -60,7 +61,7 @@ func New(ServerInfo *pb.ServerInfo, option Option) *Server {
 }
 
 //Run the server until <-ctx.Done() is done
-func (s *Server) Run(ctx context.Context, option ListenerOption) (err error) {
+func (s *Server) Run(ctx context.Context, option option.ListenerOption) (err error) {
 	go s.Server.Run(ctx)
 
 	S2SErrChan := make(chan error, 1)
