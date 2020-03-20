@@ -7,15 +7,9 @@ import (
 
 //GRPCRegistrantOption is the option for S2CRegistrant and S2SRegistrant
 type GRPCRegistrantOption struct {
-
-	//Option when dial gRPC connection
-	DialOption []grpc.DialOption
-
-	//Option when call gRPC functions
-	CallOption []grpc.CallOption
-
-	//How many ms can a gRPC connection hold at most
-	MaxDialHoldDuration time.Duration //保持连接的最大时长
+	DialOption          []grpc.DialOption `yaml:"DialOption" usage:"Option when dial gRPC connection."`
+	CallOption          []grpc.CallOption `yaml:"CallOption" usage:"Option when call gRPC functions."`
+	MaxDialHoldDuration time.Duration     `yaml:"MaxDialHoldDuration" usage:"How many ms can a gRPC connection hold at most."`
 }
 
 //DefaultOption returns a default GRPCRegistrantOption

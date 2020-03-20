@@ -12,8 +12,8 @@ type S2SRegistryServer struct {
 }
 
 func NewS2SRegistryServer(option GRPCRegistryOption) *S2SRegistryServer {
-	Server := grpc.NewServer(option.InitOption...)
-	Service := newS2SService(option.BufferLen)
+	Server := grpc.NewServer(option.ServerOption...)
+	Service := newS2SService(option.BufferSize)
 	pb.RegisterS2SRegistryServer(Server, Service)
 	return &S2SRegistryServer{Server, Service}
 }

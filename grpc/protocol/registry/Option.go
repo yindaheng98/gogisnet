@@ -4,14 +4,15 @@ import (
 	"google.golang.org/grpc"
 )
 
+//GRPCRegistryOption is the options for gRPC server in Registry
 type GRPCRegistryOption struct {
-	InitOption []grpc.ServerOption
-	BufferLen  uint64
+	ServerOption []grpc.ServerOption `yaml:"ServerOption" usage:"Option for initialize gRPC server."`
+	BufferSize   uint64              `yaml:"BufferSize" usage:"Size of the receiving buffer."`
 }
 
 func DefaultOption() GRPCRegistryOption {
 	return GRPCRegistryOption{
-		InitOption: nil,
-		BufferLen:  100,
+		ServerOption: nil,
+		BufferSize:   100,
 	}
 }

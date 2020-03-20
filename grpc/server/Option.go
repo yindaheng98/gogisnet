@@ -9,19 +9,17 @@ import (
 
 //Option contains all the options for gRPC gogisnet server
 type Option struct {
-	ServiceOption ServiceOption
-	GRPCOption    GRPCOption
-
-	//InitServer is the information about the first server that the client should connect
-	InitServer *pb.S2SInfo
+	ServiceOption ServiceOption `yaml:"ServiceOption" usage:"Option for gogisnet service."`
+	GRPCOption    GRPCOption    `yaml:"GRPCOption" usage:"Option for gRPC server in registry and gRPC client in registrant."`
+	InitServer    *pb.S2SInfo   `yaml:"InitServer" usage:"Information about the first server that the client should connect."`
 }
 
 //GRPCOption is the gRPC options for gRPC gogisnet server
 type GRPCOption struct {
-	S2SRegistryOption   registry.GRPCRegistryOption
-	S2CRegistryOption   registry.GRPCRegistryOption
-	S2SRegistrantOption registrant.GRPCRegistrantOption
-	GraphQueryOption    graph.GraphQueryOption
+	S2SRegistryOption   registry.GRPCRegistryOption     `yaml:"S2SRegistryOption" usage:"Option for gRPC server in S2SRegistry."`
+	S2CRegistryOption   registry.GRPCRegistryOption     `yaml:"S2CRegistryOption" usage:"Option for gRPC server in S2CRegistry."`
+	S2SRegistrantOption registrant.GRPCRegistrantOption `yaml:"S2SRegistrantOption" usage:"Option for gRPC client in S2SRegistrant."`
+	GraphQueryOption    graph.GraphQueryOption          `yaml:"GraphQueryOption" usage:"Option for gRPC server in GraphQuery service."`
 }
 
 //DefaultOption returns a default Option
