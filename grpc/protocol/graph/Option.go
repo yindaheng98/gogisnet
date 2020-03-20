@@ -8,7 +8,9 @@ import (
 //GraphQueryOption contains the options for GraphQueryServer and GraphQueryClient
 type GraphQueryOption struct {
 	GraphQueryClientOption GraphQueryClientOption `yaml:"GraphQueryClientOption" usage:"The options for GraphQueryClient."`
-	GraphQueryServerOption GraphQueryServerOption `yaml:"GraphQueryServerOption" usage:"The options for GraphQueryServer."`
+
+	//GraphQueryServerOption is The options for GraphQueryServer.
+	GraphQueryServerOption GraphQueryServerOption `yaml:"-"`
 }
 
 //GraphQueryClientOption contains the options for GraphQueryClient
