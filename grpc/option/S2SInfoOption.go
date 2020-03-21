@@ -10,7 +10,7 @@ type S2SInfoOption struct {
 
 func DefaultS2SInfoOption() S2SInfoOption {
 	return S2SInfoOption{
-		ServerInfoOption: defaultServerInfoOption(),
+		ServerInfoOption: DefaultServerInfoOption(),
 		BoardCastAddr:    "undefined",
 		S2CInfoOption:    DefaultS2CInfoOption(),
 	}

@@ -11,7 +11,7 @@ type ServerInfoOption struct {
 	AdditionalInfo          string `yaml:"AdditionalInfo" usage:"The additional information you want to attach to this server."`
 }
 
-func defaultServerInfoOption() ServerInfoOption {
+func DefaultServerInfoOption() ServerInfoOption {
 	return ServerInfoOption{
 		ServerID:                "SERVER-" + RandomString(64),
 		ServiceType:             "undefined",
