@@ -1,6 +1,8 @@
 package option
 
-import pb "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
+import (
+	pb "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
+)
 
 type ServerInfoOption struct {
 	ServerID                string `yaml:"ServerID" usage:"Unique ID of the server."`
@@ -11,9 +13,9 @@ type ServerInfoOption struct {
 
 func defaultServerInfoOption() ServerInfoOption {
 	return ServerInfoOption{
-		ServerID:                "undefined",
+		ServerID:                "SERVER-" + RandomString(64),
 		ServiceType:             "undefined",
-		GraphQueryBroadCastAddr: "undefined",
+		GraphQueryBroadCastAddr: GetIP() + ":4242",
 		AdditionalInfo:          "",
 	}
 }

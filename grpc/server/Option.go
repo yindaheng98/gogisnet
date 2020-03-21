@@ -32,7 +32,7 @@ type ServiceOption struct {
 
 //DefaultServiceOption returns a default ServiceOption
 func defaultServiceOption() ServiceOption {
-	ip := GetIP()
+	ip := option.GetIP()
 	S2SRegistryOption := option.DefaultRegistryOption()
 	S2SRegistryOption.BoardCastAddr = ip + ":4241"
 	S2CRegistryOption := option.DefaultRegistryOption()

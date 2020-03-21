@@ -8,6 +8,13 @@ type ClientInfoOption struct {
 	AdditionalInfo string `yaml:"AdditionalInfo" usage:"The additional information you want to attach to this client."`
 }
 
+func DefaultClientInfoOption() ClientInfoOption {
+	return ClientInfoOption{
+		ClientID:       "CLIENT-" + RandomString(64),
+		ServiceType:    "undefined",
+		AdditionalInfo: "",
+	}
+}
 func (o ClientInfoOption) PutOption(op *pb.ClientInfo) {
 	op.ClientID = o.ClientID
 	op.ServiceType = o.ServiceType
