@@ -32,9 +32,9 @@ func (o RegistryOption) PutOption(op *server.RegistryOption) {
 
 //The option for TimeoutController used in gogistry registry
 type TimeoutControllerOption struct {
-	MinimumTime    time.Duration //最小Timeout
-	MaximumTime    time.Duration //最大Timeout
-	IncreaseFactor float64       //从最小到最大的增长系数
+	MinimumTime    time.Duration `yaml:"MinimumTime" usage:"Minimum timeout output, Timeout(0)=MinimumTime"`
+	MaximumTime    time.Duration `yaml:"MaximumTime" usage:"Maximum timeout output."`
+	IncreaseFactor float64       `yaml:"IncreaseFactor" usage:"Timeout(0)=MinimumTime,Timeout(n)=Timeout(n-1)+(MaximumTime-Timeout(n-1))/IncreaseFactor."`
 }
 
 func (o TimeoutControllerOption) PutOption(op *TimeoutController.LogTimeoutController) {
