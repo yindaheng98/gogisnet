@@ -20,40 +20,37 @@ type Server struct {
 }
 
 //New returns a instance of Server
-func New(ServerInfo *pb.ServerInfo, option Option) *Server {
-	GRPCOption := option.GRPCOption
+func New(ServerInfoOption option.ServerInfoOption, opt Option) *Server {
+	GRPCOption := opt.GRPCOption
 	grpcS2SRegistry := registry.NewS2SRegistryServer(GRPCOption.S2SRegistryOption)   //注册中心gRPC初始化
 	grpcS2CRegistry := registry.NewS2CRegistryServer(GRPCOption.S2CRegistryOption)   //注册中心gRPC初始化
 	grpcS2SRegistrant := registrant.NewS2SRegistrant(GRPCOption.S2SRegistrantOption) //注册器gRPC初始化
 
 	//设置协议
-	InitServer, err := option.InitServer.Unpack()
+	InitServer := &pb.S2SInfo{}
+	opt.InitServerOption.PutOption(InitServer)
+	InitServerMessage, err := InitServer.Unpack()
 	if err != nil {
-		InitServer, err = defaultInitServer().Unpack()
-		if err != nil {
-			panic(err)
-		}
+		panic(err)
 	}
-	ServiceOption := server.DefaultOption(*InitServer,
+	ServiceOption := server.DefaultOption(*InitServerMessage,
 		grpcS2SRegistry.NewResponseProtocol(),
 		grpcS2SRegistrant.NewRequestProtocol(),
-		grpcS2CRegistry.NewResponseProtocol())
+		grpcS2CRegistry.NewResponseProtocol()) //服务设置初始化
 
 	//生成注册中心设置
-	option.ServiceOption.S2CRegistryOption.PutOption(&ServiceOption.S2CRegistryOption)
-	option.ServiceOption.S2SRegistryOption.PutOption(&ServiceOption.S2SRegistryOption)
+	opt.ServiceOption.S2CRegistryOption.PutOption(&ServiceOption.S2CRegistryOption) //服务设置修改
+	opt.ServiceOption.S2SRegistryOption.PutOption(&ServiceOption.S2SRegistryOption) //服务设置修改
 
 	//生成注册器设置
-	S2SRegistrantOption := option.ServiceOption.S2SRegistrantOption
-	S2SRegistrantOption.PutOption(&ServiceOption.S2SRegistrantOption)
-	if option.InitServer == nil {
-		ServiceOption.S2SRegistrantOption.CandidateList =
-			grpcS2SRegistrant.NewPingerCandidateList(option.InitServer, S2SRegistrantOption.CandidateListOption)
-	}
+	S2SRegistrantOption := opt.ServiceOption.S2SRegistrantOption
+	S2SRegistrantOption.PutOption(&ServiceOption.S2SRegistrantOption) //服务设置修改
 	ServiceOption.S2SRegistrantOption.CandidateList =
-		grpcS2SRegistrant.NewPingerCandidateList(option.InitServer, S2SRegistrantOption.CandidateListOption)
+		grpcS2SRegistrant.NewPingerCandidateList(InitServer, S2SRegistrantOption.CandidateListOption)
 
 	//初始化服务器
+	ServerInfo := &pb.ServerInfo{}
+	ServerInfoOption.PutOption(ServerInfo)
 	s := server.New(ServerInfo, ServiceOption)
 
 	//初始化GraphQuery

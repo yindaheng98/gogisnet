@@ -3,7 +3,6 @@ package grpc
 import (
 	"github.com/yindaheng98/gogisnet/grpc/client"
 	"github.com/yindaheng98/gogisnet/grpc/option"
-	pb "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
 	"github.com/yindaheng98/gogisnet/grpc/server"
 )
 
@@ -23,11 +22,11 @@ func DefaultClientOption() client.Option {
 }
 
 //NewServer initialize a server and returns its pointer.
-func NewServer(ServerInfo *pb.ServerInfo, option server.Option) *server.Server {
-	return server.New(ServerInfo, option)
+func NewServer(ServerInfoOption option.ServerInfoOption, option server.Option) *server.Server {
+	return server.New(ServerInfoOption, option)
 }
 
 //NewServer initialize a client and returns its pointer.
-func NewClient(ClientInfo *pb.ClientInfo, option client.Option) *client.Client {
-	return client.New(ClientInfo, option)
+func NewClient(ClientInfoOption option.ClientInfoOption, option client.Option) *client.Client {
+	return client.New(ClientInfoOption, option)
 }

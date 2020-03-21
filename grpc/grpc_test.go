@@ -3,7 +3,7 @@ package grpc
 import (
 	"context"
 	"fmt"
-	pb "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
+	"github.com/yindaheng98/gogisnet/grpc/option"
 	"sync"
 	"testing"
 	"time"
@@ -13,26 +13,29 @@ func GetAddr(port uint16) string {
 	return fmt.Sprintf("[::1]:%d", port)
 }
 
-var initS2SServer *pb.S2SInfo
+var initS2SServerOption option.S2SInfoOption
 
 func ServerTest(t *testing.T, ctx context.Context, S2SPort, S2CPort, GQPort uint16) (err error) {
 	ServerID := fmt.Sprintf("Server-%d/%d", S2SPort, S2CPort)
-	ServerInfo := &pb.ServerInfo{
+	ServerInfoOption := option.ServerInfoOption{
 		ServerID:    ServerID,
 		ServiceType: "Hello World Service",
 	}
 	S2SBoardCastAddr, S2CBoardCastAddr, GQBoardCastAddr := GetAddr(S2SPort), GetAddr(S2CPort), GetAddr(GQPort)
-	option := DefaultServerOption()
-	option.ServiceOption.S2SRegistryOption.BoardCastAddr = S2SBoardCastAddr
-	option.ServiceOption.S2CRegistryOption.BoardCastAddr = S2CBoardCastAddr
-	ServerInfo.GraphQueryBroadCastAddr = GQBoardCastAddr
-	option.InitServer = initS2SServer
-	s := NewServer(ServerInfo, option)
-	if S2SServer, err := pb.S2SInfoPack(s.GetS2SInfo()); err == nil {
-		initS2SServer = S2SServer
+	opt := DefaultServerOption()
+	opt.ServiceOption.S2SRegistryOption.BoardCastAddr = S2SBoardCastAddr
+	opt.ServiceOption.S2CRegistryOption.BoardCastAddr = S2CBoardCastAddr
+	ServerInfoOption.GraphQueryBroadCastAddr = GQBoardCastAddr
+	opt.InitServerOption = initS2SServerOption
+	s := NewServer(ServerInfoOption, opt)
+	initS2CServerOption = option.S2CInfoOption{
+		ServerInfoOption: ServerInfoOption,
+		BoardCastAddr:    S2CBoardCastAddr,
 	}
-	if S2CServer, err := pb.S2CInfoPack(s.GetS2CInfo()); err == nil {
-		initS2CServer = S2CServer
+	initS2SServerOption = option.S2SInfoOption{
+		ServerInfoOption: ServerInfoOption,
+		BoardCastAddr:    S2SBoardCastAddr,
+		S2CInfoOption:    initS2CServerOption,
 	}
 	PutServerEvent(s, func(s string) { t.Log(ServerID + s) })
 	listenerOption := DefaultServerListenerOption()
@@ -53,17 +56,17 @@ func ServerTest(t *testing.T, ctx context.Context, S2SPort, S2CPort, GQPort uint
 	return
 }
 
-var initS2CServer *pb.S2CInfo
+var initS2CServerOption option.S2CInfoOption
 
 func ClientTest(ctx context.Context, id uint16) (err error) {
 	ClientID := fmt.Sprintf("Client-%02d", id)
-	ClientInfo := &pb.ClientInfo{
+	ClientInfoOption := option.ClientInfoOption{
 		ClientID:    ClientID,
 		ServiceType: "Hello World Service",
 	}
-	option := DefaultClientOption()
-	option.InitServer = initS2CServer
-	c := NewClient(ClientInfo, option)
+	opt := DefaultClientOption()
+	opt.InitServerOption = initS2CServerOption
+	c := NewClient(ClientInfoOption, opt)
 	PutClientEvent(c, func(s string) { fmt.Println(ClientID + s) })
 	c.SetWatchdogTimeDelta(3e9)
 	okChan := make(chan bool, 1)

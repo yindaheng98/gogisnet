@@ -3,24 +3,23 @@ package server
 import (
 	"github.com/yindaheng98/gogisnet/grpc/option"
 	"github.com/yindaheng98/gogisnet/grpc/protocol/graph"
-	pb "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
 	"github.com/yindaheng98/gogisnet/grpc/protocol/registrant"
 	"github.com/yindaheng98/gogisnet/grpc/protocol/registry"
 )
 
 //Option contains all the options for gRPC gogisnet server
 type Option struct {
-	ServiceOption ServiceOption `yaml:"ServiceOption" usage:"Option for gogisnet service."`
-	GRPCOption    GRPCOption    `yaml:"GRPCOption" usage:"Option for gRPC server in registry and gRPC client in registrant."`
-	InitServer    *pb.S2SInfo   `yaml:"InitServer" usage:"Information about the first server that the client should connect."`
+	ServiceOption    ServiceOption        `yaml:"ServiceOption" usage:"Option for gogisnet service."`
+	GRPCOption       GRPCOption           `yaml:"GRPCOption" usage:"Option for gRPC server in registry and gRPC client in registrant."`
+	InitServerOption option.S2SInfoOption `yaml:"InitServerOption" usage:"Information about the first server that the client should connect."`
 }
 
 //DefaultOption returns a default Option
 func DefaultOption() Option {
 	return Option{ //初始化
-		ServiceOption: defaultServiceOption(),
-		GRPCOption:    defaultGRPCOption(),
-		InitServer:    nil,
+		ServiceOption:    defaultServiceOption(),
+		GRPCOption:       defaultGRPCOption(),
+		InitServerOption: option.DefaultS2SInfoOption(),
 	}
 }
 
@@ -61,25 +60,5 @@ func defaultGRPCOption() GRPCOption {
 		S2CRegistryOption:   registry.DefaultOption(),
 		S2SRegistrantOption: registrant.DefaultOption(),
 		GraphQueryOption:    graph.DefaultOption(),
-	}
-}
-
-func defaultInitServer() *pb.S2SInfo {
-	return &pb.S2SInfo{
-		ServerInfo: &pb.ServerInfo{
-			ServerID:    "Undefined",
-			ServiceType: "Undefined",
-		},
-		ResponseSendOption: &pb.ResponseSendOption{},
-		RequestSendOption:  &pb.RequestSendOption{Addr: "Undefined"},
-		Candidates:         nil,
-		S2CInfo: &pb.S2CInfo{
-			ServerInfo: &pb.ServerInfo{
-				ServerID:    "Undefined",
-				ServiceType: "Undefined",
-			},
-			RequestSendOption: &pb.RequestSendOption{Addr: "Undefined"},
-			Candidates:        nil,
-		},
 	}
 }
