@@ -8,11 +8,11 @@ type Graph struct {
 
 	//Vertexes contains all the server in the gogistnet.
 	//The key of the map is the unique id of the server (S2SInfo.GetServerID())
-	Vertexes map[string]Vertex
+	Vertexes map[string]Vertex `json:"Vertexes"`
 
 	//Clients contains all the clients in the gogistnet.
 	//The key of the map is the unique id of the client (C2SInfo.GetClientID())
-	Clients map[string]C2SInfo
+	Clients map[string]C2SInfo `json:"Clients"`
 }
 
 //Vertex describes consists of the information of a server,
@@ -21,14 +21,14 @@ type Graph struct {
 type Vertex struct {
 
 	//Information of a server.
-	S2SInfo
+	S2SInfo `json:"S2SInfo"`
 
 	//The edges connect from this server to other servers
 	//(The unique id of the server who receive the request and send back response).
-	EdgeTo []string
+	EdgeTo []string `json:"EdgeTo"`
 
 	//Unique id of the clients connecting to the server.
-	Clients []string
+	Clients []string `json:"Clients"`
 }
 
 //GraphQueryInfo is used to transmit vertex information among servers to generate topology graph.

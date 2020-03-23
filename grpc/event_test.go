@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/yindaheng98/gogisnet/grpc/client"
 	"github.com/yindaheng98/gogisnet/grpc/server"
@@ -14,7 +15,8 @@ func PutServerEvent(s *server.Server, logger func(string)) {
 	check := func() string {
 		go func() {
 			graph := s.GetGraph(context.Background())
-			fmt.Println("Graph:", graph)
+			graphStr, _ := json.Marshal(graph)
+			fmt.Println("Graph:", string(graphStr))
 		}()
 		ss := fmt.Sprintf("\n%s", s.GetGraphQueryInfo())
 		C2SConnections := s.GetC2SConnections()
