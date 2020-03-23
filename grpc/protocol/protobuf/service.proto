@@ -17,6 +17,10 @@ message RequestSendOption {
 message ResponseSendOption {
   google.protobuf.Any Option = 1;
 }
+message GraphQuerySendOption {
+  google.protobuf.Any Option = 1;
+  string Addr = 2;
+}
 message Timestamp {
   uint64 Timestamp = 1;
 }
@@ -34,7 +38,7 @@ message S2SInfo {
   ServerInfo ServerInfo = 1;
   ResponseSendOption ResponseSendOption = 2;
   RequestSendOption RequestSendOption = 3;
-  string GraphQueryAddr = 4;
+  GraphQuerySendOption GraphQuerySendOption = 4;
   repeated S2SInfo Candidates = 5;
   S2CInfo S2CInfo = 6;
 }
