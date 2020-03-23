@@ -12,9 +12,11 @@ type S2SInfo struct {
 	ServerInfo
 	ResponseSendOption protocol.ResponseSendOption
 	RequestSendOption  protocol.RequestSendOption
-	GraphQueryAddr     string
 	Candidates         []S2SInfo
 	S2CInfo            S2CInfo
+
+	//GraphQuerySendOption is the option for sending messages in GraphQuery service.
+	GraphQuerySendOption GraphQuerySendOption
 }
 
 func (info S2SInfo) GetRegistrantID() string {

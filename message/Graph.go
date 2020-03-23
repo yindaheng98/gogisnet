@@ -70,3 +70,6 @@ func (info GraphQueryInfo) GetVertex() Vertex {
 type GraphQueryProtocol interface {
 	Query(context.Context, S2SInfo) (*GraphQueryInfo, error)
 }
+
+//GraphQuerySendOption is the option for sending messages in GraphQuery service.
+type GraphQuerySendOption interface{}

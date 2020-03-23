@@ -35,11 +35,12 @@ func New(info message.ServerInfo, option Option) *Server {
 		RequestSendOption: S2CRegistryOption.RequestSendOption,
 		Candidates:        []message.S2CInfo{}}
 	s2sInfo := message.S2SInfo{
-		ServerInfo:         info,
-		ResponseSendOption: S2SRegistrantOption.ResponseSendOption,
-		RequestSendOption:  S2SRegistryOption.RequestSendOption,
-		Candidates:         []message.S2SInfo{},
-		S2CInfo:            s2cInfo}
+		ServerInfo:           info,
+		ResponseSendOption:   S2SRegistrantOption.ResponseSendOption,
+		RequestSendOption:    S2SRegistryOption.RequestSendOption,
+		GraphQuerySendOption: option.GraphQuerySendOption,
+		Candidates:           []message.S2SInfo{},
+		S2CInfo:              s2cInfo}
 	s := &Server{
 		s2sRegistry: gogistry.NewRegistry(s2sInfo,
 			S2SRegistryOption.MaxRegistrants,

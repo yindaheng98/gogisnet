@@ -11,9 +11,10 @@ import (
 )
 
 type Option struct {
-	S2SRegistryOption   RegistryOption
-	S2SRegistrantOption RegistrantOption
-	S2CRegistryOption   RegistryOption
+	S2SRegistryOption    RegistryOption
+	S2SRegistrantOption  RegistrantOption
+	S2CRegistryOption    RegistryOption
+	GraphQuerySendOption message.GraphQuerySendOption
 }
 
 type RegistryOption struct { //服务端面向服务端的收发设置
