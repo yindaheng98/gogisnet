@@ -9,6 +9,9 @@ import (
 func (s *Server) initConnectionLoader() {
 	//一旦有连接变化，立马更新黑名单和候选连接列表
 
+	blacklist := <-s.s2sRegistrant.CandidateBlacklist
+	s.s2sRegistrant.CandidateBlacklist <- append(blacklist, s.GetS2SInfo()) //首先服务器不可以自己连自己
+
 	s.s2sRegistry.Events.NewConnection.AddHandler( //有服务端上线
 		func(gogistryProto.RegistrantInfo) {
 			s.loadS2SRegistrantBlacklist() //s2sRegistry的变动会影响s2sRegistrant的黑名单
@@ -43,15 +46,13 @@ func (s *Server) initConnectionLoader() {
 }
 
 func (s *Server) loadS2SRegistrantBlacklist() { //将s2sRegistry的已连接项作为s2sRegistrant的黑名单
-	<-s.s2sRegistrant.CandidateBlacklist                                   //阻塞黑名单
-	s2sBlacklist := <-s.s2sBlacklist                                       //取出服务器定义的黑名单
-	connections := append(s.s2sRegistry.GetConnections(), s2sBlacklist...) //从面向服务器的注册中心中取出已连接的服务器
-	blacklist := make([]gogistryProto.RegistryInfo, len(connections)+1)    //构造黑名单
-	blacklist[0] = s.s2sRegistry.Info                                      //黑名单首先要包含自己，不能让自己的注册器连自己的注册中心
+	<-s.s2sRegistrant.CandidateBlacklist                                //阻塞黑名单
+	connections := s.s2sRegistry.GetConnections()                       //从面向服务器的注册中心中取出已连接的服务器
+	blacklist := make([]gogistryProto.RegistryInfo, len(connections)+1) //构造黑名单
+	blacklist[0] = s.s2sRegistry.Info                                   //黑名单首先要包含自己，不能让自己的注册器连自己的注册中心
 	for i, connection := range connections {
 		blacklist[i+1] = connection.(message.S2SInfo) //所有s2sRegistry已连接的服务器都不能再由s2sRegistrant连接
 	}
-	s.s2sBlacklist <- s2sBlacklist                  //放回黑名单
 	s.s2sRegistrant.CandidateBlacklist <- blacklist //放回黑名单
 }
 

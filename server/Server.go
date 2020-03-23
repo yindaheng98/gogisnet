@@ -106,14 +106,3 @@ func (s *Server) Run(ctx context.Context) {
 func (s *Server) SetS2SWatchdogTimeDelta(t time.Duration) {
 	s.s2sRegistrant.WatchdogTimeDelta = t
 }
-
-//SetS2SCandidateBlacklist can change the CandidateBlacklist for S2SRegistrant.
-//About CandidateBlacklist: https://godoc.org/github.com/yindaheng98/gogistry/registrant#Registrant
-func (s *Server) SetS2SCandidateBlacklist(blacklist []message.ServerInfo) {
-	<-s.s2sBlacklist
-	CandidateBlacklist := make([]gogistryProto.RegistrantInfo, len(blacklist))
-	for i, c := range blacklist {
-		CandidateBlacklist[i] = message.S2SInfo{ServerInfo: c}
-	}
-	s.s2sBlacklist <- CandidateBlacklist
-}
