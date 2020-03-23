@@ -47,6 +47,7 @@ func New(ServerInfoOption option.ServerInfoOption, opt Option) *Server {
 	S2SRegistrantOption.PutOption(&ServiceOption.S2SRegistrantOption) //服务设置修改
 	ServiceOption.S2SRegistrantOption.CandidateList =
 		grpcS2SRegistrant.NewPingerCandidateList(InitServer, S2SRegistrantOption.CandidateListOption)
+	ServiceOption.GraphQuerySendOption = &pb.GraphQuerySendOption{Addr: opt.ServiceOption.GraphQueryOption.BoardCastAddr}
 
 	//初始化服务器
 	ServerInfo := &pb.ServerInfo{}

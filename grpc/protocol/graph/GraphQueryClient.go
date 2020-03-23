@@ -2,6 +2,8 @@ package graph
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	pb "github.com/yindaheng98/gogisnet/grpc/protocol/protobuf"
 	"github.com/yindaheng98/gogisnet/grpc/protocol/registrant"
 	"github.com/yindaheng98/gogisnet/message"
@@ -45,7 +47,12 @@ type GraphQueryProtocol struct {
 
 //Implementation of message.GraphQueryProtocol.Query
 func (p GraphQueryProtocol) Query(ctx context.Context, info message.S2SInfo) (ginfo *message.GraphQueryInfo, err error) {
-	client, err := p.clients.getClient(info.GraphQueryAddr)
+	defer func() {
+		if r := recover(); r != nil {
+			err = errors.New(fmt.Sprintf("%s", r))
+		}
+	}()
+	client, err := p.clients.getClient(info.GraphQuerySendOption.(*pb.GraphQuerySendOption).Addr)
 	if err != nil {
 		return
 	}

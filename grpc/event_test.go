@@ -1,6 +1,7 @@
 package grpc
 
 import (
+	"context"
 	"fmt"
 	"github.com/yindaheng98/gogisnet/grpc/client"
 	"github.com/yindaheng98/gogisnet/grpc/server"
@@ -11,12 +12,10 @@ import (
 func PutServerEvent(s *server.Server, logger func(string)) {
 
 	check := func() string {
-		/*TODO:获取Graph的操作会阻塞全部线程，导致响应变慢超时，待解决
 		go func() {
 			graph := s.GetGraph(context.Background())
 			fmt.Println("Graph:", graph)
 		}()
-		*/
 		ss := fmt.Sprintf("\n%s", s.GetGraphQueryInfo())
 		C2SConnections := s.GetC2SConnections()
 		S2SConnections := s.GetS2SConnections()

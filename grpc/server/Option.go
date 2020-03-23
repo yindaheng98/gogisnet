@@ -28,6 +28,7 @@ type ServiceOption struct {
 	S2SRegistryOption   option.RegistryOption   `yaml:"S2SRegistryOption" usage:"Option for S2SRegistry in gogisnet server."`
 	S2SRegistrantOption option.RegistrantOption `yaml:"S2SRegistrantOption" usage:"Option for S2SRegistrant in gogisnet server."`
 	S2CRegistryOption   option.RegistryOption   `yaml:"S2CRegistryOption" usage:"Option for S2CRegistry in gogisnet server."`
+	GraphQueryOption    GraphQueryOption        `yaml:"GraphQueryOption" usage:"Option for GraphQuery service."`
 }
 
 //DefaultServiceOption returns a default ServiceOption
@@ -42,6 +43,7 @@ func defaultServiceOption() ServiceOption {
 		S2SRegistryOption:   S2SRegistryOption,
 		S2SRegistrantOption: option.DefaultRegistrantOption(),
 		S2CRegistryOption:   S2CRegistryOption,
+		GraphQueryOption:    GraphQueryOption{BoardCastAddr: ip + ":4242"},
 	}
 }
 
@@ -61,4 +63,8 @@ func defaultGRPCOption() GRPCOption {
 		S2SRegistrantOption: registrant.DefaultOption(),
 		GraphQueryOption:    graph.DefaultOption(),
 	}
+}
+
+type GraphQueryOption struct {
+	BoardCastAddr string `yaml:"BoardCastAddr" usage:"Broad cast address of GraphQuery service of the server."`
 }
