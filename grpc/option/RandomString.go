@@ -12,7 +12,7 @@ func RandomString(n int) string {
 	var result []byte
 	r := rand.New(src)
 	for i := 0; i < n; i++ {
-		result = append(result, bytes[r.Intn(len(bytes))])
+		result = append(result, bytes[r.Uint32()%uint32(len(bytes))])
 	}
 	return string(result)
 }
