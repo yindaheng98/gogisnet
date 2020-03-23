@@ -1,6 +1,9 @@
 package message
 
-import "context"
+import (
+	"context"
+	"encoding/json"
+)
 
 //Graph describes the topology structure of the gogistnet.
 //Topology structure of a gogistnet should be able to access from any server in the gogistnet.
@@ -13,6 +16,11 @@ type Graph struct {
 	//Clients contains all the clients in the gogistnet.
 	//The key of the map is the unique id of the client (C2SInfo.GetClientID())
 	Clients map[string]C2SInfo `json:"Clients"`
+}
+
+func (g Graph) String() string {
+	str, _ := json.Marshal(g)
+	return string(str)
 }
 
 //Vertex describes consists of the information of a server,
