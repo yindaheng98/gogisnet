@@ -12,6 +12,7 @@ type S2SInfo struct {
 	ServerInfo
 	ResponseSendOption protocol.ResponseSendOption
 	RequestSendOption  protocol.RequestSendOption
+	GraphQueryAddr     string
 	Candidates         []S2SInfo
 	S2CInfo            S2CInfo
 }

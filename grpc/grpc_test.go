@@ -25,7 +25,6 @@ func ServerTest(t *testing.T, ctx context.Context, S2SPort, S2CPort, GQPort uint
 	opt := DefaultServerOption()
 	opt.ServiceOption.S2SRegistryOption.BoardCastAddr = S2SBoardCastAddr
 	opt.ServiceOption.S2CRegistryOption.BoardCastAddr = S2CBoardCastAddr
-	ServerInfoOption.GraphQueryBroadCastAddr = GQBoardCastAddr
 	opt.InitServerOption = initS2SServerOption
 	s := NewServer(ServerInfoOption, opt)
 	initS2CServerOption = option.S2CInfoOption{
@@ -35,6 +34,7 @@ func ServerTest(t *testing.T, ctx context.Context, S2SPort, S2CPort, GQPort uint
 	initS2SServerOption = option.S2SInfoOption{
 		ServerInfoOption: ServerInfoOption,
 		BoardCastAddr:    S2SBoardCastAddr,
+		GraphQueryAddr:   GQBoardCastAddr,
 		S2CInfoOption:    initS2CServerOption,
 	}
 	PutServerEvent(s, func(s string) { t.Log(ServerID + s) })

@@ -7,12 +7,12 @@ import "context"
 type Graph struct {
 
 	//Vertexes contains all the server in the gogistnet.
-	//The key of the map is the unique id of the server (ServerInfo.GetServerID())
+	//The key of the map is the unique id of the server (S2SInfo.GetServerID())
 	Vertexes map[string]Vertex
 
 	//Clients contains all the clients in the gogistnet.
-	//The key of the map is the unique id of the client (ClientInfo.GetClientID())
-	Clients map[string]ClientInfo
+	//The key of the map is the unique id of the client (C2SInfo.GetClientID())
+	Clients map[string]C2SInfo
 }
 
 //Vertex describes consists of the information of a server,
@@ -21,7 +21,7 @@ type Graph struct {
 type Vertex struct {
 
 	//Information of a server.
-	ServerInfo
+	S2SInfo
 
 	//The edges connect from this server to other servers
 	//(The unique id of the server who receive the request and send back response).
@@ -35,19 +35,38 @@ type Vertex struct {
 type GraphQueryInfo struct {
 
 	//Who is this server?
-	ServerInfo ServerInfo
+	S2SInfo S2SInfo
 
 	//Which server is connecting to this server?
-	Indegree []ServerInfo
+	Indegree []S2SInfo
 
 	//Which server is this server connecting to?
-	Outdegree []ServerInfo
+	Outdegree []S2SInfo
 
 	//Which client is connecting to this server?
-	Clients []ClientInfo
+	Clients []C2SInfo
+}
+
+//GetVertex can construct a Vertex from a GraphQueryInfo.
+func (info GraphQueryInfo) GetVertex() Vertex {
+	Clients := make([]string, len(info.Clients)) //用info.Clients构造Clients
+	for i, c := range info.Clients {
+		Clients[i] = c.GetClientID()
+	}
+	EdgeTo := make([]string, len(info.Outdegree)) //用info.Outdegree构造EdgeTo
+	for i, s := range info.Outdegree {
+		EdgeTo[i] = s.GetServerID()
+	}
+
+	//构造Vertex
+	return Vertex{
+		S2SInfo: info.S2SInfo,
+		EdgeTo:  EdgeTo,
+		Clients: Clients,
+	}
 }
 
 //GraphQueryProtocol is used to query vertex information among servers to generate topology graph.
 type GraphQueryProtocol interface {
-	Query(context.Context, ServerInfo) (*GraphQueryInfo, error)
+	Query(context.Context, S2SInfo) (*GraphQueryInfo, error)
 }

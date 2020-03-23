@@ -27,6 +27,7 @@ func (info *S2SInfo) Unpack() (*message.S2SInfo, error) {
 		ServerInfo:         info.ServerInfo,
 		ResponseSendOption: info.ResponseSendOption,
 		RequestSendOption:  info.RequestSendOption,
+		GraphQueryAddr:     info.GraphQueryAddr,
 		Candidates:         Candidates,
 		S2CInfo:            *S2CInfo,
 	}, nil
@@ -60,6 +61,7 @@ func S2SInfoPack(info message.S2SInfo) (i *S2SInfo, e error) {
 		ServerInfo:         info.ServerInfo.(*ServerInfo),
 		ResponseSendOption: rso,
 		RequestSendOption:  info.RequestSendOption.(*RequestSendOption),
+		GraphQueryAddr:     info.GraphQueryAddr,
 		Candidates:         Candidates,
 		S2CInfo:            S2CInfo,
 	}, nil

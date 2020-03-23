@@ -23,8 +23,7 @@ message Timestamp {
 message ServerInfo {
   string ServerID = 1;
   string ServiceType = 2;
-  string GraphQueryBroadCastAddr = 3;
-  bytes AdditionalInfo = 4;
+  bytes AdditionalInfo = 3;
 }
 message S2CInfo {
   ServerInfo ServerInfo = 1;
@@ -35,8 +34,9 @@ message S2SInfo {
   ServerInfo ServerInfo = 1;
   ResponseSendOption ResponseSendOption = 2;
   RequestSendOption RequestSendOption = 3;
-  repeated S2SInfo Candidates = 4;
-  S2CInfo S2CInfo = 5;
+  string GraphQueryAddr = 4;
+  repeated S2SInfo Candidates = 5;
+  S2CInfo S2CInfo = 6;
 }
 message S2SRequest {
   S2SInfo S2SInfo = 1;

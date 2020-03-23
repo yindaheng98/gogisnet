@@ -10,53 +10,70 @@ func (info *GraphQueryInfo) Unpack() (*message.GraphQueryInfo, error) {
 	if info == nil {
 		return nil, errors.New("GraphQueryInfo is nil")
 	}
-	Indegree := make([]message.ServerInfo, len(info.Indegree))
-	for i, v := range info.Indegree {
-		Indegree[i] = v
+	S2SInfo, err := info.S2SInfo.Unpack()
+	if err != nil {
+		return nil, err
 	}
-	Outdegree := make([]message.ServerInfo, len(info.Outdegree))
-	for i, v := range info.Outdegree {
-		Outdegree[i] = v
+	var Indegree []message.S2SInfo
+	for _, v := range info.Indegree {
+		vp, _ := v.Unpack()
+		if vp != nil {
+			Indegree = append(Indegree, *vp)
+		}
 	}
-	Clients := make([]message.ClientInfo, len(info.Clients))
-	for i, v := range info.Clients {
-		Clients[i] = v
+	var Outdegree []message.S2SInfo
+	for _, v := range info.Outdegree {
+		vp, _ := v.Unpack()
+		if vp != nil {
+			Outdegree = append(Outdegree, *vp)
+		}
+	}
+	var Clients []message.C2SInfo
+	for _, v := range info.Clients {
+		vp, _ := v.Unpack()
+		if vp != nil {
+			Clients = append(Clients, *vp)
+		}
 	}
 	return &message.GraphQueryInfo{
-		ServerInfo: info.ServerInfo,
-		Indegree:   Indegree,
-		Outdegree:  Outdegree,
-		Clients:    Clients,
+		S2SInfo:   *S2SInfo,
+		Indegree:  Indegree,
+		Outdegree: Outdegree,
+		Clients:   Clients,
 	}, nil
 }
 
 //Convert a message.GraphQueryInfo into a protobuf GraphQueryInfo
 func GraphQueryInfoPack(info message.GraphQueryInfo) (*GraphQueryInfo, error) {
-	if info.ServerInfo == nil {
-		return nil, errors.New("ServerInfo is nil")
+	s2sInfo, err := S2SInfoPack(info.S2SInfo)
+	if err != nil {
+		return nil, err
 	}
-	Indegree := make([]*ServerInfo, len(info.Indegree))
-	for i, v := range info.Indegree {
-		if v != nil {
-			Indegree[i] = v.(*ServerInfo)
+	var Indegree []*S2SInfo
+	for _, v := range info.Indegree {
+		vp, _ := S2SInfoPack(v)
+		if vp != nil {
+			Indegree = append(Indegree, vp)
 		}
 	}
-	Outdegree := make([]*ServerInfo, len(info.Outdegree))
-	for i, v := range info.Outdegree {
-		if v != nil {
-			Outdegree[i] = v.(*ServerInfo)
+	var Outdegree []*S2SInfo
+	for _, v := range info.Outdegree {
+		vp, _ := S2SInfoPack(v)
+		if vp != nil {
+			Outdegree = append(Outdegree, vp)
 		}
 	}
-	Clients := make([]*ClientInfo, len(info.Clients))
-	for i, v := range info.Clients {
-		if v != nil {
-			Clients[i] = v.(*ClientInfo)
+	var Clients []*C2SInfo
+	for _, v := range info.Clients {
+		vp, _ := C2SInfoPack(v)
+		if vp != nil {
+			Clients = append(Clients, vp)
 		}
 	}
 	return &GraphQueryInfo{
-		ServerInfo: info.ServerInfo.(*ServerInfo),
-		Indegree:   Indegree,
-		Outdegree:  Outdegree,
-		Clients:    Clients,
+		S2SInfo:   s2sInfo,
+		Indegree:  Indegree,
+		Outdegree: Outdegree,
+		Clients:   Clients,
 	}, nil
 }

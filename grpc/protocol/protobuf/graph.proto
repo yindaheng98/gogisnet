@@ -10,8 +10,8 @@ message Empty {
 }
 
 message GraphQueryInfo {
-  ServerInfo ServerInfo = 1;
-  repeated ServerInfo Indegree = 2;
-  repeated ServerInfo Outdegree = 3;
-  repeated ClientInfo Clients = 4;
+  S2SInfo S2SInfo = 1;
+  repeated S2SInfo Indegree = 2;
+  repeated S2SInfo Outdegree = 3;
+  repeated C2SInfo Clients = 4;
 }
