@@ -5,14 +5,14 @@ import (
 )
 
 type ServerInfoOption struct {
-	ServerID       string `yaml:"ServerID" usage:"Unique ID of the server."`
+	ServerID       string `yaml:"ServerID" usage:"Unique ID of the server. Set to 'undefined' to generate a unique ID automatically."`
 	ServiceType    string `yaml:"ServiceType" usage:"Type of the server. Must be same as the type of the server you want to connect."`
 	AdditionalInfo string `yaml:"AdditionalInfo" usage:"The additional information you want to attach to this server."`
 }
 
 func DefaultServerInfoOption() ServerInfoOption {
 	return ServerInfoOption{
-		ServerID:       "SERVER-" + RandomString(64),
+		ServerID:       "undefined",
 		ServiceType:    "undefined",
 		AdditionalInfo: "",
 	}

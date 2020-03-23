@@ -9,8 +9,12 @@ type S2CInfoOption struct {
 
 func DefaultS2CInfoOption() S2CInfoOption {
 	return S2CInfoOption{
-		ServerInfoOption: DefaultServerInfoOption(),
-		BoardCastAddr:    "undefined",
+		ServerInfoOption: ServerInfoOption{
+			ServerID:       "undefined",
+			ServiceType:    "undefined",
+			AdditionalInfo: "",
+		},
+		BoardCastAddr: "undefined",
 	}
 }
 

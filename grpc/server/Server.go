@@ -50,6 +50,9 @@ func New(ServerInfoOption option.ServerInfoOption, opt Option) *Server {
 	ServiceOption.GraphQuerySendOption = &pb.GraphQuerySendOption{Addr: opt.ServiceOption.GraphQueryOption.BoardCastAddr}
 
 	//初始化服务器
+	if ServerInfoOption.ServerID == "undefined" {
+		ServerInfoOption.ServerID = "SERVER-" + option.RandomString(64)
+	}
 	ServerInfo := &pb.ServerInfo{}
 	ServerInfoOption.PutOption(ServerInfo)
 	s := server.New(ServerInfo, ServiceOption)

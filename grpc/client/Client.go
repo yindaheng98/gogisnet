@@ -25,6 +25,9 @@ func New(ClientInfoOption option.ClientInfoOption, opt Option) *Client {
 	opt.ServiceOption.PutOption((*server.RegistrantOption)(&ServiceOption))                           //服务设置修改
 	ServiceOption.CandidateList = grpcS2CRegistrant.NewPingerCandidateList(InitServer, opt.ServiceOption.CandidateListOption)
 
+	if ClientInfoOption.ClientID == "undefined" {
+		ClientInfoOption.ClientID = "CLIENT-" + option.RandomString(64)
+	}
 	ClientInfo := &pb.ClientInfo{}
 	ClientInfoOption.PutOption(ClientInfo)
 	return &Client{client.New(ClientInfo, ServiceOption)} //客户端初始化
