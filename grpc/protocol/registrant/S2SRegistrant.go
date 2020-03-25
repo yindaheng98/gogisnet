@@ -72,7 +72,12 @@ func (p S2SRequestProtocol) Request(ctx context.Context, requestChan <-chan prot
 		return
 	}
 
-	client, err := p.clients.getClient(option.(*pb.RequestSendOption).Addr) //从请求中取出地址得到一个客户端
+	Addr, err := ParseS2SAddr(option.(*pb.RequestSendOption).Addr)
+	if err != nil {
+		responseChan <- protocol.ReceivedResponse{Error: err}
+		return
+	}
+	client, err := p.clients.getClient(Addr.String()) //从请求中取出地址得到一个客户端
 	if err != nil {
 		responseChan <- protocol.ReceivedResponse{Error: err}
 		return
