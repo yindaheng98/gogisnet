@@ -11,8 +11,8 @@ type ListenerOption struct {
 
 func DefaultListenerOption() ListenerOption {
 	return ListenerOption{
-		S2SListenNetwork: "tcp", S2SListenAddr: "localhost:4241",
-		S2CListenNetwork: "tcp", S2CListenAddr: "localhost:4240",
-		GraphQueryListenNetwork: "tcp", GraphQueryListenAddr: "localhost:4242",
+		S2SListenNetwork: "tcp", S2SListenAddr: "0.0.0.0:4241",
+		S2CListenNetwork: "tcp", S2CListenAddr: "0.0.0.0:4240",
+		GraphQueryListenNetwork: "tcp", GraphQueryListenAddr: "0.0.0.0:4242",
 	}
 }
