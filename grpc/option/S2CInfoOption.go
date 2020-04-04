@@ -12,7 +12,7 @@ func DefaultS2CInfoOption() S2CInfoOption {
 		ServerInfoOption: ServerInfoOption{
 			ServerID:       "undefined",
 			ServiceType:    "undefined",
-			AdditionalInfo: "",
+			AdditionalInfo: map[string][]byte{},
 		},
 		BoardCastAddr: "undefined",
 	}

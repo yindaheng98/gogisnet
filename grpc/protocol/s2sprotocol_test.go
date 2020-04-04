@@ -48,7 +48,7 @@ func NewS2SInfo(i uint64) *pb.S2SInfo {
 		ServerInfo: &pb.ServerInfo{
 			ServerID:       fmt.Sprintf("ServerID:%d", i),
 			ServiceType:    fmt.Sprintf("ServiceType:%d", i),
-			AdditionalInfo: []byte(fmt.Sprintf("AdditionalInfo:%d", i)),
+			AdditionalInfo: map[string][]byte{"i": []byte(fmt.Sprintf("%d", i))},
 		},
 		ResponseSendOption: &pb.ResponseSendOption{Option: nil},
 		RequestSendOption: &pb.RequestSendOption{
@@ -60,7 +60,7 @@ func NewS2SInfo(i uint64) *pb.S2SInfo {
 			ServerInfo: &pb.ServerInfo{
 				ServerID:       fmt.Sprintf("ServerID:%d", i),
 				ServiceType:    fmt.Sprintf("ServiceType:%d", i),
-				AdditionalInfo: []byte(fmt.Sprintf("AdditionalInfo:%d", i)),
+				AdditionalInfo: map[string][]byte{"i": []byte(fmt.Sprintf("%d", i))},
 			},
 			RequestSendOption: &pb.RequestSendOption{
 				Option: nil,

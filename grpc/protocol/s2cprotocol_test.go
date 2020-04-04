@@ -49,7 +49,7 @@ func S2CRequestProtocolTest(p protocol.RequestProtocol, ctx context.Context, por
 			ClientInfo: &pb.ClientInfo{
 				ClientID:       fmt.Sprintf("ClientID:%d", i),
 				ServiceType:    fmt.Sprintf("ServiceType:%d", i),
-				AdditionalInfo: []byte(fmt.Sprintf("AdditionalInfo:%d", i)),
+				AdditionalInfo: map[string][]byte{"i": []byte(fmt.Sprintf("%d", i))},
 			},
 			ResponseSendOption: &pb.ResponseSendOption{Option: nil},
 		},
@@ -71,7 +71,7 @@ func S2CResponseProtocolTest(p protocol.ResponseProtocol, ctx context.Context, i
 			ServerInfo: &pb.ServerInfo{
 				ServerID:       fmt.Sprintf("ServerID:%d", i),
 				ServiceType:    fmt.Sprintf("ServiceType:%d", i),
-				AdditionalInfo: []byte(fmt.Sprintf("AdditionalInfo:%d", i)),
+				AdditionalInfo: map[string][]byte{"i": []byte(fmt.Sprintf("%d", i))},
 			},
 			RequestSendOption: &pb.RequestSendOption{
 				Option: nil,
