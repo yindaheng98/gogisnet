@@ -9,7 +9,7 @@ func NewClientInfo() *ClientInfo {
 	return &ClientInfo{
 		ClientID:       "Here's ID",
 		ServiceType:    "Here's Type",
-		AdditionalInfo: []byte("Here's AdditionalInfo"),
+		AdditionalInfo: map[string]string{"AD": "Here's AdditionalInfo"},
 	}
 }
 
@@ -17,7 +17,7 @@ func NewServerInfo(s string, i uint) *ServerInfo {
 	return &ServerInfo{
 		ServerID:       fmt.Sprintf("Here's %s ID %d", s, i),
 		ServiceType:    fmt.Sprintf("Here's %s Type %d", s, i),
-		AdditionalInfo: []byte(fmt.Sprintf("Here's %s AdditionalInfo %d", s, i)),
+		AdditionalInfo: map[string]string{"AD": fmt.Sprintf("Here's %s AdditionalInfo %d", s, i)},
 	}
 }
 
@@ -93,7 +93,7 @@ func S2SInfoList(n uint, m uint) []*S2SInfo {
 				ServerInfo: &ServerInfo{
 					ServerID:       "Here's S2C ID",
 					ServiceType:    "Here's S2C Type",
-					AdditionalInfo: []byte("Here's S2C AdditionalInfo"),
+					AdditionalInfo: map[string]string{"AD": "Here's S2C AdditionalInfo"},
 				},
 				RequestSendOption: &RequestSendOption{
 					Option: nil,
@@ -121,7 +121,7 @@ func TestConvertS2SRequest(t *testing.T) {
 				ServerInfo: &ServerInfo{
 					ServerID:       "Here's S2C ID",
 					ServiceType:    "Here's S2C Type",
-					AdditionalInfo: []byte("Here's S2C AdditionalInfo"),
+					AdditionalInfo: map[string]string{"AD": "Here's S2C AdditionalInfo"},
 				},
 				RequestSendOption: nil,
 				Candidates:        nil,
