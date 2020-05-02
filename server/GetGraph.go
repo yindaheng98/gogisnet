@@ -4,10 +4,11 @@ import (
 	"context"
 	"github.com/yindaheng98/gogisnet/message"
 	"sync"
+	"time"
 )
 
 //Get the topology graph of the whole gogisnet.
-func (s *Server) GetGraph(ctx context.Context) message.Graph {
+func (s *Server) GetGraph(ctx context.Context, QueryTimeout time.Duration) message.Graph {
 	graph := message.Graph{
 		Vertexes: map[string]message.Vertex{},
 		Clients:  map[string]message.C2SInfo{},
@@ -21,12 +22,14 @@ func (s *Server) GetGraph(ctx context.Context) message.Graph {
 	graphChan <- &graph
 	GraphQueryInfo := s.GetGraphQueryInfo()
 	travelledChan <- map[string]struct{}{GraphQueryInfo.GetVertex().GetServerID(): {}}
-	constructGraph(ctx, GraphQueryInfo, graphChan, travelledChan, s.GraphQueryProtocol)
+	constructGraph(ctx, GraphQueryInfo, graphChan, travelledChan, s.GraphQueryProtocol, QueryTimeout)
 	return *<-graphChan
 }
 
 //以深度优先遍历构造Graph
-func constructGraph(ctx context.Context, info message.GraphQueryInfo, graphChan chan *message.Graph, travelledChan chan map[string]struct{}, proto message.GraphQueryProtocol) {
+func constructGraph(ctx context.Context, info message.GraphQueryInfo,
+	graphChan chan *message.Graph, travelledChan chan map[string]struct{},
+	proto message.GraphQueryProtocol, QueryTimeout time.Duration) {
 	select {
 	case <-ctx.Done():
 		return //超时
@@ -49,10 +52,11 @@ func constructGraph(ctx context.Context, info message.GraphQueryInfo, graphChan 
 				wg.Add(1)
 				travelled[s.GetServerID()] = struct{}{} //就占位遍历标记
 				go func(s message.S2SInfo) {            //然后递归进行遍历
-					defer wg.Done()               //结束时报告线程结束
-					i, err := proto.Query(ctx, s) //获取信息
-					if err == nil && i != nil {   //如果成功
-						constructGraph(ctx, *i, graphChan, travelledChan, proto) //就递归
+					defer wg.Done() //结束时报告线程结束
+					queryCtx, _ := context.WithTimeout(ctx, QueryTimeout)
+					i, err := proto.Query(queryCtx, s) //获取信息
+					if err == nil && i != nil {        //如果成功
+						constructGraph(ctx, *i, graphChan, travelledChan, proto, QueryTimeout) //就递归
 					}
 				}(s)
 			}

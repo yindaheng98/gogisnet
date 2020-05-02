@@ -13,7 +13,7 @@ func PutServerEvent(s *server.Server, logger func(string)) {
 
 	check := func() string {
 		go func() {
-			graph := s.GetGraph(context.Background())
+			graph := s.GetGraph(context.Background(), 1e9)
 			fmt.Println("Graph: ", graph.String())
 		}()
 		ss := fmt.Sprintf("\n%s", s.GetGraphQueryInfo())
